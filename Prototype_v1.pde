@@ -6,7 +6,7 @@ import java.io.IOException;
  Title: Interactive-Interface
  Author: Eric Torres, @ciretorres 
  Description: Prototype
- Version: v0.1
+ Version: v1
  Update: 02/2021
 */
 PeasyCam camera;
@@ -57,13 +57,9 @@ void setup() {
   //size(1366, 768, P3D); // SAMSUNG 32"
   //size(1280, 800, P3D); // ANDROID 8"
   //size(1024, 640, P3D);
+  //size(1100, 700, P3D);
   fullScreen(P3D);
-  //size(1100, 700, P3D);  
   
-  //colorMode(RGB);
-  //loadPixels();
-  //noLights();
-  //lights();
   smooth();  
   
   // FONTS
@@ -80,7 +76,6 @@ void setup() {
   font_2_regular = createFont("fonts/Baloo_Tamma_2/BalooTamma2-Regular.ttf", 16);
   
   // ICONS
-  asset = loadImage("assets/1x/dialog-controller.png");
   app_mag_icon_enabled = loadImage("assets/1x/Artboard 48.png");
   abs_mag_icon_enabled = loadImage("assets/1x/Artboard 52.png");
   dist_mag_icon_enabled = loadImage("assets/1x/Artboard 56.png");
@@ -88,8 +83,6 @@ void setup() {
   app_mag_icon_focused = loadImage("assets/1x/Artboard 50.png");
   abs_mag_icon_focused = loadImage("assets/1x/Artboard 54.png");
   dist_mag_icon_focused = loadImage("assets/1x/Artboard 58.png");
-  //increase_icon_focused = loadImage("assets/0.5x/Artboard 65@0.5x.png");
-  //decrease_icon_focused = loadImage("assets/0.5x/Artboard 61@0.5x.png");
   increase_icon_focused = loadImage("assets/1x/Artboard 65.png");
   decrease_icon_focused = loadImage("assets/1x/Artboard 61.png");
   
@@ -98,39 +91,13 @@ void setup() {
   help_icon = loadImage("assets/1x/Artboard 73.png");
   
   welcome = loadImage("assets/1x/welcome.png");
-  text_interface = loadImage("assets/1x/text-interface.png");
-  
-  String[] fontList = PFont.list();
-  for(int i = 0; i < fontList.length; i++){
-    //println(fontList[i]);
-    if(fontList[i].contains("OpenSans")){
-      //println(fontList[i]);
-    }
-  }  
-  
-  Font1 = createFont("OpenSans", 18);
-  Font1_Bold = createFont("OpenSans-Bold", 24);
-  Font1_Semibold = createFont("OpenSans-Semibold", 18);  
-  Font1_Extrabold = createFont("OpenSans-Extrabold", 18);  
-  
-  assets_0 = loadImage("imgs/Assets_0.png");
-  assets_1 = loadImage("imgs/Assets_1.png");
-  assets_2 = loadImage("imgs/Assets_2.png");
-  assets_3 = loadImage("imgs/Assets_3.png");
-  assets = loadImage("assets/1x/asset.png");
   
   stars  = new Star(total_stars);
   
-  globe = new Grid(ratioGlobe); 
-  globe_1 = new Grid(ratioGlobe*10);  
-  
   camera = new PeasyCam(this, camDistance); // camera pixel's away
-  //cam.setRotations(1.4, -0.19, 0);
   camera.setRotations(-1.1, -0.5, 0);
   
   HUD = new HeadsUpDisplay();
-  
-  //stars = new Star();
   
   BufferedReader br;
   String line;
@@ -158,9 +125,6 @@ void draw() {
   
   stars.render();  
   
-  //globe.show();
-  globe_1.show();
-  
   popMatrix();  
   
 } // end draw
@@ -186,8 +150,7 @@ void keyPressed() {
   }
   
   if (key == ENTER) {
-    println("ENTER");
-    print = true;
+    println("ENTER");   
   }
   
   if (key == 'q') {    
