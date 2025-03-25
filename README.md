@@ -4,19 +4,103 @@
 
 Cinco propuestas para mejorar el código, refactorizar la arquitectura, legibilidad y optimización del software para visualizar un fenómeno astronómico que traduzca la relación brillo y distancia estelar. Las propuestas son las siguientes:
 
-### p5vscode
+### threevscode
 
-Utiliza **p5.js** y **visual studio code** para desarrollar la interfaz interactiva en el navegador.
+Utiliza **three.js** directamente con el visor de código **visual studio code** mediante el cdn para presentarlo en el navegador. La configuración es la siguiente:
+
+```html
+<!DOCTYPE html>
+<html lang="es-mx">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>threevscode</title>
+  </head>
+  <body>
+    <main>
+      <canvas id="canvasid"></canvas>
+    </main>
+
+    <script type="importmap">
+      {
+        "imports": {
+          "three": "https://cdn.jsdelivr.net/npm/three@0.171.0/build/three.module.js",
+          "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.171.0/examples/jsm/"
+        }
+      }
+    </script>
+    <script type="module">
+      import * as THREE from "three";
+      const canvas = document.querySelector("#canvasid");
+
+      const renderer = new THREE.WebGLRenderer({ canvas });
+    </script>
+  </body>
+</html>
+```
+
+### Prototype_v2
+
+Es una propuesta para refactorizar el código realizado en **processing.js** mediante su ide integrado.
+
+### threevite
+
+Utiliza [three.js](https://threejs.org/) **(0.171.0)** con el poder de **vite (6.0.3)** para desplegarlo en el navegador.
 
 - **Ventajas**:
 
-  - importa la librería p5js mediante el cdn hasta abajo del `body`.
+  - levanta un servidor local con **live server** que es el mismo que se instala en vscode, pero no funciona solo.
+  - creo que con solo **vite** es más ligero. En lugar de vue, react u otros frameworks.
+  - instala los módulos de javascript y paquetes de nodejs como dependencias mediante **node package manager**, npm. En lugar de utilizar el cdn o subir las librerías al repo.
+
+  ```json
+  {
+    "dependencies": {
+      "three": "^0.171.0"
+    },
+    "devDependencies": {
+      "vite": "^6.0.3"
+    }
+  }
+  ```
+
+  - carga las hojas de estilos css mediante el archivo `main.js`.
+
+  ```js
+  import "./assets/main.css";
+  ```
+
+  - coloca una etiqueta `canvas` en el html y se lo asigna al render webgl de threejs. Ejemplo:
+
+  ```html
+  <main>
+    <canvas id="idcanvas"></canvas>
+  </main>
+  ```
+
+  ```js
+  import * as THREE from "three";
+
+  const canvas = document.querySelector("#idcanvas");
+
+  const renderer = new THREE.WebGLRenderer({ canvas });
+  ```
+
+[Ver enlaces](#e1)
+
+### p5vscode
+
+Utiliza [p5.js](https://p5js.org/) **(1.11.2)** y **visual studio code** para desarrollar la interfaz interactiva en el navegador.
+
+- **Ventajas**:
+
+  - importa la librería p5js mediante el cdn hasta abajo del `body` en el html.
 
     ```html
     <script src="https://cdn.jsdelivr.net/npm/p5@1.11.2/lib/p5.min.js"></script>
     ```
 
-  - define las funciones `setup` y `draw` sin necesidad de crear un objeto que las contega y las llame mediante parámetro. Ejemplo:
+  - define las funciones `setup` y `draw` sin necesidad de crear un objeto que las contega y las llame mediante parámetro como con vuejs. Ejemplo:
 
     ```html
     <script>
@@ -29,67 +113,47 @@ Utiliza **p5.js** y **visual studio code** para desarrollar la interfaz interact
 
       function draw() {
         background(255);
-        // Enable orbiting with the mouse.
-        orbitControl();
         // Set the style's sphere.
         stroke(255, 0, 0);
         strokeWeight(0.1);
         fill(255);
-        translate(0, 0, 700);
         // Draw the sphere.
-        // Set its radius to 30.
+        // Set its radius to 10.
         sphere(10);
       }
     </script>
     ```
 
   - automáticamente agrega el `<canvas>` dentro de `<main>`.
-  - para `WEBGL` no necesito agregarle el `this` antes.
-  - **\*podría hacer un package.json para instalar las dependecias.**
+  - para `WEBGL` no necesito agregarle el `this` antes como con vuejs.
 
 ### p5vue
 
-Utiliza **p5.js** a través del ecosistema de **vue.js** para visualizar la interfaz interactiva en el navegador.
+Utiliza [p5.js](https://p5js.org/) a través del ecosistema de **vue.js (3.5.13)** para visualizar la interfaz interactiva en el navegador.
 
-- **Ventajas**:
+**Ventajas**
 
-  - Uso de eslint y prettier para colocarle punto y coma al final y convesiones para ES6.
-  - utiliza scripts y estilos desde otra carpeta o ubicación.
+- instala dependencias mediante npm en lugar de usar el cdn o subir las librerías al repo.
 
-  ```
-  src/
-  ├── assets/
-  |   ├── base.css
-  |   └──main.css
-  ├── sketches/
-  |   └── main.js
-  ├── App.vue
-  └── main.js
-  ```
+```json
+"dependencies": {
+  "p5": "^1.11.2",
+  "vue": "^3.5.13"
+},
+"devDependencies": {
+  "@eslint/js": "^9.14.0",
+  "@vitejs/plugin-vue": "^5.2.1",
+  "@vue/eslint-config-prettier": "^10.1.0",
+  "eslint": "^9.14.0",
+  "eslint-plugin-vue": "^9.30.0",
+  "prettier": "^3.3.3",
+  "vite": "^6.0.1",
+  "vite-plugin-vue-devtools": "^7.6.5"
+},
+```
 
-  - instala dependencias mediante npm en lugar de usar el cdn o subir las librerías al repo.
-
-  ```json
-  "dependencies": {
-    "p5": "^1.11.2",
-    "vue": "^3.5.13"
-  },
-  "devDependencies": {
-    "@eslint/js": "^9.14.0",
-    "@vitejs/plugin-vue": "^5.2.1",
-    "@vue/eslint-config-prettier": "^10.1.0",
-    "eslint": "^9.14.0",
-    "eslint-plugin-vue": "^9.30.0",
-    "prettier": "^3.3.3",
-    "vite": "^6.0.1",
-    "vite-plugin-vue-devtools": "^7.6.5"
-  },
-  ```
-
-  - compila el código para desplegarlo el ambiente. Eso lo hace vite.
-  - el `<canvas>` lo agrega dentro del `<main>` en auto porque la jerarquía de vue me permite colocar el main y luego mandar un componente o archivo vue anidado.
-  - permite utilizar los ciclos de vue (hooks) `onMounted` y las propiedades reactivas `ref`.
-  - las extensiones y settings del `.vscode`,
+- el `<canvas>` lo agrega dentro del `<main>` en auto porque la jerarquía de vue me permite colocar el main y luego mandar un componente o archivo vue anidado.
+- permite utilizar los ciclos de vue (hooks) `onMounted` y las propiedades reactivas de vue `ref`.
 
 - **Desventajas**:
 
@@ -100,20 +164,14 @@ Utiliza **p5.js** a través del ecosistema de **vue.js** para visualizar la inte
   ```js
   const generateSketch = () => {
     sketch.value = (s) => {
-      let x = 0;
-      let y = 0;
-      let z = 0;
       s.setup = function () {
         s.createCanvas(100, 100, this.WEBGL);
       };
       s.draw = () => {
         s.background(255);
-        // Enable orbiting with the mouse.
-        s.orbitControl();
         // Set the style's sphere.
         s.stroke(0, 255, 0);
         s.fill(255);
-        s.translate(x, y, z);
         // Draw the sphere.
         // Set its radius to 30.
         s.sphere(30);
@@ -123,71 +181,7 @@ Utiliza **p5.js** a través del ecosistema de **vue.js** para visualizar la inte
   };
   ```
 
-  - no he descubierto cómo colocar un canvas estático en el body y dentro del main para que lo utilice en lugar de crear uno por defecto.
-  - tampoco he descubierto cómo hacer el ancho del fondo responsivo a la pantalla y que se actualice la visualización.
-  - estar actualizando las dependencias de vue.
-
 [Ver enlaces](#e)
-
-### Prototype_v2
-
-Es una propuesta para refactorizar el código realizado en **processing.js** mediante su ide integrado.
-
-### threevite
-
-Utiliza **three.js** con el poder de **vite** para desplegarlo en el navegador.
-
-- **Ventajas**:
-
-  - creo que con solo vite es más ligero.
-  - instala las dependencias mediante npm.
-
-  ```json
-  {
-    "dependencies": {
-      "dat.gui": "^0.7.9",
-      "three": "^0.171.0"
-    },
-    "devDependencies": {
-      "vite": "^6.0.3"
-    }
-  }
-  ```
-
-  - levanta un servidor local que es el mismo que instala vscode live server, pero no funciona solo.
-  - carga los estilos mediante el `main.js`.
-
-  ```js
-  import "./assets/main.css";
-  ```
-
-  - coloca un `canvas` estático con un id en el html y asignárselo al render webgl de three js. Ejemplo:
-
-  ```html
-  <main>
-    <canvas id="idcanvas"></canvas>
-  </main>
-  ```
-
-  ```js
-  /**
-   * @see https://www.npmjs.com/package/three?activeTab=versions
-   */
-  import * as THREE from "three";
-
-  const canvas = document.querySelector("#idcanvas");
-  const renderer = new THREE.WebGLRenderer({
-    alpha: true,
-    antialias: true,
-    canvas,
-  });
-  ```
-
-[Ver enlaces](#e1)
-
-### threevscode
-
-Utiliza **three.js** directamente con el visor de código **visual studio code** para presentarlo en el navegador.
 
 ## Propuesta ideal
 
@@ -196,12 +190,23 @@ Tendría que contener lo siguiente:
 - importar las librerías mediante cdn o npm
 - tener un package.json
 - instalar eslint y prettier para la formateo y sintaxis de código.
-- ordenar en folders la jerarquía de los archivos js, css, etc.
 - colocar el `canvas` dentro del `main`.
 - ajustar y reescalar el ancho del canvas al ancho de la pantalla.
 - tener el folder `.vscode` para agregar los settings y extensions.
 - levantar un servidor local.
 - compilar el código para despliegue.
+- ordenar en folders la jerarquía de los archivos js, css, etc. Ejemplo:
+
+  ```
+  src/
+  ├── assets/
+  |   ├── base.css
+  |   └──main.css
+  ├── sketches/
+  |   └── index.js
+  ├── index.html
+  └── main.js
+  ```
 
 <!-- ## Instrucciones:
 
