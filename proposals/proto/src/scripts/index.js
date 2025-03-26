@@ -1,34 +1,28 @@
 import * as THREE from "three";
-
+// módulo para comprobar si es compatible con webgl
 import WebGL from "three/addons/capabilities/WebGL.js";
-
+// módulo para mostrar estadísticas del render en el front
 import Stats from "three/addons/libs/stats.module.js";
-
+// módulo para controlar rotate, zoom y pan speed
 import { TrackballControls } from "three/addons/controls/TrackballControls.js";
 
+// variables globales
 let perspectiveCamera, controls, scene, renderer, stats;
 
-const params = {
-  orthographicCamera: false,
-};
+stats = new Stats();
+document.body.appendChild(stats.dom);
 
-const frustumSize = 400;
-
-const clock = new THREE.Clock();
+// select canvas
+const canvas = document.querySelector("#canvasid");
 
 init();
 
 function init() {
-  stats = new Stats();
-  document.body.appendChild(stats.dom);
-  // select canvas
-  const canvas = document.querySelector("#canvasid");
-
   /**
    * Renders a view that contains your camera's "picture"
    * @see https://threejs.org/docs/api/en/renderers/WebGLRenderer.html
    */
-  const getRenderer = (canvas) => {
+  const createWebGLRenderer = (canvas) => {
     let alpha = true;
     let renderer = new THREE.WebGLRenderer({
       alpha: alpha,
@@ -37,7 +31,7 @@ function init() {
     });
     return renderer;
   };
-  renderer = getRenderer(canvas);
+  renderer = createWebGLRenderer(canvas);
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
   // renderer.setAnimationLoop(animate);
@@ -74,12 +68,12 @@ function init() {
    * a scene is the space in which you can places objects,cameras and lighting
    * @see https://threejs.org/docs/#api/en/scenes/Scene
    */
-  const getScene = (backgroundColor = new THREE.Color(0x000000)) => {
+  const createScene = (backgroundColor = new THREE.Color(0x000000)) => {
     let scene = new THREE.Scene();
     scene.background = backgroundColor;
     return scene;
   };
-  scene = getScene(new THREE.Color(0x000000));
+  scene = createScene(new THREE.Color(0x000000));
   // scene.fog = new THREE.FogExp2(0xcccccc, 0.002);
 
   /**
@@ -92,7 +86,7 @@ function init() {
    * new THREE.PerspectiveCamera(fov, aspect, near, far)
    * @see https://threejs.org/docs/api/en/cameras/PerspectiveCamera.html
    */
-  const getPerspectiveCamera = (
+  const createPerspectiveCamera = (
     fov = 75,
     aspect = window.innerWidth / window.innerHeight,
     near = 1,
@@ -102,7 +96,7 @@ function init() {
     perspectiveCamera = new THREE.PerspectiveCamera(fov, aspect, near, far);
     return perspectiveCamera;
   };
-  perspectiveCamera = getPerspectiveCamera(60);
+  perspectiveCamera = createPerspectiveCamera(60);
 
   const cameraPositionZ = (width) => {
     if (window.innerWidth <= width) {
@@ -123,7 +117,7 @@ function init() {
    * @property {thetaLength}:
    * @see https://threejs.org/docs/#api/en/geometries/SphereGeometry
    */
-  const getGeometry = (
+  const createSphereGeometry = (
     radius = 1,
     widthSegments = 8,
     heightSegments = 8,
@@ -147,7 +141,7 @@ function init() {
     );
     return geometry;
   };
-  const geometry = getGeometry(24, 32, 32);
+  const geometry = createSphereGeometry(24, 32, 32);
 
   /**
    * Creates a material that describe the appereance of objects
@@ -156,7 +150,7 @@ function init() {
    * @see https://threejs.org/docs/index.html#api/en/constants/Materials
    * @see https://threejs.org/manual/#en/materials
    */
-  const getMaterial = (
+  const createMeshBasicMaterial = (
     color = new THREE.Color("#ffffff"),
     wireframe = true
   ) => {
@@ -167,19 +161,19 @@ function init() {
     });
     return material;
   };
-  const material = getMaterial(new THREE.Color("#7833aa"));
+  const material = createMeshBasicMaterial(new THREE.Color("#7833aa"));
 
   /**
    * Adds the geometry to the mesh and apply the material to it
    * @property {geometry}:
    * @property {material}:
    */
-  const getMesh = (geometry, material) => {
+  const createMesh = (geometry, material) => {
     let mesh = new THREE.Mesh(geometry, material);
     scene.add(mesh);
     return mesh;
   };
-  const mesh = getMesh(geometry, material);
+  const mesh = createMesh(geometry, material);
   mesh.updateMatrix();
   // mesh.matrixAutoUpdate = false;
 
@@ -199,13 +193,6 @@ function init() {
 
   // TODO: HUD/GUI
   // const gui = new GUI();
-  // gui
-  //   .add(params, "orthographicCamera")
-  //   .name("use orthographic")
-  //   .onChange(function (value) {
-  //     controls.dispose();
-  //     createTrackballControls(value ? orthographicCamera : perspectiveCamera);
-  //   });
 
   //
 
@@ -222,18 +209,14 @@ function init() {
   }
 
   function onWindowResize() {
-    const aspect = window.innerWidth / window.innerHeight;
+    SCREEN_HEIGHT = window.innerHeight;
+    SCREEN_WIDTH = window.innerWidth;
+    const aspect = SCREEN_WIDTH / SCREEN_HEIGHT;
 
     perspectiveCamera.aspect = aspect;
     perspectiveCamera.updateProjectionMatrix();
 
-    // orthographicCamera.left = (-frustumSize * aspect) / 2;
-    // orthographicCamera.right = (frustumSize * aspect) / 2;
-    // orthographicCamera.top = frustumSize / 2;
-    // orthographicCamera.bottom = -frustumSize / 2;
-    // orthographicCamera.updateProjectionMatrix();
-
-    renderer.setSize(window.innerWidth, window.innerHeight);
+    renderer.setSize(SCREEN_WIDTH, SCREEN_HEIGHT);
 
     controls.handleResize();
   }
@@ -258,5 +241,4 @@ function init() {
 
     renderer.render(scene, camera);
   }
-  // requestAnimationFrame(render);
 }
