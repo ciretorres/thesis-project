@@ -24,17 +24,22 @@ const clock = new THREE.Clock();
 init();
 
 function init() {
+  // select canvas
+  const canvas = document.querySelector("#canvasid");
+
   /**
    * Renders a view that contains your camera's "picture"
    * @use https://threejs.org/docs/api/en/renderers/WebGLRenderer.html
    */
-  let alpha = true;
-  const canvas = document.querySelector("#b");
-  renderer = new THREE.WebGLRenderer({
-    alpha: alpha,
-    antialias: true,
-    canvas,
-  });
+  const getRenderer = (canvas) => {
+    let alpha = true;
+    return new THREE.WebGLRenderer({
+      alpha: alpha,
+      antialias: true,
+      canvas,
+    });
+  };
+  renderer = getRenderer(canvas);
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
   renderer.setAnimationLoop(animate);
@@ -46,10 +51,15 @@ function init() {
    * a scene is the space in which you can places objects,cameras and lighting
    * @see https://threejs.org/docs/#api/en/scenes/Scene
    */
-  scene = new THREE.Scene();
-  scene.background = new THREE.Color(0x000000);
+  const getScene = (backgroundColor = new THREE.Color(0x000000)) => {
+    let scene = new THREE.Scene();
+    scene.background = backgroundColor;
+    return scene;
+  };
+  scene = getScene(new THREE.Color(0x000000));
   // scene.fog = new THREE.FogExp2(0xcccccc, 0.002);
 
+  const aspect = window.innerWidth / window.innerHeight;
   /**
    * Adds a camera
    * A perspective view that simulates the behaviour of a film camera in real life
@@ -60,9 +70,25 @@ function init() {
    * new THREE.PerspectiveCamera(fov, aspect, near, far)
    * @see https://threejs.org/docs/api/en/cameras/PerspectiveCamera.html
    */
-  const aspect = window.innerWidth / window.innerHeight;
-  perspectiveCamera = new THREE.PerspectiveCamera(60, aspect, 1, 1000);
-  perspectiveCamera.position.z = 50;
+  const getPerspectiveCamera = (
+    fov = 75,
+    aspect = window.innerWidth / window.innerHeight,
+    near = 1,
+    far = 1000
+  ) => {
+    perspectiveCamera = new THREE.PerspectiveCamera(fov, aspect, near, far);
+    return perspectiveCamera;
+  };
+  perspectiveCamera = getPerspectiveCamera(60, aspect, 0.1);
+
+  const cameraPositionZ = (width) => {
+    if (window.innerWidth <= width) {
+      return 80;
+    } else {
+      return 50;
+    }
+  };
+  perspectiveCamera.position.z = cameraPositionZ(375);
 
   orthographicCamera = new THREE.OrthographicCamera(
     (frustumSize * aspect) / -2,
@@ -96,11 +122,9 @@ function init() {
   const dirLight1 = new THREE.DirectionalLight(0xffffff, 3);
   dirLight1.position.set(1, 1, 1);
   // scene.add(dirLight1);
-
   const dirLight2 = new THREE.DirectionalLight(0x002288, 3);
   dirLight2.position.set(-1, -1, -1);
   // scene.add(dirLight2);
-
   const ambientLight = new THREE.AmbientLight(0x555555);
   // scene.add(ambientLight);
 
