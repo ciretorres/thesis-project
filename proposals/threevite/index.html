@@ -3,40 +3,22 @@
 
 <head>
   <meta charset="UTF-8">
+  <!-- <link rel="shortcut icon" href="favicon.ico" type="image/x-icon"> -->
   <link rel="icon" href=".">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
   <title>threevite</title>
 
-  <style>
-    body {
-      margin: 0;
-      padding: 0;
-      width: 100%;
-      height: 100%;
-      overflow: hidden;
-    }
-
-    canvas {
-      width: 100%;
-      height: 100%;
-      display: block;
-    }
-
-    section {
-      position: absolute;
-      color: #ffffff;
-    }
-
-    h1 {}
-  </style>
+  <!-- <link rel="stylesheet" type="text/css" href="style.css"> -->
+  <link rel="stylesheet" href="./assets/main.css">
+  <style></style>
 </head>
 
 <body>
-  <main>
+  <main id="">
     <section>
       <h1>hellow orld</h1>
-      <div id="info">
+      <div id="infoid">
         MOVE mouse &amp; press LEFT/A: rotate, MIDDLE/S: zoom, RIGHT/D: pan
       </div>
     </section>
@@ -44,13 +26,13 @@
   </main>
 
   <script type="importmap">
-      {
-        "imports": {
-          "three": "https://cdn.jsdelivr.net/npm/three@0.171.0/build/three.module.js",
-          "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.171.0/examples/jsm/"
-        }
+    {
+      "imports": {
+        "three": "https://cdn.jsdelivr.net/npm/three@0.171.0/build/three.module.js",
+        "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.171.0/examples/jsm/"
       }
-    </script>
+    }
+  </script>
   <script type="module" src="/main.js"></script>
 </body>
 

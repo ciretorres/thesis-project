@@ -3,33 +3,33 @@ import * as THREE from "three";
 import WebGL from "three/addons/capabilities/WebGL.js";
 // módulo para mostrar estadísticas del render en el front
 import Stats from "three/addons/libs/stats.module.js";
+
 // módulo para controlar rotate, zoom y pan speed
 import { TrackballControls } from "three/addons/controls/TrackballControls.js";
 
-// variables globales
 let perspectiveCamera, controls, scene, renderer, stats;
-
-stats = new Stats();
-document.body.appendChild(stats.dom);
-
-// select canvas
-const canvas = document.querySelector("#canvasid");
 
 init();
 
 function init() {
+  // stats
+  stats = new Stats();
+  document.body.appendChild(stats.dom);
+
+  // select canvas
+  const canvas = document.querySelector("#canvasid");
+
   /**
    * Renders a view that contains your camera's "picture"
    * @see https://threejs.org/docs/api/en/renderers/WebGLRenderer.html
    */
   const createWebGLRenderer = (canvas) => {
     let alpha = true;
-    let renderer = new THREE.WebGLRenderer({
+    return new THREE.WebGLRenderer({
       alpha: alpha,
       antialias: true,
       canvas,
     });
-    return renderer;
   };
   renderer = createWebGLRenderer(canvas);
   renderer.setPixelRatio(window.devicePixelRatio);
@@ -90,12 +90,13 @@ function init() {
     fov = 75,
     aspect = window.innerWidth / window.innerHeight,
     near = 1,
-    // near = 0.1,
     far = 1000
   ) => {
     perspectiveCamera = new THREE.PerspectiveCamera(fov, aspect, near, far);
     return perspectiveCamera;
   };
+  // const aspect = window.innerWidth / window.innerHeight;
+  // perspectiveCamera = createPerspectiveCamera(60, aspect, 0.1);
   perspectiveCamera = createPerspectiveCamera(60);
 
   const cameraPositionZ = (width) => {
@@ -107,6 +108,7 @@ function init() {
   };
   perspectiveCamera.position.z = cameraPositionZ(375);
 
+  // Creates a box, geometry, 3d model, cube or mesh
   /**
    * Creates a geometry
    * @property {radius}:
@@ -141,7 +143,8 @@ function init() {
     );
     return geometry;
   };
-  const geometry = createSphereGeometry(24, 32, 32);
+  const radius = 24;
+  const geometry = createSphereGeometry(radius, 32, 32);
 
   /**
    * Creates a material that describe the appereance of objects
@@ -170,12 +173,13 @@ function init() {
    */
   const createMesh = (geometry, material) => {
     let mesh = new THREE.Mesh(geometry, material);
-    scene.add(mesh);
+    // scene.add(mesh);
     return mesh;
   };
   const mesh = createMesh(geometry, material);
   mesh.updateMatrix();
-  // mesh.matrixAutoUpdate = false;
+  // // mesh.matrixAutoUpdate = false;
+  scene.add(mesh);
 
   // lights
   // const getLight = (color = 0xffffff, intensity = 3) => {
@@ -209,8 +213,8 @@ function init() {
   }
 
   function onWindowResize() {
-    SCREEN_HEIGHT = window.innerHeight;
-    SCREEN_WIDTH = window.innerWidth;
+    let SCREEN_HEIGHT = window.innerHeight;
+    let SCREEN_WIDTH = window.innerWidth;
     const aspect = SCREEN_WIDTH / SCREEN_HEIGHT;
 
     perspectiveCamera.aspect = aspect;

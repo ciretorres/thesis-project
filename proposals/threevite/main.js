@@ -1,37 +1,29 @@
 import * as THREE from "three";
-
+// módulo para comprobar si es compatible con webgl
+import WebGL from "three/addons/capabilities/WebGL.js";
+// módulo para mostrar estadísticas del render en el front
 import Stats from "three/addons/libs/stats.module.js";
 
-import { FlyControls } from "three/addons/controls/FlyControls.js";
+// módulo para controlar rotate, zoom y pan speed
 import { TrackballControls } from "three/addons/controls/TrackballControls.js";
 
-let perspectiveCamera,
-  orthographicCamera,
-  controls,
-  controls2,
-  scene,
-  renderer,
-  stats;
-
-const params = {
-  orthographicCamera: false,
-};
-
-const frustumSize = 400;
-
-const clock = new THREE.Clock();
+let perspectiveCamera, controls, scene, renderer, stats;
 
 init();
 
 function init() {
+  // stats
+  stats = new Stats();
+  document.body.appendChild(stats.dom);
+
   // select canvas
   const canvas = document.querySelector("#canvasid");
 
   /**
    * Renders a view that contains your camera's "picture"
-   * @use https://threejs.org/docs/api/en/renderers/WebGLRenderer.html
+   * @see https://threejs.org/docs/api/en/renderers/WebGLRenderer.html
    */
-  const getRenderer = (canvas) => {
+  const createWebGLRenderer = (canvas) => {
     let alpha = true;
     return new THREE.WebGLRenderer({
       alpha: alpha,
@@ -39,11 +31,36 @@ function init() {
       canvas,
     });
   };
-  renderer = getRenderer(canvas);
+  renderer = createWebGLRenderer(canvas);
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
-  renderer.setAnimationLoop(animate);
+  // renderer.setAnimationLoop(animate);
   // document.body.appendChild(renderer.domElement);
+
+  if (WebGL.isWebGL2Available()) {
+    // Initiate function or other initializations here
+    renderer.setAnimationLoop(animate);
+    console.log(WebGL.isWebGL2Available());
+  } else {
+    // Mostrar mensaje de Advertencia WebGL no compatible
+    canvas.style.display = "none";
+    const warning = WebGL.getWebGL2ErrorMessage();
+    document.querySelector("main").appendChild(warning);
+    const AdvertenciaWebGLNoCompatible = document.createElement("div");
+    AdvertenciaWebGLNoCompatible.innerHTML += `
+        <h2>
+          Tu tarjeta gráfica no soporta
+          <a
+            href="http://khronos.org/webgl/wiki/Getting_a_WebGL_Implementation"
+            target="_blank"
+            rel="noopener noreferrer">
+            WebGL 2
+          </a>
+        </h2>`;
+    document
+      .querySelector("#webglmessage")
+      .appendChild(AdvertenciaWebGLNoCompatible);
+  }
 
   // universe
 
@@ -51,15 +68,14 @@ function init() {
    * a scene is the space in which you can places objects,cameras and lighting
    * @see https://threejs.org/docs/#api/en/scenes/Scene
    */
-  const getScene = (backgroundColor = new THREE.Color(0x000000)) => {
+  const createScene = (backgroundColor = new THREE.Color(0x000000)) => {
     let scene = new THREE.Scene();
     scene.background = backgroundColor;
     return scene;
   };
-  scene = getScene(new THREE.Color(0x000000));
+  scene = createScene(new THREE.Color(0x000000));
   // scene.fog = new THREE.FogExp2(0xcccccc, 0.002);
 
-  const aspect = window.innerWidth / window.innerHeight;
   /**
    * Adds a camera
    * A perspective view that simulates the behaviour of a film camera in real life
@@ -70,7 +86,7 @@ function init() {
    * new THREE.PerspectiveCamera(fov, aspect, near, far)
    * @see https://threejs.org/docs/api/en/cameras/PerspectiveCamera.html
    */
-  const getPerspectiveCamera = (
+  const createPerspectiveCamera = (
     fov = 75,
     aspect = window.innerWidth / window.innerHeight,
     near = 1,
@@ -79,7 +95,9 @@ function init() {
     perspectiveCamera = new THREE.PerspectiveCamera(fov, aspect, near, far);
     return perspectiveCamera;
   };
-  perspectiveCamera = getPerspectiveCamera(60, aspect, 0.1);
+  // const aspect = window.innerWidth / window.innerHeight;
+  // perspectiveCamera = createPerspectiveCamera(60, aspect, 0.1);
+  perspectiveCamera = createPerspectiveCamera(60);
 
   const cameraPositionZ = (width) => {
     if (window.innerWidth <= width) {
@@ -90,60 +108,95 @@ function init() {
   };
   perspectiveCamera.position.z = cameraPositionZ(375);
 
-  orthographicCamera = new THREE.OrthographicCamera(
-    (frustumSize * aspect) / -2,
-    (frustumSize * aspect) / 2,
-    frustumSize / 2,
-    frustumSize / -2,
-    1,
-    1000
-  );
-  orthographicCamera.position.z = 50;
-
   // Creates a box, geometry, 3d model, cube or mesh
+  /**
+   * Creates a geometry
+   * @property {radius}:
+   * @property {widthSegments}:
+   * @property {heightSegments}:
+   * @property {phiStart}:
+   * @property {thetaStart}:
+   * @property {thetaLength}:
+   * @see https://threejs.org/docs/#api/en/geometries/SphereGeometry
+   */
+  const createSphereGeometry = (
+    radius = 1,
+    widthSegments = 8,
+    heightSegments = 8,
+    phiStart = Math.PI * 2,
+    thetaStart = 0,
+    thetaLength = Math.PI
+  ) => {
+    // const twoPi = Math.PI * 2;
+    const props = {
+      radius: radius,
+      widthSegments: widthSegments,
+      heightSegments: heightSegments,
+      phiStart: phiStart,
+      thetaStart: thetaStart,
+      thetaLength: thetaLength,
+    };
+    let geometry = new THREE.SphereGeometry(
+      props.radius,
+      props.widthSegments,
+      props.heightSegments
+    );
+    return geometry;
+  };
   const radius = 24;
-  const geometry = new THREE.SphereGeometry(radius, 32, 32);
+  const geometry = createSphereGeometry(radius, 32, 32);
 
-  let color = new THREE.Color("#7833aa");
-  let hex = color.getHex();
-  let wireframe = true;
-  const material = new THREE.MeshBasicMaterial({
-    color: hex,
-    wireframe: wireframe,
-  });
+  /**
+   * Creates a material that describe the appereance of objects
+   * @property {color}:
+   * @property {wireframe}:
+   * @see https://threejs.org/docs/index.html#api/en/constants/Materials
+   * @see https://threejs.org/manual/#en/materials
+   */
+  const createMeshBasicMaterial = (
+    color = new THREE.Color("#ffffff"),
+    wireframe = true
+  ) => {
+    let hexadecimal = color.getHex();
+    let material = new THREE.MeshBasicMaterial({
+      color: hexadecimal,
+      wireframe: wireframe,
+    });
+    return material;
+  };
+  const material = createMeshBasicMaterial(new THREE.Color("#7833aa"));
 
-  const mesh = new THREE.Mesh(geometry, material);
+  /**
+   * Adds the geometry to the mesh and apply the material to it
+   * @property {geometry}:
+   * @property {material}:
+   */
+  const createMesh = (geometry, material) => {
+    let mesh = new THREE.Mesh(geometry, material);
+    // scene.add(mesh);
+    return mesh;
+  };
+  const mesh = createMesh(geometry, material);
   mesh.updateMatrix();
-  // mesh.matrixAutoUpdate = false;
+  // // mesh.matrixAutoUpdate = false;
   scene.add(mesh);
 
   // lights
-
-  const dirLight1 = new THREE.DirectionalLight(0xffffff, 3);
-  dirLight1.position.set(1, 1, 1);
-  // scene.add(dirLight1);
-  const dirLight2 = new THREE.DirectionalLight(0x002288, 3);
-  dirLight2.position.set(-1, -1, -1);
-  // scene.add(dirLight2);
-  const ambientLight = new THREE.AmbientLight(0x555555);
+  // const getLight = (color = 0xffffff, intensity = 3) => {
+  //   let light = new THREE.DirectionalLight(color, intensity);
+  //   light.position.set(-1, 2, 4);
+  //   scene.add(light);
+  //   return light;
+  // };
+  // const dirLight1 = getLight();
+  // dirLight1.position.set(1, 1, 1);
+  // const dirLight2 = getLight(0x002288);
+  // dirLight2.position.set(-1, -1, -1);
+  // const ambientLight = new THREE.AmbientLight(0x555555);
   // scene.add(ambientLight);
 
-  //
-
-  stats = new Stats();
-  document.body.appendChild(stats.dom);
-
-  //
-
+  // TODO: HUD/GUI
   // const gui = new GUI();
-  // gui
-  //   .add(params, "orthographicCamera")
-  //   .name("use orthographic")
-  //   .onChange(function (value) {
-  //     controls.dispose();
-
-  //     createTrackballControls(value ? orthographicCamera : perspectiveCamera);
-  //   });
 
   //
 
@@ -151,41 +204,23 @@ function init() {
 
   createTrackballControls(perspectiveCamera);
 
-  // createFlyControls(perspectiveCamera);
-
   function createTrackballControls(camera) {
     controls = new TrackballControls(camera, renderer.domElement);
-
     controls.rotateSpeed = 1.0;
     controls.zoomSpeed = 1.2;
     controls.panSpeed = 0.8;
-
     controls.keys = ["KeyA", "KeyS", "KeyD"];
   }
 
-  function createFlyControls(camera) {
-    controls2 = new FlyControls(camera, renderer.domElement);
-
-    controls2.movementSpeed = 1000;
-    controls2.domElement = renderer.domElement;
-    controls2.rollSpeed = Math.PI / 24;
-    controls2.autoForward = false;
-    controls2.dragToLook = false;
-  }
-
   function onWindowResize() {
-    const aspect = window.innerWidth / window.innerHeight;
+    let SCREEN_HEIGHT = window.innerHeight;
+    let SCREEN_WIDTH = window.innerWidth;
+    const aspect = SCREEN_WIDTH / SCREEN_HEIGHT;
 
     perspectiveCamera.aspect = aspect;
     perspectiveCamera.updateProjectionMatrix();
 
-    orthographicCamera.left = (-frustumSize * aspect) / 2;
-    orthographicCamera.right = (frustumSize * aspect) / 2;
-    orthographicCamera.top = frustumSize / 2;
-    orthographicCamera.bottom = -frustumSize / 2;
-    orthographicCamera.updateProjectionMatrix();
-
-    renderer.setSize(window.innerWidth, window.innerHeight);
+    renderer.setSize(SCREEN_WIDTH, SCREEN_HEIGHT);
 
     controls.handleResize();
   }
@@ -198,19 +233,15 @@ function init() {
     stats.update();
   }
 
-  function render() {
-    const camera = params.orthographicCamera
-      ? orthographicCamera
-      : perspectiveCamera;
-
-    // const delta = clock.getDelta();
-    // const rotationSpeed = 0.02;
-    // mesh.rotation.y += rotationSpeed * delta;
-    // controls2.movementSpeed = 33;
-    // controls2.update(delta);
-
+  function rotarMesh() {
     mesh.rotation.x += 0.001;
     mesh.rotation.y += 0.001;
+  }
+
+  function render() {
+    const camera = perspectiveCamera;
+
+    rotarMesh();
 
     renderer.render(scene, camera);
   }
