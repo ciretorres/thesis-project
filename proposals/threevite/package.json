@@ -1,9 +1,9 @@
 {
   "scripts": {
-    "clean": "rm -rf node_modules && rm -f package-lock.json && npm cache clean -f && npm cache verify && npm i",
-    "dev": "vite",
+    "dev": "vite --host",
     "build": "vite build",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "clean": "rm -rf node_modules && rm -f package-lock.json && npm cache clean -f && npm cache verify && npm i"
   },
   "dependencies": {
     "dat.gui": "^0.7.9",
