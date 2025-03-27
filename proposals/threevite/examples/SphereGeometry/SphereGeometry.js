@@ -687,10 +687,11 @@ const guis = {
 function chooseFromHash(mesh) {
   console.log(window);
   console.log(window.location);
-  console.log(window.location.hash);
   // const selectedGeometry = window.location.hash.substring(1) || "TorusGeometry";
+  // const selectedGeometry =
+  //   window.location.hash.substring(1) || "SphereGeometry";
   const selectedGeometry =
-    window.location.hash.substring(1) || "SphereGeometry";
+    window.location.hash.substring(1) || "IcosahedronGeometry";
 
   if (guis[selectedGeometry] !== undefined) {
     guis[selectedGeometry](mesh);
