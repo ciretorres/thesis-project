@@ -2,23 +2,26 @@
   "name": "thesis-project",
   "version": "0.0.1",
   "author": "ciretorres",
+  "description": "Interfaz-interactiva para la visualización de un fenómeno astronómico",
   "publishConfig": {
     "access": "public"
   },
-  "description": "Interfaz-interactiva para la visualización de un fenómeno astronómico",
   "type": "module",
   "license": "LGPL-3.0-only",
   "main": "",
   "files": [
-    "README.md"
+    "LICENSE",
+    "package.json",
+    "README.md",
+    "src"
   ],
   "scripts": {
-    "clean": "rm -rf node_modules && rm -f package-lock.json && npm cache clean -f && npm cache verify && npm i",
     "dev": "vite",
     "build": "vite build",
     "preview": "vite preview",
     "lint": "eslint . --fix",
-    "format": "prettier --write src/"
+    "format": "prettier --write src/",
+    "clean": "rm -rf node_modules && rm -f package-lock.json && npm cache clean -f && npm cache verify && npm i"
   },
   "dependencies": {
     "three": "^0.171.0"
@@ -27,9 +30,10 @@
     "vite": "^6.0.3"
   },
   "keywords": [
+    "three",
     "three.js",
-    "vite",
     "javascript",
+    "vite",
     "3d",
     "webgl",
     "canvas",
