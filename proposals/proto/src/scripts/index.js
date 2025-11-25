@@ -79,7 +79,8 @@ function init() {
     const geometry = createSphereGeometry(radius, 32, 32);
 
     // Creates a material that describe the appereance of objects
-    const material = createMeshBasicMaterial(new THREE.Color("#7833aa"));
+    // const material = createMeshBasicMaterial(new THREE.Color("#7833aa"));
+    const material = createMeshBasicMaterial(new THREE.Color("#ff0000"));
 
     // Adds the geometry to the mesh and apply the material to it
     const mesh = createMesh(geometry, material);
