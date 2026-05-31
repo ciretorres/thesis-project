@@ -1,19 +1,19 @@
 /** 
  * @class Grid
  *
- * @property {total}: la resolución total del grid en pixeles
- * @property {radio}: el radio del grid
- * @property {strokeWeight}: el ancho del borde del grid
- * @property {strokeColor}: el color del borde del grid
- * @property {grid}: un vector con el total de dimensiones por resolución
+ * @property {total}: 
+ * @property {radio}: 
+ * @property {strokeWeight}: 
+ * @property {strokeColor}: 
+ * @property {grid}: 
  */
 class Grid {
   // propiedades
-  int total = 100; // resolución en pixeles
-  int ratio = 100;
-  int strokeWeight = 1;
-  color strokeColor = color(255);
-  PVector[][] grid;
+  int total = 100; // la resolución total del grid en pixeles
+  int ratio = 100; // el radio del grid
+  int strokeWeight = 1; // el ancho del borde del grid
+  color strokeColor = color(255); // el color del borde del grid
+  PVector[][] grid; // un vector con el total de dimensiones por resolución
   
   Grid() {
     // Constructor
@@ -32,9 +32,7 @@ class Grid {
     calcularGrid(ratio);
   }
   
-  /* 
-   * Muestra un Grid vectorial esférico
-   */
+  // Muestra un Grid vectorial esférico
   void show() {
     noFill();
     strokeWeight(strokeWeight);
@@ -86,8 +84,7 @@ class Grid {
         // a partir de 0.0 to TWO_PI (6.2831855)
         float two_pi = TWO_PI;
         float longitude = map(j, 0, total, 0, two_pi);
-        // println("Longitude: " + longitude 
-        //   + ", i: " + i + ", pi: " + two_pi);        
+        // println("Longitude: " + longitude + ", i: " + i + ", pi: " + two_pi);        
 
         /* 
          * Fórmula para obtener los valores de las dimensiones esféricas:

@@ -4,20 +4,23 @@
 
 Refactorización js
 
+## Propuestas
+
 - [proto](proposals/proto/README.md)
 - [threevite](proposals/threevite/README.md)
 - [threevscode](proposals/threevscode/README.md)
-- [p5vite](proposals/p5vite/README.md) 👎🏿
-- [p5vue](proposals/p5vue/README.md) 👎🏿
-- [Prototype_v2](proposals/Prototype_v2/README.md) 👎🏿
 
-## Propuestas
+Descartadas
+
+- [p5vite](proposals/p5vite/README.md)
+- [p5vue](proposals/p5vue/README.md)
+- [Prototype_v2](proposals/Prototype_v2/README.md)
+- [processingvite](proposals/processingvite/README.md)
+- [processingvscode](proposals/processingvscode/README.md)
 
 ```md
 thesis-project/
-├── .vscode
-├── Prototype_v1
-├── docs
+├── docs/
 ├── proposals/
 | ├── p5vite
 | ├── p5vue
@@ -25,28 +28,29 @@ thesis-project/
 | ├── Prototype_v2
 | ├── threevite
 | └── thressvscode
-├── .gitignore
+|
+├── Prototype_v1/
 ├── README.md
-└── package.json/
+└── package.json
 ```
 
 [Ir al inicio](#thesis-project)
 
-## Propuesta ideal
+## Requerimientos
 
-Tendría que contener lo siguiente:
+Tendría que tener como mínimo lo siguiente:
 
-Utilizar un manejador de paquetes seguro para poder instalar las librerías por dependencias desde un archivo `package.json`, en lugar de utilizar un cdn o subir las librerías al repositorio.
+- Instalar librerías mediante un manejador de paquetes para utilizarse como dependencias de un archivo `package.json`. En lugar de utilizar un cdn o subir las librerías al repositorio la aplicación.
 
-Actualizar y recargar el puerto del servidor local instantáneamente del entorno de ejecución al realizar cambios en los script e interfaz.
+- Actualizar y recargar el entorno de ejecución instantáneamente al realizar cambios en los script de la aplicación.
 
-Compilar y minificar el código de despliegue para la versión de distribución con el builder.
+- Compilar y minificar en código de despliegue a través del builder para la versión de distribución de la aplicación.
 
-Realizar pruebas de componentes y unitarias.
+- Realizar pruebas de componentes y unitarias.
 
-Realizar una imagen en docker para ejecutarse.
+- Realizar una imagen en docker para ejecutarse.
 
-Realizar linteo, formateo y sintaxis de código.
+- Realizar linteo, formateo y sintaxis de código.
 
 - que permita colocar el `canvas` dentro del la etiqueta `main`.
 - ajustar y reescalar el ancho del canvas al ancho de la pantalla.
