@@ -1,4 +1,8 @@
 .ipynb_checkpoints/
 .DS_Store
 
+bun.lock
+package-lock.json
+node_modules
+
 deprecated
