@@ -3,6 +3,8 @@ import p5 from 'p5';
 import { onMounted, ref } from 'vue';
 import P5Component from './components/P5Component.vue';
 
+// import './sketches/index.js';
+
 // import WebGL from 'three/addons/capabilities/WebGL.js';
 // const webGL = WebGL
 const sketch = ref();
@@ -13,7 +15,14 @@ const generateSketch = () => {
     let y = 0;
     let z = 0;
     s.setup = function () {
-      s.createCanvas(100, 100, this.WEBGL);
+      const canvas = s.createCanvas(100, 100, this.WEBGL);
+      canvas.id('idcanvassketch');
+      // colocando texto para distinguir
+      const canvasById = document.querySelector('#idcanvassketch');
+      const paragraph = document.createElement('p');
+      paragraph.innerText =
+        'Sketch desde src/App.vue \nimport p5 from "p5"; \n\n const generateSketch = () => {};\n onMounted(() => { generateSketch(); });';
+      canvasById.before(paragraph);
     };
     s.draw = () => {
       // s.background(0);
@@ -38,6 +47,7 @@ const generateSketch = () => {
 onMounted(() => {
   //
   generateSketch();
+
   // new p5((sketch) => {
   //   let x = 0;
   //   let y = 0;

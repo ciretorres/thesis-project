@@ -29,7 +29,8 @@
     "README.md"
   ],
   "scripts": {
-    "clean": "rm -rf node_modules && rm -f package-lock.json && npm cache clean -f && npm cache verify && npm i",
+    "clean": "rm -rf node_modules && rm -f package-lock.json && npm cache clean -f && npm cache verify",
+    "reinstall": "rm -rf node_modules && rm -f package-lock.json && npm cache clean -f && npm cache verify && npm i",
     "dev": "vite",
     "build": "vite build",
     "preview": "vite preview",

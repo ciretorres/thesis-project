@@ -1,5 +1,5 @@
 import './assets/main.css';
-import './sketches/index.js';
+// import './sketches/index.js';
 
 import { createApp } from 'vue';
 import App from './App.vue';

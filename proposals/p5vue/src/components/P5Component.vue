@@ -12,7 +12,13 @@ onMounted(() => {
     let y = 0;
     let z = 0;
     s.setup = function () {
-      s.createCanvas(100, 100, this.WEBGL);
+      const canvas = s.createCanvas(100, 100, this.WEBGL);
+      canvas.id('idp5component');
+      const canvasById = document.querySelector('#idp5component');
+      const paragraph = document.createElement('p');
+      paragraph.innerText =
+        'Sketch desde src/components/P5component.vue \nimport p5 from "p5"; \n\n const sketch = ref();\n onMounted(() => { sketch.value = (s) => {}; new p5(sketch.value); });';
+      canvasById.before(paragraph);
     };
     s.draw = () => {
       // s.background(0);
