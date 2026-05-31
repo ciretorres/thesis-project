@@ -102,6 +102,10 @@ onMounted(() => {
 
 Incluso funciona con el componetizado de vue.
 
+[Ir al inicio](#p5vue)
+
+<h3>Enlaces</h3>
+
 - https://stackblitz.com/edit/angular-zkpdzeso-having-a-problem-loading-setti-sl2qiekl?file=src%2Fapp%2Fhello.component.ts
 - https://stackoverflow.com/questions/59295824/having-a-problem-loading-setting-webgl-to-the-createcanvas-method-in-p5-js
 - https://threejs.org/docs/index.html#manual/en/introduction/Installation
@@ -124,3 +128,5 @@ Incluso funciona con el componetizado de vue.
 - https://p5js.org/examples/
 - https://p5js.org/tutorials/
 - https://p5js.org/reference/p5/sphere/
+
+[Volver a arriba](#p5vue)

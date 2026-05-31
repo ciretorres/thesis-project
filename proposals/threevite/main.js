@@ -90,7 +90,7 @@ function init() {
     fov = 75,
     aspect = window.innerWidth / window.innerHeight,
     near = 1,
-    far = 1000
+    far = 1000,
   ) => {
     perspectiveCamera = new THREE.PerspectiveCamera(fov, aspect, near, far);
     return perspectiveCamera;
@@ -125,7 +125,7 @@ function init() {
     heightSegments = 8,
     phiStart = Math.PI * 2,
     thetaStart = 0,
-    thetaLength = Math.PI
+    thetaLength = Math.PI,
   ) => {
     // const twoPi = Math.PI * 2;
     const props = {
@@ -139,7 +139,7 @@ function init() {
     let geometry = new THREE.SphereGeometry(
       props.radius,
       props.widthSegments,
-      props.heightSegments
+      props.heightSegments,
     );
     return geometry;
   };
@@ -155,7 +155,7 @@ function init() {
    */
   const createMeshBasicMaterial = (
     color = new THREE.Color("#ffffff"),
-    wireframe = true
+    wireframe = true,
   ) => {
     let hexadecimal = color.getHex();
     let material = new THREE.MeshBasicMaterial({

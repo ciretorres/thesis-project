@@ -21,19 +21,25 @@
       <div id="infoid">
         MOVE mouse &amp; press LEFT/A: rotate, MIDDLE/S: zoom, RIGHT/D: pan
       </div>
+      <button type="button" onclick="imprime()">Click</button>
     </section>
     <canvas id="canvasid"></canvas>
   </main>
 
-  <script type="importmap">
+  <!-- <script type="importmap">
     {
       "imports": {
         "three": "https://cdn.jsdelivr.net/npm/three@0.171.0/build/three.module.js",
         "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.171.0/examples/jsm/"
       }
     }
-  </script>
+  </script> -->
   <script type="module" src="/main.js"></script>
+  <script>
+    function imprime() {
+      console.log('ay')
+    }
+  </script>
 </body>
 
 </html>
