@@ -2,7 +2,7 @@
 
 ## Instrucciones:
 
-1. Descarga [Processing](https://processing.org/download) de la página oficial
+1. Descarga [Processing](https://processing.org/download) de la página oficial.
 
 <img src="./data/captures/Captura de Pantalla 2021-12-27 a la(s) 19.30.21.png" width="800">
 
@@ -14,15 +14,15 @@
 
   <img src="./data/captures/Captura de Pantalla 2021-03-24 a la(s) 14.49.27.png" width="800">
 
-4. Selecciona añadir biblioteca de:
+4. Para reproducirlo necesitas instalar e importar la biblioteca de [Peasycam](https://www.mrfeinberg.com/peasycam/#about) desde el IDE de Processing. Selecciona Sketch > Importar biblioteca...> Añadir biblioteca:
 
   <img src="./data/captures/Captura de Pantalla 2021-12-27 a la(s) 19.36.13.png" width="800">
 
-5. Instala la librería [Peasycam](https://www.mrfeinberg.com/peasycam/#about) desde el Contribution Manager
+5. Busca e instala la librería [Peasycam](https://www.mrfeinberg.com/peasycam/#about) desde el Contribution Manager como se muestra en la imagen.
 
   <img src="./data/captures/Captura de Pantalla 2021-03-24 a la(s) 14.47.04.png" width="800">
 
-6. Ejecuta el proyecto
+6. Una vez instalada e importada la librería. Ejecuta el proyecto.
 
   <img src="./data/captures/Captura de Pantalla 2021-03-24 a la(s) 14.47.16.png" width="800">
 
