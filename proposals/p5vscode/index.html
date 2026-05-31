@@ -44,15 +44,27 @@
     p5vscode
   </main>
 
-  <script src="https://cdn.jsdelivr.net/npm/p5@1.11.2/lib/p5.min.js"></script>
-  <!-- <script src="sketch.js"></script> -->
+  <!-- <script src="https://cdn.jsdelivr.net/npm/p5@1.11.2/lib/p5.min.js"></script> -->
+  <script type="module" src="sketch.js"></script>
   <script>
     const main = document.querySelector('main');
     function setup() {
-      createCanvas(main.clientWidth, main.clientHeight, WEBGL);
+      // createCanvas(main.clientWidth, main.clientHeight, WEBGL);
+      const canvas = createCanvas(100, 100, WEBGL);
       describe('A white sphere on a gray background.');
+      canvas.id('idp5vscode')
+      const canvasByID = document.querySelector('#idp5vscode')
+      const para = document.createElement('p');
+      para.innerText =
+        'Sketch desde index.js \n https://cdn.jsdelivr.net/npm/p5@1.11.2/lib/p5.min.js';
+
+      canvasByID.before(para)
+
     }
     function draw() {
+      clear()
+
+      push();
       background(255);
       // background(0);
       // Enable orbiting with the mouse.
@@ -60,14 +72,18 @@
       // Set the style's sphere.
       // noStroke();    
       stroke(255, 0, 0);
-      strokeWeight(.1);
+      // strokeWeight(.1);
       fill(255);
-      translate(0, 0, 700);
+      // translate(0, 0, 700);
+      translate(0, 0, 0)
       // Draw the sphere.
       // Set its radius to 30.
-      sphere(10);
+      // sphere(10);
+      sphere(30);
+      pop();
     }
   </script>
+
 </body>
 
 </html>
