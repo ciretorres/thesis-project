@@ -1,44 +1,84 @@
 # thesis-project
 
-## Instrucciones:
+![](https://img.shields.io/badge/status-in%20progress-yellow)
 
-1. Descarga [Processing](https://processing.org/download) de la página oficial
+Refactorización js
 
-<img src="./Prototype_v1/data/captures/Captura de Pantalla 2021-12-27 a la(s) 19.30.21.png" width="800">
+## Propuestas
 
-2. Clona el repositorio o descarga el ZIP del proyecto de https://github.com/ciretorres/thesis-project en tu computadora :octocat:
+- [proto](proposals/proto/README.md)
+- [threevite](proposals/threevite/README.md)
+- [threevscode](proposals/threevscode/README.md)
 
-  <img src="./Prototype_v1/data/captures/Captura de Pantalla 2021-03-24 a la(s) 16.01.03.png" width="800">
+Descartadas
 
-3. Abre el archivo thesis-project/Prototype_v1/Prototype_v1.pde
-  
-  <img src="./Prototype_v1/data/captures/Captura de Pantalla 2021-03-24 a la(s) 14.49.27.png" width="800">
+- [p5vite](proposals/p5vite/README.md)
+- [p5vue](proposals/p5vue/README.md)
+- [Prototype_v2](proposals/Prototype_v2/README.md)
+- [processingvite](proposals/processingvite/README.md)
+- [processingvscode](proposals/processingvscode/README.md)
 
-4. Selecciona añadir biblioteca de:
-  
-  <img src="./Prototype_v1/data/captures/Captura de Pantalla 2021-12-27 a la(s) 19.36.13.png" width="800">
+```md
+thesis-project/
+├── docs/
+├── proposals/
+| ├── p5vite
+| ├── p5vue
+| ├── proto
+| ├── Prototype_v2
+| ├── threevite
+| └── thressvscode
+|
+├── Prototype_v1/
+├── README.md
+└── package.json
+```
 
-5. Instala la librería [Peasycam](https://www.mrfeinberg.com/peasycam/#about) desde el Contribution Manager
+[Ir al inicio](#thesis-project)
 
-  <img src="./Prototype_v1/data/captures/Captura de Pantalla 2021-03-24 a la(s) 14.47.04.png" width="800">
+## Requerimientos
 
-6. Ejecuta el proyecto
-  
-  <img src="./Prototype_v1/data/captures/Captura de Pantalla 2021-03-24 a la(s) 14.47.16.png" width="800">
+Tendría que tener como mínimo lo siguiente:
 
-7. Disfruta la experiencia :sparkles:
-  
-  <img src="./Prototype_v1/data/captures/Captura de Pantalla 2021-12-27 a la(s) 19.41.36.png" width="800">
+- Instalar librerías mediante un manejador de paquetes para utilizarse como dependencias de un archivo `package.json`. En lugar de utilizar un cdn o subir las librerías al repositorio la aplicación.
+
+- Actualizar y recargar el entorno de ejecución instantáneamente al realizar cambios en los script de la aplicación.
+
+- Compilar y minificar en código de despliegue a través del builder para la versión de distribución de la aplicación.
+
+- Realizar pruebas de componentes y unitarias.
+
+- Realizar una imagen en docker para ejecutarse.
+
+- Realizar linteo, formateo y sintaxis de código.
+
+- que permita colocar el `canvas` dentro del la etiqueta `main`.
+- ajustar y reescalar el ancho del canvas al ancho de la pantalla.
+- ordenar en folders la jerarquía de los archivos js, css, etc. Ejemplo:
+
+  ```
+  src/
+  ├── assets/
+  |   ├── base.css
+  |   └──main.css
+  ├── sketches/
+  |   └── index.js
+  ├── index.html
+  └── main.js
+  ```
 
 ## Referencias
 
-Torres-Velasco, E. O., Laureano-Cruces, A. L., Santillán-González, A. (2021). *Visualización a través del razonamiento cualitativo: un fenómeno de astrofísica* (Tesis de Maestría). Universidad Autónoma Metropolitana, México. Recuperada de: http://kali.azc.uam.mx/clc/02_publicaciones/tesis_dirigidas/Tesis_Final_ETV.pdf
-
-El análisis de datos se puede consultar y contribuir desde: [thesis-project/Prototype_v1/data/HipparcosMainCatalogue.ipynb](https://github.com/ciretorres/thesis-project/blob/main/Prototype_v1/data/HipparcosMainCatalogue.ipynb)
-## Notas
-
-La interfaz-interactiva funciona para plataformas Windows, Mac y Linux. Incluso se puede instalar en dispositivo Android utilizando el modo debug en el ambiente de Processing :metal:
+Torres-Velasco, E. O., Laureano-Cruces, A. L., Santillán-González, A. (2021). _Visualización a través del razonamiento cualitativo: un fenómeno de astrofísica_ (Tesis de Maestría). Universidad Autónoma Metropolitana, México. Recuperada de: http://kali.azc.uam.mx/clc/02_publicaciones/tesis_dirigidas/Tesis_Final_ETV.pdf
 
 ## Contacto
 
 - Eric Torres (erictorres.velasco@gmail.com)
+
+---
+
+Otros enlaces
+
+[35 incredible dataviz tools](https://www.creativebloq.com/design-tools/data-visualization-712402)
+
+[babylonjs](https://babylonjs.com/)
