@@ -1,0 +1,10 @@
+
+      && mouseY >= height-606 && mouseY <= height-552){   // Close Help
+      //help = false;
+      //help_2 = false;      
+    }
+    
+    
+    
+  
+} // end mousePressed()
