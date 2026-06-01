@@ -1,84 +1,45 @@
 # thesis-project
 
-![](https://img.shields.io/badge/status-in%20progress-yellow)
+## Instrucciones:
 
-Refactorización js
+1. Descarga [Processing](https://processing.org/download) de la página oficial.
 
-## Propuestas
+<img src="./data/captures/Captura de Pantalla 2021-12-27 a la(s) 19.30.21.png" width="800">
 
-- [proto](proposals/proto/README.md)
-- [threevite](proposals/threevite/README.md)
-- [threevscode](proposals/threevscode/README.md)
+2. Clona el repositorio o descarga el ZIP del proyecto de https://github.com/ciretorres/thesis-project en tu computadora :octocat:
 
-Descartadas
+  <img src="./data/captures/Captura de Pantalla 2021-03-24 a la(s) 16.01.03.png" width="800">
 
-- [p5vite](proposals/p5vite/README.md)
-- [p5vue](proposals/p5vue/README.md)
-- [Prototype_v2](proposals/Prototype_v2/README.md)
-- [processingvite](proposals/processingvite/README.md)
-- [processingvscode](proposals/processingvscode/README.md)
+3. Abre el archivo thesis-project/Prototype_v1/Prototype_v1.pde
 
-```md
-thesis-project/
-├── docs/
-├── proposals/
-| ├── p5vite
-| ├── p5vue
-| ├── proto
-| ├── Prototype_v2
-| ├── threevite
-| └── thressvscode
-|
-├── Prototype_v1/
-├── README.md
-└── package.json
-```
+  <img src="./data/captures/Captura de Pantalla 2021-03-24 a la(s) 14.49.27.png" width="800">
 
-[Ir al inicio](#thesis-project)
+4. Para reproducirlo necesitas instalar e importar la biblioteca de [Peasycam](https://www.mrfeinberg.com/peasycam/#about) desde el IDE de Processing. Selecciona Sketch > Importar biblioteca...> Añadir biblioteca:
 
-## Requerimientos
+  <img src="./data/captures/Captura de Pantalla 2021-12-27 a la(s) 19.36.13.png" width="800">
 
-Tendría que tener como mínimo lo siguiente:
+5. Busca e instala la librería [Peasycam](https://www.mrfeinberg.com/peasycam/#about) desde el Contribution Manager como se muestra en la imagen.
 
-- Instalar librerías mediante un manejador de paquetes para utilizarse como dependencias de un archivo `package.json`. En lugar de utilizar un cdn o subir las librerías al repositorio la aplicación.
+  <img src="./data/captures/Captura de Pantalla 2021-03-24 a la(s) 14.47.04.png" width="800">
 
-- Actualizar y recargar el entorno de ejecución instantáneamente al realizar cambios en los script de la aplicación.
+6. Una vez instalada e importada la librería. Ejecuta el proyecto.
 
-- Compilar y minificar en código de despliegue a través del builder para la versión de distribución de la aplicación.
+  <img src="./data/captures/Captura de Pantalla 2021-03-24 a la(s) 14.47.16.png" width="800">
 
-- Realizar pruebas de componentes y unitarias.
+7. Disfruta la experiencia :sparkles:
 
-- Realizar una imagen en docker para ejecutarse.
-
-- Realizar linteo, formateo y sintaxis de código.
-
-- que permita colocar el `canvas` dentro del la etiqueta `main`.
-- ajustar y reescalar el ancho del canvas al ancho de la pantalla.
-- ordenar en folders la jerarquía de los archivos js, css, etc. Ejemplo:
-
-  ```
-  src/
-  ├── assets/
-  |   ├── base.css
-  |   └──main.css
-  ├── sketches/
-  |   └── index.js
-  ├── index.html
-  └── main.js
-  ```
+  <img src="./data/captures/Captura de Pantalla 2021-12-27 a la(s) 19.41.36.png" width="800">
 
 ## Referencias
 
 Torres-Velasco, E. O., Laureano-Cruces, A. L., Santillán-González, A. (2021). _Visualización a través del razonamiento cualitativo: un fenómeno de astrofísica_ (Tesis de Maestría). Universidad Autónoma Metropolitana, México. Recuperada de: http://kali.azc.uam.mx/clc/02_publicaciones/tesis_dirigidas/Tesis_Final_ETV.pdf
 
+El análisis de datos se puede consultar y contribuir desde: [thesis-project/Prototype_v1/data/HipparcosMainCatalogue.ipynb](./data/HipparcosMainCatalogue.ipynb)
+
+## Notas
+
+La interfaz-interactiva funciona para plataformas Windows, Mac y Linux. Incluso se puede instalar en dispositivo Android utilizando el modo debug en el ambiente de Processing :metal:
+
 ## Contacto
 
 - Eric Torres (erictorres.velasco@gmail.com)
-
----
-
-Otros enlaces
-
-[35 incredible dataviz tools](https://www.creativebloq.com/design-tools/data-visualization-712402)
-
-[babylonjs](https://babylonjs.com/)
