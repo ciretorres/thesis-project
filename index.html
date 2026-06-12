@@ -3,39 +3,134 @@
 
 <head>
   <meta charset="UTF-8">
-  <!-- <link rel="shortcut icon" href="favicon.ico" type="image/x-icon"> -->
+  <link rel="shortcut icon" href="./public/favicon.ico" type="image/x-icon">
   <link rel="icon" href=".">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
   <title>proto</title>
 
-  <!-- <link rel="stylesheet" type="text/css" href="style.css"> -->
   <link rel="stylesheet" type="text/css" href="./src/assets/main.css">
-  <style></style>
+  <style>
+    #canvasid {
+      position: relative;
+      width: 100%;
+      /* height: 200px; */
+      /* border: 3px solid green; */
+    }
+
+    #hudsvgid {
+      /* background-color: black; */
+      border: 3px solid red;
+      position: absolute;
+      right: 0;
+      border: 3px solid red;
+      z-index: 1;
+    }
+
+    #lineaid,
+    #lineaverticalid {
+      stroke: white;
+      stroke-width: 3;
+    }
+
+    #sectionid {
+      position: absolute;
+      /* background-color: orangered; */
+      width: 100%;
+      height: 100%;
+      z-index: 1;
+    }
+
+    #spanid {
+      position: absolute;
+      top: 50%;
+      right: 50%;
+      z-index: 9;
+    }
+  </style>
 </head>
 
 <body>
   <main id="mainid">
-    <section>
+    <section id="sectionid">
       <h1>hellow orld</h1>
+
       <div id="infoid">
         MOVE mouse &amp; press LEFT/A: rotate, MIDDLE/S: zoom, RIGHT/D: pan
       </div>
-      <button type="button" onclick="console.log('Click en el botón')">Botón</button>
+
+      <button type="button" onclick="increasePositionZ()" style="padding: 16px; font-size: 24px;">+</button>
+      <button type="button" onclick="decreasePositionZ()" style="padding: 16px; font-size: 24px;">-</button>
+
+      <span id="spanid" style="transform: translate(50%, -50%);">+</span>
+
+      <p id="pid">-</p>
     </section>
+
+    <!-- <svg id="hudsvgid" xmlns="http://www.w3.org/2000/svg"></svg> -->
     <canvas id="canvasid"></canvas>
+
   </main>
 
-  <!-- Este import solo le afecta al puerto localhost:5500 -->
-  <!-- <script type="importmap">
-    {
-      "imports": {
-        "three": "https://cdn.jsdelivr.net/npm/three@0.171.0/build/three.module.js",
-        "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.171.0/examples/jsm/"
-      }
-    }
-  </script> -->
   <script type="module" src="./src/main.js"></script>
+
+  <script type="text/javascript">
+    function greetFromHtml() {
+      alert("Hello");
+    }
+  </script>
+
+  <script type="module">
+    import { increasePositionZ, decreasePositionZ } from './src/scripts/index.js'
+    import { imprime } from './src/components/imprimir.js'
+    imprime();
+    window.imprime = imprime;
+
+    window.increasePositionZ = increasePositionZ;
+    window.decreasePositionZ = decreasePositionZ;
+
+    document.addEventListener('keydown', function (event) {
+      if (event.key === 'w') {
+        console.log('W key pressed');
+        increasePositionZ()
+      }
+      if (event.key === 's') {
+        console.log('S key pressed');
+        decreasePositionZ()
+      }
+    });
+
+    // const svg = document.getElementById('hudsvgid');
+    // svg.setAttribute("height", "200");
+    // svg.setAttribute("width", "400");
+    // var rect = document.createElementNS('http://www.w3.org/2000/svg', 'rect');
+    // rect.setAttribute('id', 'rectid');
+    // rect.setAttribute('width', '200');
+    // rect.setAttribute('height', '100');
+    // rect.setAttribute('x', '100');
+    // rect.setAttribute('y', '50');
+    // rect.setAttribute('rx', '20');
+    // rect.setAttribute('ry', '20');
+    // rect.setAttribute('fill', 'blue');
+    // svg.append(rect)
+    // var group = document.createElementNS('http://www.w3.org/2000/svg', 'g');
+    // group.setAttribute('id', 'grupoid');
+    // svg.append(group)
+    // var line = document.createElementNS('http://www.w3.org/2000/svg', 'line');
+    // line.setAttribute('id', 'lineaid');
+    // line.setAttribute('x1', '175');
+    // line.setAttribute('y1', '100');
+    // line.setAttribute('x2', '225');
+    // line.setAttribute('y2', '100');
+    // group.append(line);
+    // var lineVertical = document.createElementNS('http://www.w3.org/2000/svg', 'line');
+    // lineVertical.setAttribute('id', 'lineaverticalid');
+    // lineVertical.setAttribute('x1', '200');
+    // lineVertical.setAttribute('y1', '75');
+    // lineVertical.setAttribute('x2', '200');
+    // lineVertical.setAttribute('y2', '125');
+    // group.append(lineVertical);
+  </script>
 </body>
 
 </html>

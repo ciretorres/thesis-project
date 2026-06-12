@@ -3,39 +3,56 @@ import * as THREE from "three";
 import WebGL from "three/addons/capabilities/WebGL.js";
 // módulo para mostrar estadísticas del render en el front
 import Stats from "three/addons/libs/stats.module.js";
+// módulo para rotar y zoom en la escena
+import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 
-// módulo para controlar rotate, zoom y pan speed
-import { TrackballControls } from "three/addons/controls/TrackballControls.js";
-
-let perspectiveCamera, controls, scene, renderer, stats;
+// variables globales
+let camera, controls, scene, renderer, stats;
 
 init();
 
-function init() {
-  //
-  // select canvas
-  const canvas = document.querySelector("#canvasid");
-  // stats
-  stats = new Stats();
-  document.body.appendChild(stats.dom);
+// Métodos para zoom
+export const increasePositionZ = () => {
+  camera.position.z += 50;
+};
+export const decreasePositionZ = () => {
+  camera.position.z -= 50;
+};
 
+// función de inicio
+function init() {
+  // setup
+  const mainid = document.querySelector("#mainid");
+  const canvas = document.querySelector("#canvasid");
+  const p = document.querySelector("#pid");
+  const section = document.querySelector("#sectionid");
+
+  // añade las stats
+  stats = new Stats();
+  section.appendChild(stats.dom).setAttribute("id", "statsid");
+  const statsid = document.querySelector("#statsid");
+  statsid.setAttribute("style", "position:block");
+
+  // función principal
   function main() {
     // Renders a view that contains your camera's "picture"
     renderer = createWebGLRenderer(canvas);
     renderer.setPixelRatio(window.devicePixelRatio);
     renderer.setSize(window.innerWidth, window.innerHeight);
     // renderer.setAnimationLoop(animate);
-    // document.body.appendChild(renderer.domElement);
+    mainid.appendChild(renderer.domElement);
 
+    //  Advertir si el navegador es compatible con WebGL
     if (WebGL.isWebGL2Available()) {
       // Initiate function or other initializations here
+      // Manda lo que se debe actualizar cada cierto tiempo para animar
       renderer.setAnimationLoop(animate);
       console.log(WebGL.isWebGL2Available());
     } else {
-      // Mostrar mensaje de Advertencia WebGL no compatible
+      // Mostrar mensaje no compatible
       canvas.style.display = "none";
       const warning = WebGL.getWebGL2ErrorMessage();
-      document.querySelector("main").appendChild(warning);
+      document.querySelector("mainid").appendChild(warning);
       const AdvertenciaWebGLNoCompatible = document.createElement("div");
       AdvertenciaWebGLNoCompatible.innerHTML += `
         <h2>
@@ -52,41 +69,105 @@ function init() {
         .appendChild(AdvertenciaWebGLNoCompatible);
     }
 
-    // universe
+    // Implementación
 
-    // A scene is the space in which you can places objects,cameras and lighting
+    // Una scene es el lugar en donde puedes agregar luces, mesh o grupos
     scene = createScene(new THREE.Color(0x000000));
     // scene.fog = new THREE.FogExp2(0xcccccc, 0.002);
 
     // Adds a camera
     // A perspective view that simulates the behaviour of a film camera in real life
     // const aspect = window.innerWidth / window.innerHeight;
-    // perspectiveCamera = createPerspectiveCamera(60, aspect, 0.1);
-    perspectiveCamera = createPerspectiveCamera(60);
+    // camera = createPerspectiveCamera(60, aspect, 0.1);
+    camera = createPerspectiveCamera(75);
+    // camera.position.z = 50;
 
-    const cameraPositionZ = (width) => {
-      if (window.innerWidth <= width) {
-        return 80;
-      } else {
-        return 50;
-      }
-    };
-    perspectiveCamera.position.z = cameraPositionZ(375);
+    const orbit = new OrbitControls(camera, renderer.domElement);
+    orbit.enableZoom = false;
 
     // Creates a box, geometry, 3d model, cube or mesh
     const radius = 24;
+    const widthSegments = 32;
+    const heightSegments = 32;
+    const geometry = createSphereGeometry(
+      radius,
+      widthSegments,
+      heightSegments,
+    );
     // const geometry = createSphereGeometry(1, 5, 3);
-    const geometry = createSphereGeometry(radius, 32, 32);
-
     // Creates a material that describe the appereance of objects
-    // const material = createMeshBasicMaterial(new THREE.Color("#7833aa"));
     const material = createMeshBasicMaterial(new THREE.Color("#ff0000"));
-
+    // const material = createMeshBasicMaterial(new THREE.Color("#7833aa"));
     // Adds the geometry to the mesh and apply the material to it
     const mesh = createMesh(geometry, material);
     mesh.updateMatrix();
     // // mesh.matrixAutoUpdate = false;
-    scene.add(mesh);
+    // scene.add(mesh);
+
+    // Calcula líneas de geometría grid
+    const ratio = 100;
+    const total = 16;
+    const grid = [];
+    for (let i = 0; i < total; i++) {
+      const row = new Array(total + 1);
+      for (let j = 0; j < total + 1; j++) {
+        const latitude = ((i - 0) * (Math.PI - 0)) / (total - 0) + 0;
+        const longitude = ((j - 0) * (Math.PI * 2 - 0)) / (total - 0) + 0;
+
+        const x = ratio * Math.sin(latitude) * Math.cos(longitude);
+        const y = ratio * Math.sin(latitude) * Math.sin(longitude);
+        const z = ratio * Math.cos(latitude);
+
+        row[j] = new THREE.Vector3(x, y, z);
+      }
+      grid[i] = row;
+    }
+    // console.log(grid[0][0]);
+    // console.log(grid.length);
+
+    // LINE VERTICAL
+    const lineBasicMaterial = new THREE.LineBasicMaterial({ color: 0xff0000 });
+    const points = [];
+    points.push(
+      new THREE.Vector3(0, 0, -98.07852804032305),
+      new THREE.Vector3(
+        31.81896451432087,
+        -76.81777567114163,
+        -55.55702330196019,
+      ),
+    );
+
+    const bufferGeometryPoints = new THREE.BufferGeometry().setFromPoints(
+      points,
+    );
+    console.log(bufferGeometryPoints);
+    const lineVertical = new THREE.Line(
+      bufferGeometryPoints,
+      lineBasicMaterial,
+    );
+    scene.add(lineVertical);
+
+    // LINE HORIZONTAL
+    const vertex = [];
+    for (let i = 0; i < grid.length; i++) {
+      for (let j = 0; j < grid.length + 1; j++) {
+        // console.log(i, j, grid[i][j]);
+        let x = grid[i][j].x;
+        let y = grid[i][j].y;
+        let z = grid[i][j].z;
+        vertex.push(new THREE.Vector3(x, y, z));
+      }
+    }
+    // console.log(vertex);
+    const bufferGeometryVertex = new THREE.BufferGeometry().setFromPoints(
+      vertex,
+    );
+    // console.log(bufferGeometryVertex);
+    const lineHorizontal = new THREE.Line(
+      bufferGeometryVertex,
+      lineBasicMaterial,
+    );
+    scene.add(lineHorizontal);
 
     // TODO: lights
     // const dirLight1 = getLight();
@@ -95,43 +176,29 @@ function init() {
     // dirLight2.position.set(-1, -1, -1);
     // const ambientLight = new THREE.AmbientLight(0x555555);
     // scene.add(ambientLight);
-
     // TODO: HUD/GUI
     // const gui = new GUI();
-
     //
+    // Crear controles
+    // TODO: Revisar documentación
+    // createTrackballControls(camera);
+    // //
+    // function createTrackballControls(camera) {
+    //   // controls = new TrackballControls(camera, renderer.domElement);
+    //   // controls.rotateSpeed = 1.0;
+    //   // controls.zoomSpeed = 1.2;
+    //   // controls.panSpeed = 0.8;
+    //   // controls.keys = ["KeyA", "KeyS", "KeyD"];
+    // }
 
+    //  Ajustar ancho de la pantalla al render
     window.addEventListener("resize", onWindowResize);
-
-    createTrackballControls(perspectiveCamera);
-
-    function createTrackballControls(camera) {
-      controls = new TrackballControls(camera, renderer.domElement);
-      controls.rotateSpeed = 1.0;
-      controls.zoomSpeed = 1.2;
-      controls.panSpeed = 0.8;
-      controls.keys = ["KeyA", "KeyS", "KeyD"];
-    }
-
+    //
     function onWindowResize() {
-      let SCREEN_HEIGHT = window.innerHeight;
-      let SCREEN_WIDTH = window.innerWidth;
-      const aspect = SCREEN_WIDTH / SCREEN_HEIGHT;
+      camera.aspect = window.innerWidth / window.innerHeight;
+      camera.updateProjectionMatrix();
 
-      perspectiveCamera.aspect = aspect;
-      perspectiveCamera.updateProjectionMatrix();
-
-      renderer.setSize(SCREEN_WIDTH, SCREEN_HEIGHT);
-
-      controls.handleResize();
-    }
-
-    function animate() {
-      controls.update();
-
-      render();
-
-      stats.update();
+      renderer.setSize(window.innerWidth, window.innerHeight);
     }
 
     function rotarMesh() {
@@ -142,14 +209,23 @@ function init() {
     }
 
     function render() {
-      const camera = perspectiveCamera;
+      renderer.render(scene, camera);
+    }
 
+    function animate() {
+      // requestAnimationFrame(render);
       rotarMesh();
 
-      renderer.render(scene, camera);
+      render();
+
+      p.innerText = `x: ${camera.position.x}; y: ${camera.position.y}; z: ${camera.position.z}`;
+
+      // controls.update();
+      stats.update();
     }
   }
 
+  // utils
   /**
    * Renders a view that contains your camera's "picture"
    * @see https://threejs.org/docs/api/en/renderers/WebGLRenderer.html
@@ -185,9 +261,9 @@ function init() {
     fov = 75,
     aspect = window.innerWidth / window.innerHeight,
     near = 1,
-    far = 1000
+    far = 1000,
   ) => {
-    perspectiveCamera = new THREE.PerspectiveCamera(fov, aspect, near, far);
+    let perspectiveCamera = new THREE.PerspectiveCamera(fov, aspect, near, far);
     return perspectiveCamera;
   };
   /**
@@ -206,9 +282,8 @@ function init() {
     heightSegments = 8,
     phiStart = Math.PI * 2,
     thetaStart = 0,
-    thetaLength = Math.PI
+    thetaLength = Math.PI,
   ) => {
-    // const twoPi = Math.PI * 2;
     const props = {
       radius: radius,
       widthSegments: widthSegments,
@@ -220,7 +295,7 @@ function init() {
     let geometry = new THREE.SphereGeometry(
       props.radius,
       props.widthSegments,
-      props.heightSegments
+      props.heightSegments,
     );
     return geometry;
   };
@@ -233,7 +308,7 @@ function init() {
    */
   const createMeshBasicMaterial = (
     color = new THREE.Color("#ffffff"),
-    wireframe = true
+    wireframe = true,
   ) => {
     let hexadecimal = color.getHex();
     let material = new THREE.MeshBasicMaterial({
@@ -259,5 +334,6 @@ function init() {
   //   scene.add(light);
   //   return light;
   // };
+
   main();
 }

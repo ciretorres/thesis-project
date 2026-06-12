@@ -2,36 +2,46 @@
 
 ![](https://img.shields.io/badge/status-in%20progress-yellow)
 
-Refactorización js
+refactorización javascript
 
-## Propuestas
+## Levantar
 
-- [proto](proposals/proto/README.md)
-- [threevite](proposals/threevite/README.md)
-- [threevscode](proposals/threevscode/README.md)
+```
+npm install
+```
 
-Descartadas
+ó
 
-- [p5vite](proposals/p5vite/README.md)
-- [p5vue](proposals/p5vue/README.md)
-- [Prototype_v2](proposals/Prototype_v2/README.md)
-- [processingvite](proposals/processingvite/README.md)
-- [processingvscode](proposals/processingvscode/README.md)
+```
+bun install
+```
+
+# Ejecutar
+
+Compilar y _Hot-Reload_ para desarrollar
+
+```
+bun run dev
+```
+
+## Estructura de los archivos:
 
 ```md
 thesis-project/
-├── docs/
-├── proposals/
-| ├── p5vite
-| ├── p5vue
-| ├── proto
-| ├── Prototype_v2
-| ├── threevite
-| └── thressvscode
+├── public/
+├── src/
+| ├── assets/
+| ├── components/
+| ├── composables/
+| ├── mixins/
+| ├── scripts/
+| ├── utils/
+| └── main.js
 |
-├── Prototype_v1/
-├── README.md
-└── package.json
+├── .gitignore
+├── index.html/
+├── package.json
+└── README.md
 ```
 
 [Ir al inicio](#thesis-project)
