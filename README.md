@@ -17,6 +17,10 @@ refactorización javascript
   - [Técnicos](#técnicos)
 - [Pasos para la Implementación](#pasos-para-la-implementación)
   - [Escena](#escena)
+  - [Cámara](#cámara)
+  - [Renderer](#renderer)
+  - [Controles](#controles-de-órbita)
+  - [Luces](#luces)
   - [Retícula](#retícula)
 - [Three.js](#threejs)
 - [Referencias](#referencias)
@@ -193,6 +197,141 @@ src/
 
 Definir una escena.
 
+```js
+/**
+ * a scene is the space in which you can places objects,cameras and lighting
+ * @property {backgroundColor}: of the scene.
+ * @see https://threejs.org/docs/#api/en/scenes/Scene
+ */
+const createScene = (backgroundColor = new Color(0x444444)) => {
+  let scene = new Scene();
+  scene.background = backgroundColor;
+  return scene;
+};
+const scene = createScene(new Color(0x000000));
+```
+
+#### Cámara
+
+```js
+/**
+ * Adds a camera
+ * A perspective view that simulates the behaviour of a film camera in real life
+ * @property {fov}: the vertical field of view.
+ * @property {aspect}: this is the aspect ratio you use to create the horizontal field of view based off the vertical.
+ * @property {near}: this is the nearest plane of view (where the camera's view begins) .
+ * @property {far}: this is far plane of view (where the camera's view ends).
+ * new PerspectiveCamera(fov, aspect, near, far)
+ * @see https://threejs.org/docs/api/en/cameras/PerspectiveCamera.html
+ */
+const createPerspectiveCamera = (
+  fov = 75,
+  aspect = window.innerWidth / window.innerHeight,
+  near = 1,
+  far = 1000,
+) => {
+  let perspectiveCamera = new PerspectiveCamera(fov, aspect, near, far);
+  return perspectiveCamera;
+};
+
+const camera = createPerspectiveCamera(75);
+camera.near = 0.1;
+camera.far = 50;
+console.log(camera.position.y);
+camera.position.z = 1;
+```
+
+#### Renderer
+
+```js
+// setup
+
+// selector html tags
+const mainid = document.querySelector("#mainid");
+const canvas = document.querySelector("#canvasid");
+
+/**
+ * Renders a view that contains your camera's "picture"
+ * @property {canvas}: in which will render the scene and camera.
+ * @property {alpha}: Controls the default clear alpha value. When set totrue, the value is 0. Otherwise it's 1. Default is false.
+ * @property {antialias}: Whether to use the default MSAA or not. Default is false.
+ * @see https://threejs.org/docs/api/en/renderers/WebGLRenderer.html
+ */
+const createWebGLRenderer = (canvas, alpha = false, antialias = true) => {
+  return canvas === undefined
+    ? new WebGLRenderer({
+        alpha,
+        antialias,
+      })
+    : new WebGLRenderer({
+        canvas,
+        alpha,
+        antialias,
+      });
+};
+
+// renderer to render a view with camera contained
+const renderer = createWebGLRenderer(canvas);
+renderer.setPixelRatio(window.devicePixelRatio);
+renderer.setSize(window.innerWidth, window.innerHeight);
+// document.body.appendChild(renderer.domElement);
+mainid.appendChild(renderer.domElement);
+```
+
+#### Advertencia WebGL
+
+```js
+//  Advertir si el navegador es compatible con WebGL
+if (WebGL.isWebGL2Available()) {
+  // Initiate function or other initializations here
+  // Manda lo que se debe actualizar cada cierto tiempo para animar
+  renderer.setAnimationLoop(animate);
+  console.log(WebGL.isWebGL2Available());
+} else {
+  // Mostrar mensaje no compatible
+  canvas.style.display = "none";
+  const warning = WebGL.getWebGL2ErrorMessage();
+  document.querySelector("mainid").appendChild(warning);
+  const AdvertenciaWebGLNoCompatible = document.createElement("div");
+  AdvertenciaWebGLNoCompatible.innerHTML += `
+        <h2>
+          Tu tarjeta gráfica parece no soportar
+          <a
+            href="http://khronos.org/webgl/wiki/Getting_a_WebGL_Implementation"
+            target="_blank"
+            rel="noopener noreferrer">
+            WebGL 2
+          </a>
+        </h2>`;
+  document
+    .querySelector("#webglmessage")
+    .appendChild(AdvertenciaWebGLNoCompatible);
+}
+```
+
+#### Controles de órbita
+
+```js
+// orbit controls
+const orbit = new OrbitControls(camera, renderer.domElement);
+orbit.enableZoom = true;
+```
+
+#### Luces
+
+```js
+// lights
+const color = 0xffffff;
+const intensity = 1;
+const light = new AmbientLight(color, intensity);
+// const light = new AmbientLight( 0x404040 ); // soft white light
+scene.add(light);
+const lights = [];
+lights[0] = new DirectionalLight(0xffffff, 3);
+lights[0].position.set(0, 200, 0);
+scene.add(lights[0]);
+```
+
 [Ir al inicio](#thesis-project)
 
 #### Retícula
@@ -303,6 +442,10 @@ Realizar/visualizar una retícula ecuatorial detallada.
 - Cómo sincronizar la rotación de la cámara con un html canvas overlay que dibuje el grid de lineas sobre los ejes proyectados.
 - Cómo utilizar un shader pesonalizado en una esfera transparente que dibuje las líneas RA/Dec basados en UV/spherical coordinates.
 
+### Estrellas
+
+`Get Star Field` Instancias de esferas/estrellas.
+
 [Ir al inicio](#thesis-project)
 
 ## Three.js
@@ -351,3 +494,23 @@ Torres-Velasco, E. O., Laureano-Cruces, A. L., Santillán-González, A. (2021). 
 [https://threejs.org/docs/](https://threejs.org/docs/)
 
 [https://ollama.com/](https://ollama.com/)
+
+[https://www.tutorialspoint.com/threejs](https://www.tutorialspoint.com/threejs/index.htm)
+
+[https://threejs.org/docs/#SphereGeometry](https://threejs.org/docs/#SphereGeometry)
+
+[https://github.com/mrdoob/three.js/blob/master/src/geometries/SphereGeometry.js#L74C27-L74C41](https://github.com/mrdoob/three.js/blob/master/src/geometries/SphereGeometry.js#L74C27-L74C41)
+
+[Three.js Geometry Tutorial (Day 3) – Box, Sphere, Plane & Cylinder | Create 3D Shapes with Three.js](https://www.youtube.com/watch?v=Pglky4obBIk)
+
+[Coding Challenge 25: Spherical Geometry](https://www.youtube.com/watch?v=RkuBWEkBrZA)
+
+[Create a 3D Globe with Three.js](https://www.youtube.com/watch?v=f4zncVufL_I)
+
+[Create Point sphere animation in WebGL, THREE JS & GSAP](https://www.youtube.com/watch?v=K3WCGUO1uu8)
+
+[Create star system - particles animation in THREE JS, WebGL and STATS JS](https://www.youtube.com/watch?v=k0npZq07afw)
+
+[https://threejs.org/docs/#GridHelper](https://threejs.org/docs/#GridHelper)
+
+[https://github.com/mrdoob/three.js/blob/master/src/helpers/GridHelper.js](https://github.com/mrdoob/three.js/blob/master/src/helpers/GridHelper.js)
