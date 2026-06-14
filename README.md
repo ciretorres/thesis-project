@@ -120,6 +120,14 @@ Por su parte, los modelos `qwen3.6:27b` y `mistral-small3.2:24b` destacaron en d
   z = radius * cos(dec) * sin(ra)
   ```
 
+  ```
+  /* Formula for obtaining spheric dimensions values
+      x = r sin(θ) cos(Φ/φ)
+      y = r sin(θ) sin(Φ/φ)
+      z = r cos(θ)
+  */
+  ```
+
   Quizá sea necesario hacer la conversión o ajustar la 'camera.up'. Alinear el eje polar terreste vector(0,1,0) o rotar la escena.
 
   ```js
@@ -172,6 +180,7 @@ Las necesidades básicas, intermedias y avanzadas para el desarrollo e implement
 - **Testeo.**
 - **Realidad virtual (VR) / Realidad aumentada (AR).** Integrar soporte para VR/AR utilizando bibliotecas como WebXR para crear una experiencia inmersiva. La integración en interfaz gráfica UI es más flexible con mejor performance para actualizaciones dinámicas.
 - **Sistema de color.** Añadir botones para cambiar entre diferentes sistemas de colores. Claro, oscuro, rojo. Realizar análisis como parte de la accesibilidad web.
+- **Descarga de app.** Instalar la aplicación para móvil en android.
 
 [Ir al inicio](#thesis-project)
 
@@ -353,98 +362,123 @@ Realizar/visualizar una retícula ecuatorial detallada.
 ##### Sistema de coordenas ecuatorial
 
 - Construir las líneas RA/Dec con trigonometría.
-- Calcular, transformar y convertir los puntos del sistema de coordenadas ecuatoriales (ra, dec) a coordenadas esféricas (x,y,z). `Grid Generation Formula`
+- Calcular, transformar y convertir los puntos del sistema de coordenadas ecuatoriales (ra, dec) a coordenadas esféricas (x,y,z).
 
   ###### Declinación
-  - Calcular las líneas de declinación paralelos al ecuador celeste
-  - Crear una geometría a partir de los puntos
-  - Crear los segmentos de líneas con `LineSegments, MeshLine o BufferGeometry. LineBasicMaterial`.
-  - Agregarlas a la escena
+  - Calcular los puntos de las líneas de declinación.
 
   ```js
-  // 9 líneas de declinación de -90° a 90° de 20° en 20°
-  for (let dec = -90; dec < 90; dec += 20) {
+  // 9 líneas para la declinación desde -90° hasta 90° en pasos de 20° en 20° grados
+  for (let i = -90; i <= 90; i += 20) {
+    const pi = Math.PI;
     const points = [];
-    for (let ra = 0; ra <= 360; ra++) {
-      const x =
-        radio *
-        Math.cos((dec * Math.PI) / 180) *
-        Math.cos((ra * Math.PI) / 180);
-      const y = radio * Math.sin((dec * Math.PI) / 180);
-      const z =
-        radio *
-        Math.cos((dec * Math.PI) / 180) *
-        Math.sin((ra * Math.PI) / 180);
+
+    for (let j = 0; j <= 360; j++) {
+      // // aquí cambia con declination
+      const dec = (i * pi) / 180;
+      const ra = (j * pi) / 180;
+
+      // Fórmula para transformar las coordenadas de la forma Y-up
+      const x = radio * Math.cos(dec) * Math.cos(ra);
+      const y = radio * Math.sin(dec);
+      const z = radio * Math.cos(dec) * Math.sin(ra);
+
       points.push(new Vector3(x, y, z));
     }
-    const geometry = new BufferGeometry().setFromPoints(points);
-    const line = new Line(geometry, new LineBasicMaterial({ color: 0xff0000 }));
-    scene.add(line);
+    // Genera geometría, material, mesh y agrega a escena
+    //
   }
   ```
 
-  <!-- <img src="/capturas/DiagramaPrototype_v2.png" width="800"> -->
+    <img src="public/capturas/Screen Shot 2026-06-14 at 16.51.17.webp" width="800">
 
   ###### Ascensión Recta
-  - Calcular las líneas de ascensión recta meridianos que pasan por los ejes polares.
-  - Crear una geometría a partir de los puntos
-  - Crear los segmentos de líneas con `LineSegments, MeshLine o BufferGeometry. LineBasicMaterial`.
-  - Agregarlas a la escena
+  - Calcular los puntos para las líneas de ascensión recta.
 
   ```js
-  // 24 lineas de ascención recta de 0° a 360° de 15° en 15°
-  for (let ra = 0; ra < 360; ra += 15) {
+  // 24 lineas de ascención recta desde 0° hasta 360° en pasos de 15° en 15° grados
+  for (let i = 0; i <= 360; i += 15) {
+    const pi = Math.PI;
     const points = [];
-    for (let dec = -90; dec <= 90; dec++) {
-      const x =
-        radio *
-        Math.cos((dec * Math.PI) / 180) *
-        Math.cos((ra * Math.PI) / 180);
-      const y = radio * Math.sin((dec * Math.PI) / 180);
-      const z =
-        radio *
-        Math.cos((dec * Math.PI) / 180) *
-        Math.sin((ra * Math.PI) / 180);
+
+    for (let j = -90; j <= 90; j++) {
+      // // aquí cambia con ascensión
+      const ra = (i * pi) / 180;
+      const dec = (j * pi) / 180;
+
+      // Fórmula para transformar coordenas de la forma Y-up
+      const x = radio * Math.cos(dec) * Math.cos(ra);
+      const y = radio * Math.sin(dec);
+      const z = radio * Math.cos(dec) * Math.sin(ra);
+
       points.push(new Vector3(x, y, z));
     }
-    const geometry = new BufferGeometry().setFromPoints(points);
-    const line = new Line(geometry, new LineBasicMaterial({ color: 0xff0000 }));
-    scene.add(line);
+    // Genera geometría, material, mesh y agrega a escena
+    //
   }
   ```
 
-  ###### Ángulos rectos
-  - Ajustar que solo los ángulos de ra 0, 90, 180, 270 y 360 toquen el eje polar.
+  <img src="public/capturas/Screen Shot 2026-06-14 at 16.52.41.webp" width="800">
+  - Para asignar los puntos a una geometría, crear el mesh de las líneas y agregarlas a la escena se usa:
 
   ```js
-  if (ra === 180 || ra === 360 || ra === 90 || ra === 270 || ra === 0) {
-    for (let dec = -90; dec <= 90; dec++) {
-      const x =
-        radio *
-        Math.cos((dec * Math.PI) / 180) *
-        Math.cos((ra * Math.PI) / 180);
-      const y = radio * Math.sin((dec * Math.PI) / 180);
-      const z =
-        radio *
-        Math.cos((dec * Math.PI) / 180) *
-        Math.sin((ra * Math.PI) / 180);
+  // Genera geometría, material, mesh y agrega a escena
+  const geometry = new BufferGeometry().setFromPoints(points);
+
+  const line = new Line(
+    geometry,
+    new LineBasicMaterial({
+      color: 0xff0000,
+      transparent: true,
+      opacity: 0.6,
+    }),
+  );
+
+  line.updateMatrix();
+  scene.add(line);
+  ```
+
+  - Opciones `Line`, `LineSegments`, `MeshLine`. `BufferGeometry`. `LineBasicMaterial`.
+
+  <img src="public/capturas/Screen Shot 2026-06-14 at 16.53.36.webp" width="800">
+
+  ###### Ángulos rectos
+  - Ajustar que las líneas de Ascensión Recta con ángulos rectos de 0, 90, 180, 270 y 360 lleguen hasta los ejes polares. Y los demás hasta -70° / 70°.
+
+  ```js
+  const angulosRectos = [0, 90, 180, 270, 360];
+
+  if (angulosRectos.includes(i)) {
+    for (let j = -90; j <= 90; j++) {
+      // aquí cambia con ascensión
+      const ra = (i * pi) / 180;
+      const dec = (j * pi) / 180;
+
+      // Fórmula para transformar coordenas de la forma Y-up
+      const x = radio * Math.cos(dec) * Math.cos(ra);
+      const y = radio * Math.sin(dec);
+      const z = radio * Math.cos(dec) * Math.sin(ra);
+
       points.push(new Vector3(x, y, z));
     }
   } else {
-    for (let dec = -70; dec <= 70; dec++) {
-      const x =
-        radio *
-        Math.cos((dec * Math.PI) / 180) *
-        Math.cos((ra * Math.PI) / 180);
-      const y = radio * Math.sin((dec * Math.PI) / 180);
-      const z =
-        radio *
-        Math.cos((dec * Math.PI) / 180) *
-        Math.sin((ra * Math.PI) / 180);
+    // esto soluciona que las líneas no lleguen hasta -90° o 90
+    for (let j = -70; j <= 70; j++) {
+      // aquí cambia con ascensión
+      const ra = (i * pi) / 180;
+      const dec = (j * pi) / 180;
+
+      // Fórmula para transformar coordenas de la forma Y-up
+      const x = radio * Math.cos(dec) * Math.cos(ra);
+      const y = radio * Math.sin(dec);
+      const z = radio * Math.cos(dec) * Math.sin(ra);
+
       points.push(new Vector3(x, y, z));
     }
   }
   ```
+
+  <img src="public/capturas/Screen Shot 2026-06-14 at 16.53.52.webp" width="800">
 
 - Añadir etiquetas con texto para indicar los valores en las líneas los paralelos y meridianos.
 

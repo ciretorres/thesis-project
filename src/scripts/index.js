@@ -7,9 +7,9 @@ import {
   BufferGeometry,
   Color,
   DirectionalLight,
+  Group,
   Line,
   LineBasicMaterial,
-  LineSegments,
   PerspectiveCamera,
   Scene,
   Sprite,
@@ -163,7 +163,8 @@ function init() {
     camera.near = 0.1;
     camera.far = 50;
     console.log(camera.position.y);
-    camera.position.z = 1;
+    // camera.position.z = 1;
+    camera.position.z = 40;
 
     // setup
 
@@ -254,159 +255,172 @@ function init() {
 
     // Ejemplo de Código para Retícula Ecuatorial
     // Grid, Reticula Ecuatorial
-    const radio = 20;
-    // // La retícula se genera automáticamente sobre la esfera celeste
-    // const R = 10; // radio de la esfera
-    // const raStep = Math.PI / 6; // cada 30°
-    // const decStep = Math.PI / 8; // cada 22.5°
-    // const points = [];
-    // console.log(R, raStep, decStep, points);
-    // console.log(Math.PI / 2)
-    // console.log(-Math.PI / 2 + decStep)
-    // console.log(2 * Math.PI);
-    // console.log(Math.PI / 36);
-    // console.log(-Math.PI / 2 + Math.PI / 60);
-    console.log(Math.PI / 60);
 
-    // Líneas de Declinación (paralelos al ecuador celestial)
-    function lineaDec(inicial, condition) {
+    const group = new Group();
+
+    // Declinación
+    function gridDeclinationLines() {
       // 9 líneas de declinación de -90° a 90° de 20° en 20°
-      for (let dec = inicial; dec < condition; dec += 20) {
+      const start1 = -90;
+      const condition1 = 90;
+      const step1 = 20;
+      const start2 = 0;
+      const condition2 = 360;
+
+      const radio = 20;
+
+      for (let i = start1; i <= condition1; i += step1) {
+        const pi = Math.PI;
         const points = [];
-        for (let ra = 0; ra <= 360; ra++) {
-          const x =
-            radio *
-            Math.cos((dec * Math.PI) / 180) *
-            Math.cos((ra * Math.PI) / 180);
-          const y = radio * Math.sin((dec * Math.PI) / 180);
-          const z =
-            radio *
-            Math.cos((dec * Math.PI) / 180) *
-            Math.sin((ra * Math.PI) / 180);
+
+        for (let j = start2; j <= condition2; j++) {
+          // aquí cambia con declination
+          const dec = (i * pi) / 180;
+          const ra = (j * pi) / 180;
+
+          // forma uno z-up
+          // const x = radio * Math.sin(lat) * Math.cos(lon);
+          // const y = radio * Math.sin(lat) * Math.sin(lon);
+          // const z = radio * Math.cos(lat);
+          // forma dos y-up
+          // const x = radio * Math.sin(lat) * Math.cos(lon);
+          // const y = radio * Math.cos(lat);
+          // const z = radio * Math.sin(lat) * Math.sin(lon);
+          // forma tres x-up
+          // const x = radio * Math.cos(lat);
+          // const y = radio * Math.sin(lat) * Math.cos(lon);
+          // const z = radio * Math.sin(lat) * Math.sin(lon);
+
+          // forma cuatro y-up
+          const x = radio * Math.cos(dec) * Math.cos(ra);
+          const y = radio * Math.sin(dec);
+          const z = radio * Math.cos(dec) * Math.sin(ra);
+
+          // if ([70, 50].includes(i)) {
+          //   // console.log(x, y, z);
+          //   points.push(new Vector3(x, y, z));
+          // }
           points.push(new Vector3(x, y, z));
         }
+
         const geometry = new BufferGeometry().setFromPoints(points);
+
         // const material = createMeshBasicMaterial(new Color("#ff0000"));
         // const material = createMeshBasicMaterial(new Color("#7833aa"));
+        // const material = createMeshBasicMaterial(new Color("#4488ff"));
+        const material = new LineBasicMaterial({
+          color: 0xff0000,
+          transparent: true,
+          opacity: 0.6,
+        });
 
         // const mesh = createMesh(geometry, material);
         // mesh.updateMatrix();
         // mesh.matrixAutoUpdate = false;
+        const line = new Line(geometry, material);
 
-        // const line = new Line(
-        //   geometry,
-        //   new LineBasicMaterial({ color: 0xff0000 }),
-        // );
-        const line = new LineSegments(
-          geometry,
-          new LineBasicMaterial({
-            // color: 0x4488ff,
-            color: 0xff0000,
-            transparent: true,
-            opacity: 0.6,
-          }),
-        );
         line.updateMatrix();
-        scene.add(line);
+        // scene.add(line);
+        group.add(line);
+        scene.add(group);
       }
     }
-    function linesDeclination(value = "all") {
-      if (value === "all") {
-        // lineaDec(-90, -70);
-        lineaDec(-70, -50);
-        lineaDec(-50, -30);
-        lineaDec(-30, -10);
-        lineaDec(-10, 10);
-        // lineaDec(0, 20); // línea horizontal 0,0
-        lineaDec(10, 30);
-        lineaDec(30, 50);
-        lineaDec(50, 70);
-        lineaDec(70, 90);
-      }
-    }
-    linesDeclination();
-    //
-    // Líneas de Ascensión Recta (meridianos que pasan por los polos)
-    function lineaAsc(initialRa, conditionRa) {
-      for (let ra = initialRa; ra < conditionRa; ra += 15) {
-        // 24 lineas de ascención recta de 0° a 360° de 15° en 15°
+
+    // Ascesión recta
+    function gridAscesionLines() {
+      // 24 lineas de ascención recta de 0° a 360° de 15° en 15°
+      const start1 = 0;
+      const condition1 = 360;
+      const step1 = 15;
+      const start2 = -90;
+      const condition2 = 90;
+
+      const radio = 20;
+
+      for (let i = start1; i <= condition1; i += step1) {
+        const pi = Math.PI;
         const points = [];
-        if (ra === 180 || ra === 360 || ra === 90 || ra === 270 || ra === 0) {
-          for (let dec = -90; dec <= 90; dec++) {
-            const x =
-              radio *
-              Math.cos((dec * Math.PI) / 180) *
-              Math.cos((ra * Math.PI) / 180);
-            const y = radio * Math.sin((dec * Math.PI) / 180);
-            const z =
-              radio *
-              Math.cos((dec * Math.PI) / 180) *
-              Math.sin((ra * Math.PI) / 180);
+        const angulosRectos = [0, 90, 180, 270, 360];
+
+        if (angulosRectos.includes(i)) {
+          for (let j = start2; j <= condition2; j++) {
+            // aquí cambia con ascensión
+            const ra = (i * pi) / 180;
+            const dec = (j * pi) / 180;
+
+            // forma cuatro y-up
+            const x = radio * Math.cos(dec) * Math.cos(ra);
+            const y = radio * Math.sin(dec);
+            const z = radio * Math.cos(dec) * Math.sin(ra);
+            // Para visualizar una por una
+            // if ([0, 180].includes(i)) {
+            //   // // console.log(x, y, z);
+            //   points.push(new Vector3(x, y, z));
+            // }
             points.push(new Vector3(x, y, z));
           }
         } else {
-          for (let dec = -70; dec <= 70; dec++) {
-            const x =
-              radio *
-              Math.cos((dec * Math.PI) / 180) *
-              Math.cos((ra * Math.PI) / 180);
-            const y = radio * Math.sin((dec * Math.PI) / 180);
-            const z =
-              radio *
-              Math.cos((dec * Math.PI) / 180) *
-              Math.sin((ra * Math.PI) / 180);
+          // esto soluciona que las líneas no lleguen hasta -90° o 90
+          for (let j = -70; j <= 70; j++) {
+            // aquí cambia con ascensión
+            const ra = (i * pi) / 180;
+            const dec = (j * pi) / 180;
+
+            // forma cuatro y-up
+            const x = radio * Math.cos(dec) * Math.cos(ra);
+            const y = radio * Math.sin(dec);
+            const z = radio * Math.cos(dec) * Math.sin(ra);
+            // Para visualizar una por una
+            // if ([15, 30].includes(i)) {
+            //   // console.log(x, y, z);
+            //   points.push(new Vector3(x, y, z));
+            // }
             points.push(new Vector3(x, y, z));
           }
         }
-        // console.log(points);
-        const geometry = new BufferGeometry().setFromPoints(points);
-        const line = new Line(
-          geometry,
-          new LineBasicMaterial({ color: 0xff0000 }),
-        );
-        scene.add(line);
-      }
-    }
-    function linesAscension(value = "all") {
-      if (value === "all") {
-        lineaAsc(0, 0);
-        lineaAsc(0, 15);
-        lineaAsc(15, 30);
-        lineaAsc(30, 45);
-        lineaAsc(45, 60);
-        lineaAsc(60, 75);
-        lineaAsc(75, 90);
-        lineaAsc(90, 105); // línea vertical 90,90
-        lineaAsc(105, 120);
-        lineaAsc(120, 150);
-        lineaAsc(150, 180); // mitad
-        lineaAsc(180, 195);
-        lineaAsc(195, 210);
-        lineaAsc(210, 225);
-        lineaAsc(225, 240);
-        lineaAsc(240, 255);
-        lineaAsc(255, 270);
-        lineaAsc(270, 285); // línea vertical 90,-90
-        lineaAsc(285, 300);
-        lineaAsc(300, 315);
-        lineaAsc(315, 330);
-        lineaAsc(330, 345);
-        lineaAsc(345, 360);
-      }
-    }
-    linesAscension();
-    //
 
-    // console.log(
-    //   radio * Math.cos((-90 * Math.PI) / 180) * Math.sin((0 * Math.PI) / 180),
-    // );
-    // console.log(
-    //   radio * Math.cos((-90 * Math.PI) / 180) * Math.sin((1 * Math.PI) / 180),
-    // );
+        const geometry = new BufferGeometry().setFromPoints(points);
+        const material = new LineBasicMaterial({
+          color: 0xff0000,
+          transparent: true,
+          opacity: 0.6,
+        });
+
+        const line = new Line(geometry, material);
+
+        line.updateMatrix();
+        // scene.add(line);
+        group.add(line);
+        scene.add(group);
+      }
+    }
+
+    function gridEcuatorialLines(coordinates) {
+      if (coordinates === "declination") {
+        gridDeclinationLines();
+      } else {
+        if (coordinates === "ascension") {
+          gridAscesionLines();
+        } else {
+          gridDeclinationLines();
+          gridAscesionLines();
+        }
+      }
+    }
+
+    // Líneas de Declinación (paralelos al ecuador celestial)
+    // gridEcuatorialLines("declination");
+
+    // Líneas de Ascensión Recta (meridianos que pasan por los polos)
+    // gridEcuatorialLines("ascension");
+
+    // Todas
+    gridEcuatorialLines();
 
     // Etiquetas en líneas paraleas al ecuador
     const spriteMap = new TextureLoader().load("/favicon.ico");
     const spriteMaterial = new SpriteMaterial({ map: spriteMap });
+    const radio = 20;
     for (let dec = -90; dec < 90; dec += 20) {
       for (let ra = 0; ra <= 360; ra++) {
         const sprite = new Sprite(spriteMaterial);
@@ -420,13 +434,15 @@ function init() {
           Math.cos((dec * Math.PI) / 180) *
           Math.sin((ra * Math.PI) / 180);
         // Posicionar la etiqueta en el punto correspondiente
-        sprite.position.set(x, y + 0.5, z);
+        sprite.position.set(x, y + 0.6, z);
         // sprite.position.set(6.82, 19.79, 0.47);
         if ([253, 270, 287].includes(ra)) {
-          scene.add(sprite);
+          // scene.add(sprite);
+          group.add(sprite);
+          scene.add(group);
         }
       }
-      console.log("-", dec);
+      // console.log("-", dec);
     }
 
     // const sphereRadius = 1;
@@ -460,8 +476,8 @@ function init() {
       // mesh.rotation.y += 0.0001;
       // line.rotation.x += 0.0001;
       // line.rotation.y += 0.0001;
-      camera.rotation.x += 0.0001;
-      camera.rotation.y += 0.0001;
+      // camera.rotation.x += 0.0001;
+      // camera.rotation.y += 0.0001;
       // cubes.forEach((cube, ndx) => {
       //   const speed = 1 + ndx * 0.1;
       //   const rot = time * speed;
@@ -470,6 +486,8 @@ function init() {
       // });
       // cube.rotation.x = time;
       // cube.rotation.y = time;
+      group.rotation.x += 0.001;
+      group.rotation.y += 0.001;
     }
 
     // Resize
@@ -488,7 +506,8 @@ function init() {
 
       // requestAnimationFrame(render);
       // controls.update();
-      // orbit.update();
+      orbit.update();
+
       rotarMesh();
 
       render();
@@ -496,31 +515,6 @@ function init() {
 
       stats.update();
     }
-
-    // // Líneas de Declinación (paralelos al ecuador celestial)
-    // for (let dec = -Math.PI / 2 + decStep; dec < Math.PI / 2; dec += decStep) {
-    //   console.log(dec);
-    //   for (let ra = 0; ra < 2 * Math.PI; ra += Math.PI / 36) {
-    //     const x = R * Math.cos(dec) * Math.sin(ra);
-    //     const y = R * Math.sin(dec);
-    //     const z = R * Math.cos(dec) * Math.cos(ra);
-    //     points.push(new Vector3(x, y, z));
-    //   }
-    // }
-
-    // // Líneas de Ascensión Recta (meridianos que pasan por los polos)
-    // for (let ra = 0; ra < 2 * Math.PI; ra += raStep) {
-    //   for (
-    //     let dec = -Math.PI / 2 + Math.PI / 60;
-    //     dec < Math.PI / 2;
-    //     dec += Math.PI / 60
-    //   ) {
-    //     const x = R * Math.cos(dec) * Math.sin(ra);
-    //     const y = R * Math.sin(dec);
-    //     const z = R * Math.cos(dec) * Math.cos(ra);
-    //     points.push(new Vector3(x, y, z));
-    //   }
-    // }
 
     //
 
@@ -544,47 +538,6 @@ function init() {
     //   lineBasicMaterial,
     // );
     // scene.add(lineVertical);
-
-    // // Calcula líneas de geometría grid
-    // const ratio = 100;
-    // const total = 16;
-    // const grid = [];
-    // for (let i = 0; i < total; i++) {
-    //   const row = new Array(total + 1);
-    //   for (let j = 0; j < total + 1; j++) {
-    //     const latitude = ((i - 0) * (Math.PI - 0)) / (total - 0) + 0;
-    //     const longitude = ((j - 0) * (Math.PI * 2 - 0)) / (total - 0) + 0;
-    //     const x = ratio * Math.sin(latitude) * Math.cos(longitude);
-    //     const y = ratio * Math.sin(latitude) * Math.sin(longitude);
-    //     const z = ratio * Math.cos(latitude);
-    //     row[j] = new Vector3(x, y, z);
-    //   }
-    //   grid[i] = row;
-    // }
-    // // console.log(grid[0][0]);
-    // // console.log(grid.length);
-
-    // // LINE HORIZONTAL
-    // const vertex = [];
-    // for (let i = 0; i < grid.length; i++) {
-    //   for (let j = 0; j < grid.length + 1; j++) {
-    //     // console.log(i, j, grid[i][j]);
-    //     let x = grid[i][j].x;
-    //     let y = grid[i][j].y;
-    //     let z = grid[i][j].z;
-    //     vertex.push(new Vector3(x, y, z));
-    //   }
-    // }
-    // // console.log(vertex);
-    // const bufferGeometryVertex = new BufferGeometry().setFromPoints(
-    //   vertex,
-    // );
-    // // console.log(bufferGeometryVertex);
-    // const lineHorizontal = new Line(
-    //   bufferGeometryVertex,
-    //   lineBasicMaterial,
-    // );
-    // scene.add(lineHorizontal);
   }
 
   // utils
