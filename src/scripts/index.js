@@ -1,3 +1,6 @@
+/**
+ * @see https://www.npmjs.com/package/three?activeTab=versions
+ * */
 // import * as THREE from "three";
 import {
   AmbientLight,
@@ -136,9 +139,14 @@ function init() {
    * * @property {renderer}:
    */
   function onWindowResize(camera, renderer) {
+    // let SCREEN_HEIGHT = window.innerHeight;
+    // let SCREEN_WIDTH = window.innerWidth;
+    // const aspect = SCREEN_WIDTH / SCREEN_HEIGHT;
+    // perspectiveCamera.aspect = aspect;
     camera.aspect = window.innerWidth / window.innerHeight;
     camera.updateProjectionMatrix();
 
+    // renderer.setSize(SCREEN_WIDTH, SCREEN_HEIGHT);
     renderer.setSize(window.innerWidth, window.innerHeight);
   }
 
@@ -421,10 +429,19 @@ function init() {
       console.log("-", dec);
     }
 
+    // const sphereRadius = 1;
+    //   const widthSegments = 5;
+    //   const heightSegments = 3;
+    //   const geometry = new THREE.SphereGeometry(sphereRadius, widthSegments, heightSegments);
+
     // TODO: HUD/GUI
     // const gui = new GUI();
 
-    //
+    // TODO: Instancias de esferas/estrellas
+    // const sphereRadius = 1;
+    //   const widthSegments = 5;
+    //   const heightSegments = 3;
+    //   const geometry = new THREE.SphereGeometry(sphereRadius, widthSegments, heightSegments);
 
     function render() {
       requestAnimationFrame(render);
@@ -445,6 +462,14 @@ function init() {
       // line.rotation.y += 0.0001;
       camera.rotation.x += 0.0001;
       camera.rotation.y += 0.0001;
+      // cubes.forEach((cube, ndx) => {
+      //   const speed = 1 + ndx * 0.1;
+      //   const rot = time * speed;
+      //   cube.rotation.x = rot;
+      //   cube.rotation.y = rot;
+      // });
+      // cube.rotation.x = time;
+      // cube.rotation.y = time;
     }
 
     // Resize
@@ -456,15 +481,19 @@ function init() {
       false,
     );
 
-    function animate() {
+    // animation
+    function animate(time) {
+      // console.log((time *= 0.001));
+      // time *= 0.001; // convert time to seconds
+
       // requestAnimationFrame(render);
+      // controls.update();
+      // orbit.update();
       rotarMesh();
 
       render();
       p.innerText = `x: ${camera.position.x}; y: ${camera.position.y}; z: ${camera.position.z}`;
 
-      // controls.update();
-      // orbit.update();
       stats.update();
     }
 
@@ -559,6 +588,86 @@ function init() {
   }
 
   // utils
+  // function makeInstance(geometry, color, x) {
+  // /**
+  //  * Creates a material that describe the appereance of objects
+  //  * @see https://threejs.org/docs/index.html#api/en/constants/Materials
+  //  * @see https://threejs.org/manual/#en/materials
+  //  */
+  // const material = new THREE.MeshBasicMaterial({ color, wireframe: true });
+  //   const material = new THREE.MeshPhongMaterial({ color });
+  //   const cube = new THREE.Mesh(geometry, material);
+  //   scene.add(cube);
+  //   cube.position.x = x;
+  //   return cube;
+  // }
+  // const cubes = [
+  //   makeInstance(geometry, 0x44aa88, 0),
+  //   makeInstance(geometry, 0x8844aa, -2),
+  //   makeInstance(geometry, 0xaa8844, 2),
+  // ];
+  // /**
+  //  * Creates a material that describe the appereance of objects
+  //  * @see https://threejs.org/docs/index.html#api/en/constants/Materials
+  //  * @see https://threejs.org/manual/#en/materials
+  //  */
+  // function crearInstancia(geometria, color, posicionX, scene) {
+  //   const wireframe = true;
+  //   const material = new THREE.MeshBasicMaterial({
+  //     color,
+  //     wireframe: wireframe,
+  //   });
+  //   // adds the geometry to the mesh and apply the material to it
+  //   const esfera = new THREE.Mesh(geometria, material);
+  //   scene.add(esfera);
+  //   // scene.add( mesh );
+  //   esfera.position.x = posicionX;
+  //   return esfera;
+  // }
+  // function obtenerEsferas(scene, geometria) {
+  //   let colorEsfera = new THREE.Color("#7833aa");
+  //   let hexadecimal = colorEsfera.getHex();
+  //   return [
+  //     crearInstancia(geometria, hexadecimal, 0, scene),
+  //     // crearInstancia( geometry, 0x8844aa, - 2 ),
+  //     // crearInstancia( geometry, 0xaa8844, 2 ),
+  //   ];
+  // }
+  // function obtenerGeometria(gui) {
+  //   /**
+  //    * @see https://threejs.org/docs/#api/en/geometries/SphereGeometry
+  //    */
+  //   const twoPi = Math.PI * 2;
+  //   const props = {
+  //     // radius: 1,
+  //     // widthSegments: 8,
+  //     // heightSegments: 8,
+  //     radius: 24,
+  //     widthSegments: 32,
+  //     heightSegments: 32,
+  //     phiStart: Math.PI * 2,
+  //     thetaStart: 0,
+  //     thetaLength: Math.PI,
+  //   };
+
+  //   // TODO: hacer que cambien los valores y se actualice la geometría
+  //   const folder = gui.addFolder("THREE.SphereGeometry");
+  //   folder.open();
+  //   // folder.close();
+  //   folder.add(props, "radius", 1, 30).step(1);
+  //   folder.add(props, "widthSegments", 3, 64).step(1);
+  //   folder.add(props, "heightSegments", 2, 32);
+  //   // folder.add( props, 'phiStart', 0, twoPi ).onChange( generateGeometry );
+  //   // folder.add( props, 'phiLength', 0, twoPi ).onChange( generateGeometry );
+  //   // folder.add( props, 'thetaStart', 0, twoPi ).onChange( generateGeometry );
+  //   // folder.add( props, 'thetaLength', 0, twoPi ).onChange( generateGeometry );
+
+  //   return new THREE.SphereGeometry(
+  //     props.radius,
+  //     props.widthSegments,
+  //     props.heightSegments,
+  //   );
+  // }
   // /**
   //  * Creates a geometry
   //  * @property {radius}:

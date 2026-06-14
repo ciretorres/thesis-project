@@ -7,7 +7,7 @@ import * as THREE from "three";
 import WebGL from "three/addons/capabilities/WebGL.js";
 import { GUI } from "three/addons/libs/lil-gui.module.min.js";
 
-import * as r from "./_renderer.js";
+// import * as r from "./_renderer.js";
 
 function init() {
   r.imprime();
@@ -78,7 +78,7 @@ function init() {
     return new THREE.SphereGeometry(
       props.radius,
       props.widthSegments,
-      props.heightSegments
+      props.heightSegments,
     );
   }
   function crearInstancia(geometria, color, posicionX, scene) {

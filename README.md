@@ -1,8 +1,20 @@
 # thesis-project
 
 ![](https://img.shields.io/badge/status-in%20progress-yellow)
+![](https://img.shields.io/badge/npm%20v1.0.1-orange)
 
 refactorización javascript
+
+```json
+{
+  "dependencies": {
+    "three": "^0.174.0"
+  },
+  "devDependencies": {
+    "vite": "^6.4.1"
+  }
+}
+```
 
 ## Contacto
 
@@ -170,7 +182,7 @@ Los requerimientos técnicos que tendría que tener como mínimo son:
 - ✅ Vivir en un **repositorio** en línea de git.
 - ✅ Utilizar un **manejador de paquetes** para instalar las librerías y usarse como dependencias del archivo `package.json`. En lugar de utilizar un cdn o subir las librerías al repositorio la aplicación.
 - ✅ Utilizar un **entorno de ejecución** para actualizar y recargar instantáneamente el servidor local al realizar cambios en la aplicación.
-- Utilizar un **builder** para compilar y minificar el código en archivos desplegables para la distribución de la app.
+- Utilizar un **builder** para compilar y minificar el código en archivos desplegables para distribución de la app en producción.
 - Utilizar un entorno de **pruebas** unitarias y de componentes.
 - Utilizar una configuración en **docker** para la creación de una imagen del entorno de ejecucción.
 - ✅ Utilizar herramientas para el **linteo**, **formateo** y revisión de **sintaxis** del código.
@@ -371,6 +383,8 @@ Realizar/visualizar una retícula ecuatorial detallada.
   }
   ```
 
+  <!-- <img src="/capturas/DiagramaPrototype_v2.png" width="800"> -->
+
   ###### Ascensión Recta
   - Calcular las líneas de ascensión recta meridianos que pasan por los ejes polares.
   - Crear una geometría a partir de los puntos
@@ -480,6 +494,16 @@ Crear un planetario interactivo con Three.js es un proyecto totalmente viable.
 - Mantenlo práctico y alineado con el Three.js actual.
 
 [Ir al inicio](#thesis-project)
+
+## Por qué se dejó de mantener el proyecto de processing
+
+- Utiliza un IDE Processing que se tiene que descargar de la página oficial.
+- Es necesario importar una librería peasy para la creación de una cámara virtual desde el IDE.
+- Escribir código con el IDE de Processing es un tanto robusto. Incluso algunos atajos con el teclado no funcionan.
+- Al final son archivos con extensión .pde de processing development, pero en su interior son clases en java.
+- Es mucho más robusto mantener las funciones como hacer click en un botón que con el uso de html js.
+- La sintáxis de java es mucho más extensa que la de js.
+- Es más fácil encontrar la documentación de las librerías de js que de java.
 
 ## Referencias
 
