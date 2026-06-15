@@ -11,6 +11,9 @@ import {
   Vector3,
 } from "three";
 
+import { TextGeometry } from "three/examples/jsm/geometries/TextGeometry.js";
+import { FontLoader } from "three/examples/jsm/loaders/FontLoader.js";
+
 /**
  * Creates a material that describe the appereance of objects
  * @property {color}:
@@ -43,6 +46,20 @@ const createMesh = (geometry, material) => {
 
 const implementacion = (scene) => {
   // Ejemplo de texto
+  let fontLoader = new FontLoader();
+  fontLoader.load("helvetiker_regular.typeface.json", (font) => {
+    let textG = new TextGeometry("Hellow orld", {
+      font: font,
+      size: 1,
+      depth: 0,
+      curveSegments: 12,
+    });
+    textG.center();
+    let materialt = new MeshBasicMaterial({ color: "white" });
+    let mesht = new Mesh(textG, materialt);
+    mesht.position.set(0, 0, -10);
+    scene.add(mesht);
+  });
 
   // Ejemplo de Código para Retícula Ecuatorial
   // Grid, Reticula Ecuatorial

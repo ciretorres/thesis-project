@@ -8,7 +8,7 @@ refactorización javascript
 ```json
 {
   "dependencies": {
-    "three": "^0.174.0"
+    "three": "^0.176.0"
   },
   "devDependencies": {
     "vite": "^6.4.1"

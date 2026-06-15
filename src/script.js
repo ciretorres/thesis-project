@@ -1,7 +1,5 @@
 // import * as THREE from "three";
-import { Mesh, MeshBasicMaterial } from "three";
-import { TextGeometry } from "three/examples/jsm/geometries/TextGeometry.js";
-import { FontLoader } from "three/examples/jsm/loaders/FontLoader.js";
+import { Mesh } from "three";
 
 // componentes
 import camara from "./components/camara";
@@ -68,22 +66,6 @@ function init() {
 
     // LIGHTS
     newLights(scene);
-
-    // Ejemplo de texto
-    let fontLoader = new FontLoader();
-    fontLoader.load("helvetiker_regular.typeface.json", (font) => {
-      let textG = new TextGeometry("Hellow orld", {
-        font: font,
-        size: 1,
-        depth: 0,
-        curveSegments: 12,
-      });
-      textG.center();
-      let materialt = new MeshBasicMaterial({ color: "white" });
-      let mesht = new Mesh(textG, materialt);
-      mesht.position.set(0, 0, -10);
-      scene.add(mesht);
-    });
 
     //--
 
