@@ -28,12 +28,13 @@ refactorización javascript
 - [Requerimientos](#requerimientos)
   - [Técnicos](#técnicos)
 - [Pasos para la Implementación](#pasos-para-la-implementación)
-  - [Escena](#escena)
-  - [Cámara](#cámara)
-  - [Renderer](#renderer)
-  - [Controles](#controles-de-órbita)
-  - [Luces](#luces)
+  - Escena
+  - Cámara
+  - Renderer
+  - Controles
+  - Luces
   - [Retícula](#retícula)
+- [Estrellas](#estrellas)
 - [Three.js](#threejs)
 - [Referencias](#referencias)
 - [Fuentes de información](#fuentes-de-información)
@@ -180,7 +181,8 @@ Las necesidades básicas, intermedias y avanzadas para el desarrollo e implement
 - **Testeo.**
 - **Realidad virtual (VR) / Realidad aumentada (AR).** Integrar soporte para VR/AR utilizando bibliotecas como WebXR para crear una experiencia inmersiva. La integración en interfaz gráfica UI es más flexible con mejor performance para actualizaciones dinámicas.
 - **Sistema de color.** Añadir botones para cambiar entre diferentes sistemas de colores. Claro, oscuro, rojo. Realizar análisis como parte de la accesibilidad web.
-- **Descarga de app.** Instalar la aplicación para móvil en android.
+- **Descarga de app.** Descarga la aplicación para móvil en android.
+- **Integrar app.** Integrar la aplicación en otros sitios instalando la herramienta o mediante `<iframe>`.
 
 [Ir al inicio](#thesis-project)
 
@@ -214,144 +216,12 @@ src/
 
 ### Pasos para la implementación
 
-#### Escena
-
-Definir una escena.
-
-```js
-/**
- * a scene is the space in which you can places objects,cameras and lighting
- * @property {backgroundColor}: of the scene.
- * @see https://threejs.org/docs/#api/en/scenes/Scene
- */
-const createScene = (backgroundColor = new Color(0x444444)) => {
-  let scene = new Scene();
-  scene.background = backgroundColor;
-  return scene;
-};
-const scene = createScene(new Color(0x000000));
-```
-
-#### Cámara
-
-```js
-/**
- * Adds a camera
- * A perspective view that simulates the behaviour of a film camera in real life
- * @property {fov}: the vertical field of view.
- * @property {aspect}: this is the aspect ratio you use to create the horizontal field of view based off the vertical.
- * @property {near}: this is the nearest plane of view (where the camera's view begins) .
- * @property {far}: this is far plane of view (where the camera's view ends).
- * new PerspectiveCamera(fov, aspect, near, far)
- * @see https://threejs.org/docs/api/en/cameras/PerspectiveCamera.html
- */
-const createPerspectiveCamera = (
-  fov = 75,
-  aspect = window.innerWidth / window.innerHeight,
-  near = 1,
-  far = 1000,
-) => {
-  let perspectiveCamera = new PerspectiveCamera(fov, aspect, near, far);
-  return perspectiveCamera;
-};
-
-const camera = createPerspectiveCamera(75);
-camera.near = 0.1;
-camera.far = 50;
-console.log(camera.position.y);
-camera.position.z = 1;
-```
-
-#### Renderer
-
-```js
-// setup
-
-// selector html tags
-const mainid = document.querySelector("#mainid");
-const canvas = document.querySelector("#canvasid");
-
-/**
- * Renders a view that contains your camera's "picture"
- * @property {canvas}: in which will render the scene and camera.
- * @property {alpha}: Controls the default clear alpha value. When set totrue, the value is 0. Otherwise it's 1. Default is false.
- * @property {antialias}: Whether to use the default MSAA or not. Default is false.
- * @see https://threejs.org/docs/api/en/renderers/WebGLRenderer.html
- */
-const createWebGLRenderer = (canvas, alpha = false, antialias = true) => {
-  return canvas === undefined
-    ? new WebGLRenderer({
-        alpha,
-        antialias,
-      })
-    : new WebGLRenderer({
-        canvas,
-        alpha,
-        antialias,
-      });
-};
-
-// renderer to render a view with camera contained
-const renderer = createWebGLRenderer(canvas);
-renderer.setPixelRatio(window.devicePixelRatio);
-renderer.setSize(window.innerWidth, window.innerHeight);
-// document.body.appendChild(renderer.domElement);
-mainid.appendChild(renderer.domElement);
-```
-
-#### Advertencia WebGL
-
-```js
-//  Advertir si el navegador es compatible con WebGL
-if (WebGL.isWebGL2Available()) {
-  // Initiate function or other initializations here
-  // Manda lo que se debe actualizar cada cierto tiempo para animar
-  renderer.setAnimationLoop(animate);
-  console.log(WebGL.isWebGL2Available());
-} else {
-  // Mostrar mensaje no compatible
-  canvas.style.display = "none";
-  const warning = WebGL.getWebGL2ErrorMessage();
-  document.querySelector("mainid").appendChild(warning);
-  const AdvertenciaWebGLNoCompatible = document.createElement("div");
-  AdvertenciaWebGLNoCompatible.innerHTML += `
-        <h2>
-          Tu tarjeta gráfica parece no soportar
-          <a
-            href="http://khronos.org/webgl/wiki/Getting_a_WebGL_Implementation"
-            target="_blank"
-            rel="noopener noreferrer">
-            WebGL 2
-          </a>
-        </h2>`;
-  document
-    .querySelector("#webglmessage")
-    .appendChild(AdvertenciaWebGLNoCompatible);
-}
-```
-
-#### Controles de órbita
-
-```js
-// orbit controls
-const orbit = new OrbitControls(camera, renderer.domElement);
-orbit.enableZoom = true;
-```
-
-#### Luces
-
-```js
-// lights
-const color = 0xffffff;
-const intensity = 1;
-const light = new AmbientLight(color, intensity);
-// const light = new AmbientLight( 0x404040 ); // soft white light
-scene.add(light);
-const lights = [];
-lights[0] = new DirectionalLight(0xffffff, 3);
-lights[0].position.set(0, 200, 0);
-scene.add(lights[0]);
-```
+- Definir una [escena](./src/components/escena/index.js).
+- Definir una [cámara](./src/components/camara/index.js).
+- Definir un [renderer](./src/components/renderer/index.js).
+- Validad compatibilidad con [WebGL](./src/utils/warning.js).
+- Definir [controles](./src/components/controls/index.js) de órbita.
+- Definir [luces](./src/components/lights/index.js).
 
 [Ir al inicio](#thesis-project)
 
@@ -392,6 +262,8 @@ Realizar/visualizar una retícula ecuatorial detallada.
 
     <img src="public/capturas/Screen Shot 2026-06-14 at 16.51.17.webp" width="800">
 
+  [Ir al inicio](#thesis-project)
+
   ###### Ascensión Recta
   - Calcular los puntos para las líneas de ascensión recta.
 
@@ -418,8 +290,8 @@ Realizar/visualizar una retícula ecuatorial detallada.
   }
   ```
 
-  <img src="public/capturas/Screen Shot 2026-06-14 at 16.52.41.webp" width="800">
-  - Para asignar los puntos a una geometría, crear el mesh de las líneas y agregarlas a la escena se usa:
+    <img src="public/capturas/Screen Shot 2026-06-14 at 16.52.41.webp" width="800">
+    - Para asignar los puntos a una geometría, crear el mesh de las líneas y agregarlas a la escena se usa:
 
   ```js
   // Genera geometría, material, mesh y agrega a escena
@@ -441,6 +313,8 @@ Realizar/visualizar una retícula ecuatorial detallada.
   - Opciones `Line`, `LineSegments`, `MeshLine`. `BufferGeometry`. `LineBasicMaterial`.
 
   <img src="public/capturas/Screen Shot 2026-06-14 at 16.53.36.webp" width="800">
+
+  [Ir al inicio](#thesis-project)
 
   ###### Ángulos rectos
   - Ajustar que las líneas de Ascensión Recta con ángulos rectos de 0, 90, 180, 270 y 360 lleguen hasta los ejes polares. Y los demás hasta -70° / 70°.
@@ -489,6 +363,8 @@ Realizar/visualizar una retícula ecuatorial detallada.
 
 - Cómo sincronizar la rotación de la cámara con un html canvas overlay que dibuje el grid de lineas sobre los ejes proyectados.
 - Cómo utilizar un shader pesonalizado en una esfera transparente que dibuje las líneas RA/Dec basados en UV/spherical coordinates.
+
+[Ir al inicio](#thesis-project)
 
 ### Estrellas
 
@@ -572,3 +448,7 @@ Torres-Velasco, E. O., Laureano-Cruces, A. L., Santillán-González, A. (2021). 
 [https://threejs.org/docs/#GridHelper](https://threejs.org/docs/#GridHelper)
 
 [https://github.com/mrdoob/three.js/blob/master/src/helpers/GridHelper.js](https://github.com/mrdoob/three.js/blob/master/src/helpers/GridHelper.js)
+
+--
+
+[Ir al inicio](#thesis-project)

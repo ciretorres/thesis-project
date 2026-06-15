@@ -3,27 +3,28 @@
  * */
 // import * as THREE from "three";
 import {
-  AmbientLight,
   BufferGeometry,
   Color,
   DirectionalLight,
   Group,
   Line,
   LineBasicMaterial,
-  PerspectiveCamera,
-  Scene,
   Sprite,
   SpriteMaterial,
   TextureLoader,
   Vector3,
-  WebGLRenderer,
 } from "three";
-// módulo para comprobar si es compatible con webgl
-import WebGL from "three/addons/capabilities/WebGL.js";
-// módulo para mostrar estadísticas del render en el front
-import Stats from "three/addons/libs/stats.module.js";
+
 // módulo para rotar y zoom en la escena
-import { OrbitControls } from "three/addons/controls/OrbitControls.js";
+
+import camara from "../components/camara";
+import newControls from "../components/controls";
+import escena from "../components/escena";
+import newLights from "../components/lights";
+import newRenderer from "../components/renderer";
+import newStats from "../components/stats";
+import onWindowResize from "../utils/resize.js";
+import checaWebGLCompatibilidad from "../utils/warning.js";
 
 // variables globales
 let camera, controls, orbit, scene, renderer, stats;
@@ -45,56 +46,9 @@ init();
 
 // función de inicio
 function init() {
-  /**
-   * a scene is the space in which you can places objects,cameras and lighting
-   * @property {backgroundColor}: of the scene.
-   * @see https://threejs.org/docs/#api/en/scenes/Scene
-   */
-  const createScene = (backgroundColor = new Color(0x444444)) => {
-    let scene = new Scene();
-    scene.background = backgroundColor;
-    return scene;
-  };
-
-  /**
-   * Adds a camera
-   * A perspective view that simulates the behaviour of a film camera in real life
-   * @property {fov}: the vertical field of view.
-   * @property {aspect}: this is the aspect ratio you use to create the horizontal field of view based off the vertical.
-   * @property {near}: this is the nearest plane of view (where the camera's view begins) .
-   * @property {far}: this is far plane of view (where the camera's view ends).
-   * new PerspectiveCamera(fov, aspect, near, far)
-   * @see https://threejs.org/docs/api/en/cameras/PerspectiveCamera.html
-   */
-  const createPerspectiveCamera = (
-    fov = 75,
-    aspect = window.innerWidth / window.innerHeight,
-    near = 1,
-    far = 1000,
-  ) => {
-    let perspectiveCamera = new PerspectiveCamera(fov, aspect, near, far);
-    return perspectiveCamera;
-  };
-
-  /**
-   * Renders a view that contains your camera's "picture"
-   * @property {canvas}: in which will render the scene and camera.
-   * @property {alpha}: Controls the default clear alpha value. When set totrue, the value is 0. Otherwise it's 1. Default is false.
-   * @property {antialias}: Whether to use the default MSAA or not. Default is false.
-   * @see https://threejs.org/docs/api/en/renderers/WebGLRenderer.html
-   */
-  const createWebGLRenderer = (canvas, alpha = false, antialias = true) => {
-    return canvas === undefined
-      ? new WebGLRenderer({
-          alpha,
-          antialias,
-        })
-      : new WebGLRenderer({
-          canvas,
-          alpha,
-          antialias,
-        });
-  };
+  // setup
+  // selector html tags
+  const p = document.querySelector("#pid");
 
   /**
    * Creates a material that describe the appereance of objects
@@ -133,121 +87,30 @@ function init() {
     return light;
   };
 
-  /**
-   * Resize and update the size of render and camera aspect
-   * @property {camera}:
-   * * @property {renderer}:
-   */
-  function onWindowResize(camera, renderer) {
-    // let SCREEN_HEIGHT = window.innerHeight;
-    // let SCREEN_WIDTH = window.innerWidth;
-    // const aspect = SCREEN_WIDTH / SCREEN_HEIGHT;
-    // perspectiveCamera.aspect = aspect;
-    camera.aspect = window.innerWidth / window.innerHeight;
-    camera.updateProjectionMatrix();
-
-    // renderer.setSize(SCREEN_WIDTH, SCREEN_HEIGHT);
-    renderer.setSize(window.innerWidth, window.innerHeight);
-  }
-
   main();
 
   // función principal
   function main() {
     // scene en donde puedes agregar luces, mesh o grupos
-    scene = createScene(new Color(0x000000));
-    // scene.fog = new FogExp2(0xcccccc, 0.002);
+    scene = escena();
 
     // camera
-    camera = createPerspectiveCamera(75);
-    camera.near = 0.1;
-    camera.far = 50;
-    console.log(camera.position.y);
-    // camera.position.z = 1;
-    camera.position.z = 40;
-
-    // setup
-
-    // selector html tags
-    const mainid = document.querySelector("#mainid");
-    const canvas = document.querySelector("#canvasid");
-    const p = document.querySelector("#pid");
-    const section = document.querySelector("#sectionid");
+    camera = camara();
 
     // añade las stats
-    stats = new Stats();
-    mainid.appendChild(stats.dom).setAttribute("id", "statsid");
-    const statsid = document.querySelector("#statsid");
-    // statsid.setAttribute("style", "position:block");
-    statsid.setAttribute(
-      "style",
-      "position: absolute; top: 0px; right: 0px; cursor: pointer; opacity: 0.9; z-index: 10000;",
-    );
+    stats = newStats("#mainid");
 
     // renderer to render a view with camera contained
-    renderer = createWebGLRenderer(canvas);
-    renderer.setPixelRatio(window.devicePixelRatio);
-    renderer.setSize(window.innerWidth, window.innerHeight);
-    // document.body.appendChild(renderer.domElement);
-    mainid.appendChild(renderer.domElement);
+    renderer = newRenderer("#mainid", "#canvasid");
 
     //  Advertir si el navegador es compatible con WebGL
-    if (WebGL.isWebGL2Available()) {
-      // Initiate function or other initializations here
-      // Manda lo que se debe actualizar cada cierto tiempo para animar
-      renderer.setAnimationLoop(animate);
-      console.log(WebGL.isWebGL2Available());
-    } else {
-      // Mostrar mensaje no compatible
-      canvas.style.display = "none";
-      const warning = WebGL.getWebGL2ErrorMessage();
-      document.querySelector("mainid").appendChild(warning);
-      const AdvertenciaWebGLNoCompatible = document.createElement("div");
-      AdvertenciaWebGLNoCompatible.innerHTML += `
-        <h2>
-          Tu tarjeta gráfica parece no soportar
-          <a
-            href="http://khronos.org/webgl/wiki/Getting_a_WebGL_Implementation"
-            target="_blank"
-            rel="noopener noreferrer">
-            WebGL 2
-          </a>
-        </h2>`;
-      document
-        .querySelector("#webglmessage")
-        .appendChild(AdvertenciaWebGLNoCompatible);
-    }
+    checaWebGLCompatibilidad(renderer, animate, "maindid", "#canvasid");
 
     // orbit controls
-    orbit = new OrbitControls(camera, renderer.domElement);
-    orbit.enableZoom = true;
-    // Crear controles
-    // TODO: Revisar documentación
-    // createTrackballControls(camera);
-    // //
-    // function createTrackballControls(camera) {
-    //   // controls = new TrackballControls(camera, renderer.domElement);
-    //   // controls.rotateSpeed = 1.0;
-    //   // controls.zoomSpeed = 1.2;
-    //   // controls.panSpeed = 0.8;
-    //   // controls.keys = ["KeyA", "KeyS", "KeyD"];
-    // }
+    orbit = newControls(camera, renderer);
 
     // lights
-    // const dirLight1 = getLight();
-    // dirLight1.position.set(1, 1, 1);
-    // const dirLight2 = getLight(0x002288);
-    // dirLight2.position.set(-1, -1, -1);
-    const color = 0xffffff;
-    // const color = 0x555555;
-    const intensity = 1;
-    const light = new AmbientLight(color, intensity);
-    // const light = new AmbientLight( 0x404040 ); // soft white light
-    scene.add(light);
-    const lights = [];
-    lights[0] = new DirectionalLight(0xffffff, 3);
-    lights[0].position.set(0, 200, 0);
-    scene.add(lights[0]);
+    newLights(scene);
 
     // Implementación
 
@@ -493,9 +356,7 @@ function init() {
     // Resize
     window.addEventListener(
       "resize",
-      function () {
-        onWindowResize(camera, renderer);
-      },
+      () => onWindowResize(camera, renderer),
       false,
     );
 
@@ -655,3 +516,7 @@ function init() {
   //   return geometry;
   // };
 }
+export const exportCamera = () => {
+  // console.log(camera);
+  return camera;
+};

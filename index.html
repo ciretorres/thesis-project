@@ -69,10 +69,10 @@
 
       <div id="infoid">
         MOVE mouse &amp; press LEFT/A: rotate, MIDDLE/S: zoom, RIGHT/D: pan
-      </div>
+      </div> -->
 
-      <button type="button" onclick="increasePositionZ()" style="padding: 16px; font-size: 24px;">+</button>
-      <button type="button" onclick="decreasePositionZ()" style="padding: 16px; font-size: 24px;">-</button> -->
+      <button type="button" onclick="btnIncrementaPosZ()" style="padding: 16px; font-size: 24px;">+</button>
+      <button type="button" onclick="btnDecrementaPosZ()" style="padding: 16px; font-size: 24px;">-</button>
 
       <p id="pid">-</p>
     </section>
@@ -103,7 +103,8 @@
 
   <script type="module">
     // import * as THREE from "three";
-    import { increasePositionZ, decreasePositionZ, resetPosition } from './src/scripts/index.js'
+    import { exportCamera } from './src/scripts/index.js'
+    import { increasePositionZ, decreasePositionZ, resetPosition } from './src/utils/zoom.js'
     import { imprime } from './src/components/imprimir.js'
     imprime();
     window.imprime = imprime;
@@ -111,19 +112,32 @@
     window.increasePositionZ = increasePositionZ;
     window.decreasePositionZ = decreasePositionZ;
     window.resetPosition = resetPosition;
+    window.exportCamera = exportCamera;
 
+    // Métodos de acciones para elementos de la interfaz
+    function btnIncrementaPosZ() {
+      increasePositionZ(exportCamera())
+    }
+    window.btnIncrementaPosZ = btnIncrementaPosZ;
+
+    function btnDecrementaPosZ() {
+      decreasePositionZ(exportCamera())
+    }
+    window.btnDecrementaPosZ = btnDecrementaPosZ;
+
+    // Métodos de acciones para teclas del teclado
     document.addEventListener('keydown', function (event) {
       if (event.key === 'w') {
         console.log('W key pressed');
-        increasePositionZ()
+        increasePositionZ(exportCamera())
       }
       if (event.key === 's') {
         console.log('S key pressed');
-        decreasePositionZ()
+        decreasePositionZ(exportCamera())
       }
       if (event.key === 'Enter') {
         console.log('Enter key pressed');
-        resetPosition()
+        resetPosition(exportCamera())
       }
     });
 
