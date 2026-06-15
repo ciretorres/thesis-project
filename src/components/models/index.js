@@ -47,9 +47,10 @@ const createMesh = (geometry, material) => {
 const implementacion = (scene) => {
   // Ejemplo de texto
   let fontLoader = new FontLoader();
-  fontLoader.load("helvetiker_regular.typeface.json", (font) => {
+  fontLoader.load("helvetiker_regular.typeface.json", (response) => {
+    // console.log(response);
     let textG = new TextGeometry("Hellow orld", {
-      font: font,
+      font: response,
       size: 1,
       depth: 0,
       curveSegments: 12,
