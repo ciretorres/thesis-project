@@ -1,4 +1,5 @@
 import { WebGLRenderer } from "three";
+import checaWebGLCompatibilidad from "../../utils/warning.js";
 /**
  * Renders a view that contains your camera's "picture"
  * @property {canvas}: in which will render the scene and camera.
@@ -18,15 +19,18 @@ const createWebGLRenderer = (canvas, alpha = false, antialias = true) => {
         antialias,
       });
 };
-const newRenderer = (mainId, canvasId) => {
+const newRenderer = (animate, mainId, canvasId) => {
   const mainid = document.querySelector(mainId);
   const canvas = document.querySelector(canvasId);
 
   const renderer = createWebGLRenderer(canvas);
-  renderer.setPixelRatio(window.devicePixelRatio);
+  // renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
   // document.body.appendChild(renderer.domElement);
   mainid.appendChild(renderer.domElement);
+
+  //  Advertir si el navegador es compatible con WebGL
+  checaWebGLCompatibilidad(renderer, animate, mainId, canvasId);
   return renderer;
 };
 

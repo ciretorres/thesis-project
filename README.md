@@ -16,6 +16,8 @@ refactorización javascript
 }
 ```
 
+[three.js - npm](https://www.npmjs.com/package/three?activeTab=versions)
+
 ## Contacto
 
 - Eric Torres (erictorres.velasco@gmail.com)
@@ -69,7 +71,7 @@ bun run dev
 
 ```md
 thesis-project/
-├── public/
+├── static/
 ├── src/
 | ├── assets/
 | ├── components/
@@ -260,7 +262,7 @@ Realizar/visualizar una retícula ecuatorial detallada.
   }
   ```
 
-    <img src="public/capturas/Screen Shot 2026-06-14 at 16.51.17.webp" width="800">
+    <img src="./static/capturas/Screen Shot 2026-06-14 at 16.51.17.webp" width="800">
 
   [Ir al inicio](#thesis-project)
 
@@ -290,7 +292,7 @@ Realizar/visualizar una retícula ecuatorial detallada.
   }
   ```
 
-    <img src="public/capturas/Screen Shot 2026-06-14 at 16.52.41.webp" width="800">
+    <img src="./static/capturas/Screen Shot 2026-06-14 at 16.52.41.webp" width="800">
     - Para asignar los puntos a una geometría, crear el mesh de las líneas y agregarlas a la escena se usa:
 
   ```js
@@ -312,7 +314,7 @@ Realizar/visualizar una retícula ecuatorial detallada.
 
   - Opciones `Line`, `LineSegments`, `MeshLine`. `BufferGeometry`. `LineBasicMaterial`.
 
-  <img src="public/capturas/Screen Shot 2026-06-14 at 16.53.36.webp" width="800">
+  <img src="./static/capturas/Screen Shot 2026-06-14 at 16.53.36.webp" width="800">
 
   [Ir al inicio](#thesis-project)
 
@@ -352,7 +354,7 @@ Realizar/visualizar una retícula ecuatorial detallada.
   }
   ```
 
-  <img src="public/capturas/Screen Shot 2026-06-14 at 16.53.52.webp" width="800">
+  <img src="./static/capturas/Screen Shot 2026-06-14 at 16.53.52.webp" width="800">
 
 - Añadir etiquetas con texto para indicar los valores en las líneas los paralelos y meridianos.
 

@@ -19,13 +19,19 @@ const createPerspectiveCamera = (
   return perspectiveCamera;
 };
 
+let size = {
+  width: window.innerWidth,
+  height: window.innerHeight,
+};
+
 const camara = () => {
-  const camera = createPerspectiveCamera(75);
+  const camera = createPerspectiveCamera(35);
   camera.near = 0.1;
-  camera.far = 50;
-  console.log(camera.position.y);
-  // camera.position.z = 1;
-  camera.position.z = 40;
+  camera.far = 500;
+  // // console.log(camera.position.y);
+  // // camera.position.z = 1;
+  // // camera.position.z = 40;
+  // scene.add(camera);
   return camera;
 };
 

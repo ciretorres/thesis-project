@@ -2,13 +2,13 @@
   "name": "thesis-project",
   "version": "1.0.1",
   "author": "ciretorres",
+  "license": "LGPL-3.0-only",
+  "description": "Interfaz-interactiva para la visualización de un fenómeno astronómico",
   "publishConfig": {
     "access": "public"
   },
-  "description": "Interfaz-interactiva para la visualización de un fenómeno astronómico",
   "type": "module",
-  "license": "LGPL-3.0-only",
-  "main": "",
+  "main": "script.js",
   "files": [
     "LICENSE",
     "package.json",
@@ -25,7 +25,7 @@
     "reinstall": "rm -rf node_modules && rm -f package-lock.json && npm cache clean -f && npm cache verify && npm i"
   },
   "dependencies": {
-    "three": "^0.174.0"
+    "three": "^0.176.0"
   },
   "devDependencies": {
     "vite": "^6.4.1"

@@ -1,15 +1,15 @@
 <!DOCTYPE html>
-<html lang="es-mx">
+<html lang="en">
 
 <head>
   <meta charset="UTF-8">
   <link rel="shortcut icon" href="./public/favicon.ico" type="image/x-icon">
-  <link rel="icon" href=".">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
   <title>proto</title>
+  <!-- <link rel="stylesheet" href="./style.css"> -->
+  <link rel="stylesheet" type="text/css" href="./assets/main.css">
 
-  <link rel="stylesheet" type="text/css" href="./src/assets/main.css">
   <style>
     #canvasid {
       position: relative;
@@ -62,14 +62,14 @@
   </style>
 </head>
 
-<body>
+<body class="body">
   <main id="mainid">
     <section id="sectionid">
-      <!-- <h1>hellow orld</h1>
+      <h1>hellow orld</h1>
 
       <div id="infoid">
         MOVE mouse &amp; press LEFT/A: rotate, MIDDLE/S: zoom, RIGHT/D: pan
-      </div> -->
+      </div>
 
       <button type="button" onclick="btnIncrementaPosZ()" style="padding: 16px; font-size: 24px;">+</button>
       <button type="button" onclick="btnDecrementaPosZ()" style="padding: 16px; font-size: 24px;">-</button>
@@ -93,8 +93,8 @@
     }
   </script> -->
 
-  <script type="module" src="./src/main.js"></script>
-
+  <script type="module" src="./script.js"></script>
+  <!-- <script type="module" src="./src/main.js"></script> -->
   <script type="text/javascript">
     function greetFromHtml() {
       alert("Hello");
@@ -103,9 +103,10 @@
 
   <script type="module">
     // import * as THREE from "three";
-    import { exportCamera } from './src/scripts/index.js'
-    import { increasePositionZ, decreasePositionZ, resetPosition } from './src/utils/zoom.js'
-    import { imprime } from './src/components/imprimir.js'
+    import { exportCamera } from './script.js'
+    // módulo para rotar y zoom en la escena
+    import { increasePositionZ, decreasePositionZ, resetPosition } from './utils/zoom.js'
+    import { imprime } from './components/imprimir.js'
     imprime();
     window.imprime = imprime;
 
@@ -125,7 +126,7 @@
     }
     window.btnDecrementaPosZ = btnDecrementaPosZ;
 
-    // Métodos de acciones para teclas del teclado
+    // Eventos del teclado
     document.addEventListener('keydown', function (event) {
       if (event.key === 'w') {
         console.log('W key pressed');

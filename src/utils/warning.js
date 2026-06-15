@@ -7,7 +7,7 @@ const checaWebGLCompatibilidad = (renderer, animate, mainId, canvasId) => {
     // Manda lo que se debe actualizar cada cierto tiempo para animar
     renderer.setAnimationLoop(animate);
 
-    console.log(WebGL.isWebGL2Available());
+    console.log("es compatible con WebGL:", WebGL.isWebGL2Available());
   } else {
     // Ocultar el elemento canvas
     document.querySelector(canvasId).style.display = "none";
@@ -32,6 +32,7 @@ const checaWebGLCompatibilidad = (renderer, animate, mainId, canvasId) => {
     document
       .querySelector("#webglmessage")
       .appendChild(AdvertenciaWebGLNoCompatible);
+    console.warn("Tu tarjeta gráfica parece no soportar WebGL2");
   }
 };
 
