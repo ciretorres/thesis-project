@@ -1,4 +1,15 @@
-import { BufferGeometry, Group, Line, LineBasicMaterial, Vector3 } from "three";
+import {
+  BufferGeometry,
+  CanvasTexture,
+  Group,
+  Line,
+  LinearFilter,
+  LineBasicMaterial,
+  Sprite,
+  SpriteMaterial,
+  Vector3,
+} from "three";
+import { CSS2DObject } from "three/examples/jsm/Addons.js";
 
 // Método para convertir grados a radianes
 const degreesToRadians = (degrees) => {
@@ -8,7 +19,7 @@ const degreesToRadians = (degrees) => {
 
 /**
  * Método para tranformar Coordenadas Ecuatoriales en Cartesianas
- * Tridimensionales (ra, dec -> x, y, z) en la forma Y-up
+ * Tridimensionales (RA/Dec -> XYZ) en la forma Y-up
  * @property {Number} radius: el radio de la esfera
  * @property {Number} raDeg: la ascensión recta en grados
  * @property {Number} decDeg: la declinación en grados
@@ -21,9 +32,9 @@ const formulaRaDecToCartesian = (radius = 1, raDeg, decDeg) => {
   const theta = degreesToRadians(raDeg);
 
   //       // forma uno z-up
-  //       // const x = radio * Math.sin(lat) * Math.cos(lon);
-  //       // const y = radio * Math.sin(lat) * Math.sin(lon);
-  //       // const z = radio * Math.cos(lat);
+  // const x = radius * Math.sin(phi) * Math.cos(theta);
+  // const y = radius * Math.sin(phi) * Math.sin(theta);
+  // const z = radius * Math.cos(phi);
   //       // forma dos y-up
   //       // const x = radio * Math.sin(lat) * Math.cos(lon);
   //       // const y = radio * Math.cos(lat);
@@ -45,8 +56,109 @@ const formulaRaDecToCartesian = (radius = 1, raDeg, decDeg) => {
 };
 
 // formulaSphereToEcuatorial
-const formulaSpehereToEcuatorial = (radius = 1, x, y, z) => {
-  // return {radius, ra, dec};
+// from Cartesian to Ecuatorial
+const formulaSpehereToEcuatorial = (vec) => {
+  const radius = vec.length();
+  const dec = Math.acos(vec.z / radius);
+  const ra = Math.atan(vec.y, vec.x);
+  return { radius, ra, dec };
+};
+
+// Método para agregar etiqueta mediante CSS2DObject
+const addLabelCSS2DObject = (scene, type, raDeg, decDeg, text, radius) => {
+  // console.log("addLabel");
+  const sphericalPosition = formulaRaDecToCartesian(radius, raDeg, decDeg);
+
+  const wrapper = document.createElement("div");
+  wrapper.className = "wrapper-label";
+
+  // const labelElement = document.createElement("label");
+  // labelElement.for // for id line
+  const labelElement = document.createElement("div");
+  labelElement.className = "label";
+  labelElement.textContent = `${type === "dec" && text > 0 ? "+" : ""}${text}°`;
+  labelElement.style.backgroundColor = "#ff0000";
+  // labelElement.style.backgroundColor = "transparent";
+  if (type === "ra") {
+    labelElement.style.transform = "rotate(-90deg)";
+  }
+
+  // Anidando para poder rotar
+  wrapper.appendChild(labelElement);
+  // CSS2DObject
+  const label = new CSS2DObject(wrapper);
+
+  if (type === "dec") {
+    label.position.set(
+      sphericalPosition.x + 0.1,
+      sphericalPosition.y + 0.1,
+      sphericalPosition.z,
+    );
+  }
+  if (type === "ra") {
+    label.position.set(
+      sphericalPosition.x - 0.5,
+      sphericalPosition.y + 0.8,
+      sphericalPosition.z,
+    );
+  }
+  label.center.set(0, 1);
+
+  scene.add(label);
+  // label.layers.set(1);
+};
+
+const createTextTexture = (text, type, fontSize = 72, color = "#ff0000") => {
+  // console.log("createTextTexture");
+  const canvas = document.createElement("canvas");
+  canvas.width = 192;
+  canvas.height = 64;
+
+  const ctx = canvas.getContext("2d");
+
+  // Rect
+  // ctx.fillStyle = "rgba(255,0,0,1)";
+  ctx.fillStyle = "rgba(0,0,0,1)";
+  ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+  // Text
+  ctx.font = `${fontSize}px monospace`;
+  ctx.fillStyle = color;
+  // ctx.textAlign = "center";
+  ctx.textBaseline = "middle";
+  ctx.fillText(
+    `${type === "dec" && text > 0 ? "+" : ""}${text}°`,
+    0,
+    canvas.height / 2,
+  );
+
+  const texture = new CanvasTexture(canvas);
+  texture.minFilter = LinearFilter;
+  return texture;
+};
+
+// Método para agregar etiqueta mediante Sprite
+const addSpriteLabel = (scene, type, raDeg, decDeg, text, radius) => {
+  // console.log('addSpriteLabel')
+  const pos = formulaRaDecToCartesian(radius, raDeg, decDeg);
+
+  const spriteMat = new SpriteMaterial({
+    map: createTextTexture(text, type),
+    transparent: true,
+    rotation: type === "ra" ? (90 * Math.PI) / 180 : 0,
+  });
+  const sprite = new Sprite(spriteMat);
+  // sprite.position.copy(pos);
+  if (type === "ra") {
+    sprite.position.set(pos.x - 0.3, pos.y + 1.5, pos.z);
+  }
+  if (type === "dec") {
+    sprite.position.set(pos.x + 0.6, pos.y + 0.3, pos.z);
+  }
+
+  // sprite.scale.set(0.75, 0.25, 1); // Ajusta según distancia
+  sprite.scale.set(0.9375, 0.3125, 1.25); // Ajusta según distancia
+  scene.add(sprite);
 };
 
 /**
@@ -68,10 +180,14 @@ const createDecLines = (scene, radius = 20, step = 20) => {
 
   // Líneas de latitud (declinación)
   for (let dec = -90; dec <= 90; dec += step) {
+    // for (let dec = -Math.PI / 2; dec <= Math.PI / 2; dec += Math.PI / 9) {
+    // console.log(dec);
     // const latitudePoints;
     const points = [];
 
     for (let ra = 0; ra <= 360; ra++) {
+      // for (let ra = 0; ra <= 2 * Math.PI; ra += (2 * Math.PI) / 360) {
+      // console.log(dec, ra);
       // Paralelos
       const sphericalCoords = formulaRaDecToCartesian(radius, ra, dec);
 
@@ -86,8 +202,13 @@ const createDecLines = (scene, radius = 20, step = 20) => {
       // }
       // console.log({ x, y, z });
       points.push(new Vector3(x, y, z));
-    }
 
+      // Colocar etiquetas
+      if (ra % 15 === 0) {
+        // addLabelCSS2DObject(scene, "dec", ra, dec, dec, radius);
+        addSpriteLabel(scene, "dec", ra, dec, dec, radius);
+      }
+    }
     // const lineGeometry;
     const geometry = new BufferGeometry().setFromPoints(points);
 
@@ -134,6 +255,12 @@ const createRaLines = (scene, radius = 20, step = 15) => {
         // Meridianos
         const sphericalCoords = formulaRaDecToCartesian(radius, ra, dec);
         points.push(sphericalCoords);
+
+        // Colocar etiquetas
+        if (dec % 10 === 0 && dec % 20 !== 0) {
+          // addSpriteLabel(scene, "ra", ra, dec, ra, radius);
+          addLabelCSS2DObject(scene, "ra", ra, dec, ra, radius);
+        }
       }
     } else {
       // esto soluciona que las líneas no lleguen hasta -90° o 90
@@ -141,13 +268,17 @@ const createRaLines = (scene, radius = 20, step = 15) => {
         // Meridianos
         const sphericalCoords = formulaRaDecToCartesian(radius, ra, dec);
         points.push(sphericalCoords);
+
+        // Colocar etiquetas
+        if (dec % 10 === 0 && dec % 20 !== 0) {
+          // addSpriteLabel(scene, "ra", ra, dec, ra, radius);
+          addLabelCSS2DObject(scene, "ra", ra, dec, ra, radius);
+        }
       }
     }
     const geometry = new BufferGeometry().setFromPoints(points);
     const material = new LineBasicMaterial({
       color: 0xff0000,
-      // transparent: true,
-      // opacity: 0.6,
     });
     const line = new Line(geometry, material);
     line.updateMatrix();

@@ -1,5 +1,5 @@
 // import * as THREE from "three";
-import { Mesh } from "three";
+import { AxesHelper, Mesh } from "three";
 
 // componentes
 import camara from "./components/camara";
@@ -11,10 +11,11 @@ import newRenderer from "./components/renderer";
 import newStats from "./components/stats";
 
 // utils
+import { CSS2DRenderer } from "three/addons/renderers/CSS2DRenderer.js";
 import onWindowResize from "./utils/resize.js";
 
 // variables globales
-let camera, controls, orbit, scene, renderer, stats;
+let camera, controls, orbit, scene, renderer, stats, labelRenderer;
 
 init();
 
@@ -48,9 +49,10 @@ function init() {
 
     // CAMERA
     camera = camara();
-    // camera.position.z = 1;
-    camera.position.z = 80;
+    camera.position.z = 1;
+    // camera.position.z = 80;
     // camera.position.z = 35;
+    camera.layers.enableAll();
 
     // STATS
     stats = newStats("#mainid");
@@ -58,12 +60,31 @@ function init() {
     // RENDERER
     renderer = newRenderer(animate, "#mainid", "#canvasid");
 
+    // CSS2DRENDERER (necesario para las etiquetas CSS2DObject)
+    labelRenderer = new CSS2DRenderer();
+    labelRenderer.setSize(window.innerWidth, window.innerHeight);
+    labelRenderer.domElement.id = "labelrendererid";
+    labelRenderer.domElement.style.position = "absolute";
+    labelRenderer.domElement.style.top = "0px";
+    labelRenderer.domElement.style.pointerEvents = "none";
+    const mainid = document.querySelector("#mainid");
+    mainid.appendChild(labelRenderer.domElement);
+    // document.body.appendChild(labelRenderer.domElement);
+
     // CONTROLS
-    orbit = newControls(camera, renderer);
+    orbit = newControls(camera, renderer.domElement);
+    orbit.enableZoom = true;
     orbit.enableDamping = true;
+    // const orbit = new OrbitControls(camera, labelRenderer.domElement);
+    // orbit.minDistance = 5;
+    // orbit.maxDistance = 100;
 
     // LIGHTS
     newLights(scene);
+
+    const axesHelper = new AxesHelper(5);
+    axesHelper.layers.enableAll();
+    scene.add(axesHelper);
 
     //--
 
@@ -82,12 +103,15 @@ function init() {
       // group.rotation.y += 0.005;
       renderer.render(scene, camera);
       // window.requestAnimationFrame(animate);
+
+      // CSS2DRENDERER (necesario para las etiquetas CSS2DObject)
+      labelRenderer.render(scene, camera);
     }
 
     // resize
     window.addEventListener(
       "resize",
-      () => onWindowResize(camera, renderer),
+      () => onWindowResize(camera, renderer, labelRenderer),
       false,
     );
 
@@ -98,7 +122,7 @@ function init() {
       // controls.update();
       orbit.update();
 
-      rotarMesh(group);
+      // rotarMesh(group);
 
       render();
 
