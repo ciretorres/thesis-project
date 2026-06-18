@@ -65,14 +65,16 @@
 <body class="body">
   <main id="mainid">
     <section id="sectionid">
-      <h1>hellow orld</h1>
+      <!-- <h1>hellow orld</h1> -->
 
       <!-- <div id="infoid">
         MOVE mouse &amp; press LEFT/A: rotate, MIDDLE/S: zoom, RIGHT/D: pan
       </div> -->
 
-      <button type="button" onclick="btnIncrementaPosZ()" style="padding: 16px; font-size: 24px;">+</button>
-      <button type="button" onclick="btnDecrementaPosZ()" style="padding: 16px; font-size: 24px;">-</button>
+      <button type="button" onclick="btnIncrementaPosZ()"
+        style="width: 50px;height: 50px; padding: 16px; font-size: 24px;">+</button>
+      <button type="button" onclick="btnDecrementaPosZ()"
+        style="width: 50px;height: 50px;padding: 16px; font-size: 24px;">-</button>
 
       <p id="pid">-</p>
     </section>
@@ -129,12 +131,12 @@
     // Eventos del teclado
     document.addEventListener('keydown', function (event) {
       if (event.key === 'w') {
-        console.log('W key pressed');
-        increasePositionZ(exportCamera())
+        // console.log('W key pressed');
+        // increasePositionZ(exportCamera())
       }
       if (event.key === 's') {
-        console.log('S key pressed');
-        decreasePositionZ(exportCamera())
+        // console.log('S key pressed');
+        // decreasePositionZ(exportCamera())
       }
       if (event.key === 'Enter') {
         console.log('Enter key pressed');

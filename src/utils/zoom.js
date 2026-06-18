@@ -8,7 +8,7 @@ export const decreasePositionZ = (camera) => {
 };
 
 export const resetPosition = (camera) => {
-  camera.position.x = 0;
-  camera.position.y = 0;
-  camera.position.z = 1;
+  camera.position.x = 0.0;
+  camera.position.y = 0.0;
+  camera.position.z = 1.0;
 };

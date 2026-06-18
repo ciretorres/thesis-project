@@ -50,9 +50,7 @@ function init() {
     camera = camara();
     // camera.position.z = 1;
     camera.position.z = 80;
-    // camera.position.y = 0;
-    // camera.position.x = 0;
-    // sc.add(camera);
+    // camera.position.z = 35;
 
     // STATS
     stats = newStats("#mainid");
@@ -69,7 +67,7 @@ function init() {
 
     //--
 
-    // Implementación
+    // IMPLEMENTACIÓN
     // const group = new Group();
     const group = implementacion(scene);
 
