@@ -1,10 +1,12 @@
+import { Color } from "three";
 import createSphericalGrid from "./grid.js";
 
 const implementacion = (scene) => {
   // Grid, Reticula Ecuatorial
   const radio = 20;
-  // const color;
-  const grid = createSphericalGrid(scene, radio);
+  const color = new Color("#4488ff");
+  // const color = new Color("#ff0000");
+  const grid = createSphericalGrid(scene, radio, color);
   scene.add(grid);
 
   // Mesh para integrar a scene

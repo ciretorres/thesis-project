@@ -122,7 +122,7 @@ function init() {
       // controls.update();
       orbit.update();
 
-      // rotarMesh(group);
+      rotarMesh(group);
 
       render();
 
