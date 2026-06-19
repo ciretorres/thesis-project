@@ -7,7 +7,7 @@ import {
   Vector3,
 } from "three";
 
-import { addLabelCSS2DObject, createSpriteLabel } from "./labels";
+import { addLabelCSS2DObject } from "./labels";
 
 import { formulaRaDecToCartesian } from "../../utils/convert.js";
 
@@ -57,10 +57,20 @@ const createDecLines = (radius = 20, step = 20) => {
 
       // Colocar etiquetas
       if (ra % 15 === 0) {
-        const spriteLabel = createSpriteLabel("dec", ra, dec, dec, radius);
-        labelsSpriteGroup.add(spriteLabel);
-        // const css2dLabel = addLabelCSS2DObject("dec", ra, dec, dec, radius);
-        // labelsCSS2DGroup.add(css2dLabel);
+        // const spriteLabel = createSpriteLabel(
+        //   "dec",
+        //   new Vector3(x, y, z),
+        //   dec,
+        //   radius,
+        // );
+        // labelsSpriteGroup.add(spriteLabel);
+        const css2dLabel = addLabelCSS2DObject(
+          "dec",
+          new Vector3(x, y, z),
+          dec,
+          radius,
+        );
+        labelsCSS2DGroup.add(css2dLabel);
       }
     }
     // const lineGeometry;
@@ -109,10 +119,21 @@ const createRaLines = (radius = 20, step = 15) => {
         points.push(sphericalCoords);
 
         // Colocar etiquetas
-        if (dec % 10 === 0 && dec % 20 !== 0) {
-          // const spriteLabel = createSpriteLabel("ra", ra, dec, ra, radius);
+        if (
+          dec % 10 === 0 &&
+          dec % 20 !== 0 &&
+          ra !== 0 &&
+          dec !== 90 &&
+          dec !== -90
+        ) {
+          // const spriteLabel = createSpriteLabel("ra", sphericalCoords, ra, radius);
           // labelsSpriteGroup.add(spriteLabel);
-          const css2dLabel = addLabelCSS2DObject("ra", ra, dec, ra, radius);
+          const css2dLabel = addLabelCSS2DObject(
+            "ra",
+            sphericalCoords,
+            ra,
+            radius,
+          );
           labelsCSS2DGroup.add(css2dLabel);
         }
       }
@@ -125,9 +146,14 @@ const createRaLines = (radius = 20, step = 15) => {
 
         // Colocar etiquetas
         if (dec % 10 === 0 && dec % 20 !== 0) {
-          // const spriteLabel = createSpriteLabel("ra", ra, dec, ra, radius);
+          // const spriteLabel = createSpriteLabel("ra", sphericalCoords, ra, radius);
           // labelsSpriteGroup.add(spriteLabel);
-          const css2dLabel = addLabelCSS2DObject("ra", ra, dec, ra, radius);
+          const css2dLabel = addLabelCSS2DObject(
+            "ra",
+            sphericalCoords,
+            ra,
+            radius,
+          );
           labelsCSS2DGroup.add(css2dLabel);
         }
       }

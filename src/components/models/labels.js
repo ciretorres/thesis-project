@@ -8,22 +8,26 @@ import {
 
 import { CSS2DObject } from "three/addons/renderers/CSS2DRenderer.js";
 
-import { formulaRaDecToCartesian } from "../../utils/convert.js";
-
 const createTextTexture = (text, type, fontSize = 72, color = "#ff0000") => {
   // console.log("createTextTexture");
+
+  // cada etiqueta es un canvas
+  const mainid = document.querySelector("#mainid");
   const canvas = document.createElement("canvas");
+  canvas.id = `spriteid-${Math.random().toString(36).substring(2)}`;
+
+  // Tamaño de la etiqueta
   canvas.width = 192;
   canvas.height = 64;
-
+  // contexto del canva 2d
   const ctx = canvas.getContext("2d");
 
-  // Rect
+  // Dibuja un Rect en la posición 0,0 del canvas, del ancho y alto del canvas
   // ctx.fillStyle = "rgba(255,0,0,1)";
   ctx.fillStyle = "rgba(0,0,0,1)";
   ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-  // Text
+  // Configura estilo de Text
   ctx.font = `${fontSize}px monospace`;
   ctx.fillStyle = color;
   // ctx.textAlign = "center";
@@ -34,30 +38,38 @@ const createTextTexture = (text, type, fontSize = 72, color = "#ff0000") => {
     canvas.height / 2,
   );
 
+  mainid.appendChild(canvas);
+
+  // Textura con el canvas
   const texture = new CanvasTexture(canvas);
   texture.minFilter = LinearFilter;
   return texture;
 };
 
-// Método para agregar etiqueta mediante Sprite
-const createSpriteLabel = (type, raDeg, decDeg, text, radius) => {
-  // console.log('createSpriteLabel')
-  const group = new Group();
-  const pos = formulaRaDecToCartesian(radius, raDeg, decDeg);
-
-  const spriteMat = new SpriteMaterial({
-    map: createTextTexture(text, type),
-    transparent: true,
-    rotation: type === "ra" ? (90 * Math.PI) / 180 : 0,
-  });
-  const sprite = new Sprite(spriteMat);
-  // sprite.position.copy(pos);
+const ajustarMargenes = (type, pos, sprite) => {
   if (type === "ra") {
     sprite.position.set(pos.x - 0.3, pos.y + 1.5, pos.z);
   }
   if (type === "dec") {
     sprite.position.set(pos.x + 0.6, pos.y + 0.3, pos.z);
   }
+};
+
+// Método para agregar etiqueta mediante Sprite
+const createSpriteLabel = (type, pos, text, radius) => {
+  // console.log('createSpriteLabel')
+  const group = new Group();
+
+  const spriteMaterial = new SpriteMaterial({
+    map: createTextTexture(text, type),
+    transparent: true,
+    // rotar 90° si es línea ra
+    rotation: type === "ra" ? (90 * Math.PI) / 180 : 0,
+  });
+  const sprite = new Sprite(spriteMaterial);
+
+  // sprite.position.copy(pos);
+  ajustarMargenes(type, pos, sprite);
 
   // sprite.scale.set(0.75, 0.25, 1); // Ajusta según distancia
   sprite.scale.set(0.9375, 0.3125, 1.25); // Ajusta según distancia
@@ -91,10 +103,18 @@ const createSpriteLabel = (type, raDeg, decDeg, text, radius) => {
 //   // console.log("-", dec);
 // }
 
-const addLabelCSS2DObject = (type, raDeg, decDeg, text, radius) => {
+const ajustarMargenesCSS2D = (type, pos, label) => {
+  if (type === "dec") {
+    label.position.set(pos.x + 0.1, pos.y + 0.1, pos.z);
+  }
+  if (type === "ra") {
+    label.position.set(pos.x - 0.7, pos.y + 0.8, pos.z);
+  }
+};
+
+const addLabelCSS2DObject = (type, pos, text, radius) => {
   // console.log("addLabel");
   const group = new Group();
-  const sphericalPosition = formulaRaDecToCartesian(radius, raDeg, decDeg);
 
   const wrapper = document.createElement("div");
   wrapper.className = "wrapper-label";
@@ -103,32 +123,23 @@ const addLabelCSS2DObject = (type, raDeg, decDeg, text, radius) => {
   // labelElement.for // for id line
   const labelElement = document.createElement("div");
   labelElement.className = "label";
+  labelElement.id = `labelid-${Math.random().toString(36).substring(2)}`;
   labelElement.textContent = `${type === "dec" && text > 0 ? "+" : ""}${text}°`;
-  labelElement.style.backgroundColor = "#ff0000";
+  // labelElement.style.backgroundColor = "#ff0000";
   // labelElement.style.backgroundColor = "transparent";
   if (type === "ra") {
+    // rotar
     labelElement.style.transform = "rotate(-90deg)";
   }
 
   // Anidando para poder rotar
   wrapper.appendChild(labelElement);
+
   // CSS2DObject
   const label = new CSS2DObject(wrapper);
 
-  if (type === "dec") {
-    label.position.set(
-      sphericalPosition.x + 0.1,
-      sphericalPosition.y + 0.1,
-      sphericalPosition.z,
-    );
-  }
-  if (type === "ra") {
-    label.position.set(
-      sphericalPosition.x - 0.7,
-      sphericalPosition.y + 0.8,
-      sphericalPosition.z,
-    );
-  }
+  ajustarMargenesCSS2D(type, pos, label);
+
   label.center.set(0, 1);
   group.add(label);
 
