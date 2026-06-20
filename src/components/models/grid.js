@@ -56,7 +56,8 @@ const createDecLines = (radius = 20, step = 20) => {
       points.push(new Vector3(x, y, z));
 
       // Colocar etiquetas
-      if (ra % 15 === 0) {
+      // if (ra % 15 === 0) {
+      if (ra % 45 === 0 && [-90, -70, 50, -10, 10, 50, 70, 90].includes(dec)) {
         // const spriteLabel = createSpriteLabel(
         //   "dec",
         //   new Vector3(x, y, z),
@@ -119,20 +120,25 @@ const createRaLines = (radius = 20, step = 15) => {
         points.push(sphericalCoords);
 
         // Colocar etiquetas
-        if (
-          dec % 10 === 0 &&
-          dec % 20 !== 0 &&
-          ra !== 0 &&
-          dec !== 90 &&
-          dec !== -90
-        ) {
+        // if (
+        //   dec % 10 === 0 &&
+        //   dec % 20 !== 0 &&
+        //   ra !== 0 &&
+        //   dec !== 90 &&
+        //   dec !== -90
+        // ) {
+
+        if (ra !== 0 && [-70, -50, -10, 10, 50, 70].includes(dec)) {
+          const raHours = ra / 15;
+          const horas = true;
           // const spriteLabel = createSpriteLabel("ra", sphericalCoords, ra, radius);
           // labelsSpriteGroup.add(spriteLabel);
           const css2dLabel = addLabelCSS2DObject(
             "ra",
             sphericalCoords,
-            ra,
+            raHours,
             radius,
+            horas,
           );
           labelsCSS2DGroup.add(css2dLabel);
         }
@@ -145,14 +151,24 @@ const createRaLines = (radius = 20, step = 15) => {
         points.push(sphericalCoords);
 
         // Colocar etiquetas
-        if (dec % 10 === 0 && dec % 20 !== 0) {
+        // if (
+        //   dec % 10 === 0 &&
+        //   dec % 20 !== 0 &&
+        // )
+        if (
+          [-70, -50, -10, 10, 50, 70].includes(dec) &&
+          [45, 135, 225, 315].includes(ra)
+        ) {
+          const raHours = ra / 15;
+          const horas = true;
           // const spriteLabel = createSpriteLabel("ra", sphericalCoords, ra, radius);
           // labelsSpriteGroup.add(spriteLabel);
           const css2dLabel = addLabelCSS2DObject(
             "ra",
             sphericalCoords,
-            ra,
+            raHours,
             radius,
+            horas,
           );
           labelsCSS2DGroup.add(css2dLabel);
         }
@@ -181,7 +197,7 @@ const createRaLines = (radius = 20, step = 15) => {
 const createEcuatorialGrid = ({
   stepRa,
   stepDec,
-  radius = 20,
+  radius = 1,
   coordinates = "all",
 }) => {
   // console.log("createEcuatorialGrid");
@@ -257,8 +273,8 @@ const createSphericalGrid = (scene, radio, linesGridColor) => {
   group.add(sphericalGridGroup);
 
   // labelsSpriteGroup
-  scene.add(labelsSpriteGroup);
-  group.add(labelsSpriteGroup);
+  // scene.add(labelsSpriteGroup);
+  // group.add(labelsSpriteGroup);
 
   // labelsCSS2DGroup
   scene.add(labelsCSS2DGroup);

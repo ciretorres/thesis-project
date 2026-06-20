@@ -1,20 +1,34 @@
-import { Color } from "three";
+import { Color, Mesh, MeshBasicMaterial, SphereGeometry } from "three";
 import createSphericalGrid from "./grid.js";
 
 const implementacion = (scene) => {
   // Grid, Reticula Ecuatorial
-  const radio = 20;
-  const color = new Color("#4488ff");
-  // const color = new Color("#ff0000");
+  const radio = 1;
+  // const color = new Color("#4488ff");
+  const color = new Color("#ff0000");
   const grid = createSphericalGrid(scene, radio, color);
   scene.add(grid);
 
   // Mesh para integrar a scene
 
-  // const sphereRadius = 1;
-  //   const widthSegments = 5;
-  //   const heightSegments = 3;
-  //   const geometry = new THREE.SphereGeometry(sphereRadius, widthSegments, heightSegments);
+  const sphereRadius = 0.5;
+  const widthSegments = 5;
+  const heightSegments = 3;
+  const geometry = new SphereGeometry(
+    sphereRadius,
+    // widthSegments,
+    // heightSegments,
+  );
+  const wireframe = false;
+  const material = new MeshBasicMaterial({
+    color: new Color("#FFFFFF"),
+    wireframe: wireframe,
+  });
+
+  const esfera = new Mesh(geometry, material);
+  // esfera.position.set(0, 0, -0.0999); // mínima distancia de la cámara para ver completa con 0.1 de diámetro
+  esfera.position.set(0, 0, -2);
+  scene.add(esfera);
 
   // TODO: HUD/GUI
   // const gui = new GUI();

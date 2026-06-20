@@ -60,7 +60,7 @@
       z-index: 10000; */
     }
 
-    .labelRenderer {
+    .labelCSS2DRenderer {
       /* position: "absolute";
       top: "0px";
       pointer-events: "none"; */
@@ -153,16 +153,34 @@
     // Eventos del teclado
     document.addEventListener('keydown', function (event) {
       if (event.key === 'w') {
-        // console.log('W key pressed');
-        // increasePositionZ(exportCamera())
+        console.log('W key pressed');
+        increasePositionZ(exportCamera())
       }
       if (event.key === 's') {
-        // console.log('S key pressed');
-        // decreasePositionZ(exportCamera())
+        console.log('S key pressed');
+        decreasePositionZ(exportCamera())
       }
       if (event.key === 'Enter') {
         console.log('Enter key pressed');
         resetPosition(exportCamera())
+      }
+
+      if (event.key === "a") {
+        console.log("A key pressed");
+        exportCamera().position.x -= 5;
+      }
+      if (event.key === "d") {
+        console.log("D key pressed");
+        exportCamera().position.x += 5;
+
+      }
+      if (event.key === "q") {
+        console.log("Q key pressed");
+        exportCamera().position.y -= 5;
+      }
+      if (event.key === "e") {
+        console.log("E key pressed");
+        exportCamera().position.y += 5;
       }
     });
 

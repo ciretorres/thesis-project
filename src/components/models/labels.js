@@ -105,14 +105,15 @@ const createSpriteLabel = (type, pos, text, radius) => {
 
 const ajustarMargenesCSS2D = (type, pos, label) => {
   if (type === "dec") {
-    label.position.set(pos.x + 0.1, pos.y + 0.1, pos.z);
+    label.position.set(pos.x + 0.01, pos.y + 0.01, pos.z);
   }
   if (type === "ra") {
-    label.position.set(pos.x - 0.7, pos.y + 0.8, pos.z);
+    // label.position.set(pos.x - 0.7, pos.y + 0.8, pos.z);
+    label.position.set(pos.x, pos.y, pos.z);
   }
 };
 
-const addLabelCSS2DObject = (type, pos, text, radius) => {
+const addLabelCSS2DObject = (type, pos, text, radiu, horas = false) => {
   // console.log("addLabel");
   const group = new Group();
 
@@ -124,13 +125,11 @@ const addLabelCSS2DObject = (type, pos, text, radius) => {
   const labelElement = document.createElement("div");
   labelElement.className = "label";
   labelElement.id = `labelid-${Math.random().toString(36).substring(2)}`;
-  labelElement.textContent = `${type === "dec" && text > 0 ? "+" : ""}${text}°`;
+  labelElement.textContent = horas
+    ? `${text}h`
+    : `${type === "dec" && text > 0 ? "+" : ""}${text}°`;
   // labelElement.style.backgroundColor = "#ff0000";
   // labelElement.style.backgroundColor = "transparent";
-  if (type === "ra") {
-    // rotar
-    labelElement.style.transform = "rotate(-90deg)";
-  }
 
   // Anidando para poder rotar
   wrapper.appendChild(labelElement);
@@ -140,10 +139,18 @@ const addLabelCSS2DObject = (type, pos, text, radius) => {
 
   ajustarMargenesCSS2D(type, pos, label);
 
-  label.center.set(0, 1);
+  // Ajusta rotación para que apunte hacia arriba
+  label.rotation.z = Math.atan2(pos.x, pos.y);
+  if (type === "ra") {
+    // rotar
+    labelElement.style.transform = "rotate(-90deg)";
+    label.center.set(1, 2.5);
+  } else {
+    label.center.set(0, 1);
+  }
+  // label.center.set(0, 1);
   group.add(label);
 
-  // label.layers.set(1);
   return group;
 };
 

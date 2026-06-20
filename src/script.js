@@ -15,7 +15,7 @@ import { CSS2DRenderer } from "three/addons/renderers/CSS2DRenderer.js";
 import onWindowResize from "./utils/resize.js";
 
 // variables globales
-let camera, controls, orbit, scene, renderer, stats, labelRenderer;
+let camera, controls, orbit, scene, renderer, stats, labelCSS2DRenderer;
 
 init();
 
@@ -51,7 +51,7 @@ function init() {
     camera = camara();
     camera.position.z = 1;
     // camera.position.z = 80;
-    // camera.position.z = 35;
+    // camera.position.z = 5;
     camera.layers.enableAll();
 
     // STATS
@@ -61,21 +61,22 @@ function init() {
     renderer = newRenderer(animate, "#mainid", "#canvasid");
 
     // CSS2DRENDERER (necesario para las etiquetas CSS2DObject)
-    labelRenderer = new CSS2DRenderer();
-    labelRenderer.setSize(window.innerWidth, window.innerHeight);
-    labelRenderer.domElement.id = "labelrendererid";
-    labelRenderer.domElement.style.position = "absolute";
-    labelRenderer.domElement.style.top = "0px";
-    labelRenderer.domElement.style.pointerEvents = "none";
+    labelCSS2DRenderer = new CSS2DRenderer();
+    labelCSS2DRenderer.setSize(window.innerWidth, window.innerHeight);
+    // labelCSS2DRenderer.setCamera(camera);
+    labelCSS2DRenderer.domElement.id = "labelcss2drendererid";
+    labelCSS2DRenderer.domElement.style.position = "absolute";
+    labelCSS2DRenderer.domElement.style.top = "0px";
+    labelCSS2DRenderer.domElement.style.pointerEvents = "none";
     const mainid = document.querySelector("#mainid");
-    mainid.appendChild(labelRenderer.domElement);
-    // document.body.appendChild(labelRenderer.domElement);
+    mainid.appendChild(labelCSS2DRenderer.domElement);
+    // document.body.appendChild(labelCSS2DRenderer.domElement);
 
     // CONTROLS
     orbit = newControls(camera, renderer.domElement);
     orbit.enableZoom = true;
     orbit.enableDamping = true;
-    // const orbit = new OrbitControls(camera, labelRenderer.domElement);
+    // const orbit = new OrbitControls(camera, labelCSS2DRenderer.domElement);
     // orbit.minDistance = 5;
     // orbit.maxDistance = 100;
 
@@ -105,13 +106,13 @@ function init() {
       // window.requestAnimationFrame(animate);
 
       // CSS2DRENDERER (necesario para las etiquetas CSS2DObject)
-      labelRenderer.render(scene, camera);
+      labelCSS2DRenderer.render(scene, camera);
     }
 
     // resize
     window.addEventListener(
       "resize",
-      () => onWindowResize(camera, renderer, labelRenderer),
+      () => onWindowResize(camera, renderer, labelCSS2DRenderer),
       false,
     );
 

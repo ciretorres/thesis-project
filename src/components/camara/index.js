@@ -27,7 +27,7 @@ let size = {
 const camara = () => {
   const camera = createPerspectiveCamera(35);
   camera.near = 0.1;
-  camera.far = 500;
+  // camera.far = 500;
   // // console.log(camera.position.y);
   // // camera.position.z = 1;
   // // camera.position.z = 40;
