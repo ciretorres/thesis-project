@@ -128,6 +128,9 @@ const addLabelCSS2DObject = (type, pos, text, radiu, horas = false) => {
   labelElement.textContent = horas
     ? `${text}h`
     : `${type === "dec" && text > 0 ? "+" : ""}${text}°`;
+  // rotar
+  labelElement.style.transform =
+    type === "ra" ? "rotate(-90deg)" : "rotate(0deg)";
   // labelElement.style.backgroundColor = "#ff0000";
   // labelElement.style.backgroundColor = "transparent";
 
@@ -141,13 +144,7 @@ const addLabelCSS2DObject = (type, pos, text, radiu, horas = false) => {
 
   // Ajusta rotación para que apunte hacia arriba
   label.rotation.z = Math.atan2(pos.x, pos.y);
-  if (type === "ra") {
-    // rotar
-    labelElement.style.transform = "rotate(-90deg)";
-    label.center.set(1, 2.5);
-  } else {
-    label.center.set(0, 1);
-  }
+  type === "ra" ? label.center.set(1, 2.5) : label.center.set(0, 1);
   // label.center.set(0, 1);
   group.add(label);
 
