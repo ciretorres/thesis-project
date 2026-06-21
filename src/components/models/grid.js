@@ -7,7 +7,7 @@ import {
   Vector3,
 } from "three";
 
-import { addLabelCSS2DObject } from "./labels";
+import { addLabelCSS2DObject } from "./etiquetas";
 
 import { formulaRaDecToCartesian } from "../../utils/convert.js";
 
