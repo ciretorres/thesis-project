@@ -336,29 +336,6 @@ Three.js no renderiza texto nativamente en WebGL, se trata de añadir etiquetas 
 
 - Sprite
 
-```js
-// Método para agregar etiqueta mediante Sprite
-const createSpriteLabel = (type, pos, text, radius) => {
-  const group = new Group();
-
-  const spriteMaterial = new SpriteMaterial({
-    map: createTextTexture(text, type),
-    transparent: true,
-    // rotar 90° si es línea ra
-    rotation: type === "ra" ? (90 * Math.PI) / 180 : 0,
-  });
-  const sprite = new Sprite(spriteMaterial);
-
-  // Ajustar márgenes de las etiquetas
-  ajustarMargenes(type, pos, sprite);
-
-  sprite.scale.set(0.9375, 0.3125, 1.25); // Ajusta según distancia
-  group.add(sprite);
-
-  return sprite;
-};
-```
-
 ###### Ventajas de Sprite
 
 - La textura del texto es un elemento canvas html `new CanvasTexture(canvas)` con el texto `fillText()` en el contexto 2D.
@@ -415,10 +392,10 @@ const addLabelCSS2DObject = (type, pos, text, radius) => {
 
 ###### Bugs
 
-- Hacer que solo se vean hacia las de los extremos. Y ocultarlas cuando estén en el centro de la cáma.
+- Hacer que solo se vean hacia las de los extremos. Y ocultarlas cuando estén en el centro de la cámara.
 - Cómo sincronizar la rotación de la cámara con un html canvas overlay que dibuje el grid de lineas sobre los ejes proyectados.
 - Cómo utilizar un shader pesonalizado en una esfera transparente que dibuje las líneas RA/Dec basados en UV/spherical coordinates.
-- A veces se desposicionan, hacen una transición cuando se rota a los 90 grados.
+- ✅ A veces se desposicionan, hacen una transición cuando se rota a los 90 grados.
 - Lograr que la retícula siga a la cámara cuando haga zoom o se desplace. Y pueda rotar para ver los ángulos.
 
 [Ir al inicio](#thesis-project)
@@ -426,6 +403,28 @@ const addLabelCSS2DObject = (type, pos, text, radius) => {
 ### Estrellas
 
 `Get Star Field` Instancias de esferas/estrellas.
+
+```js
+const createSpritedStars = (numStars = 500) => {
+  const starMaterial = new SpriteMaterial({ color: 0xffffff });
+  const stars = [];
+
+  for (let i = 0; i < numStars; i++) {
+    const starSprite = new Sprite(starMaterial);
+
+    // Genera una posición aleatoria dentro de un rango deseado;
+    const x = Math.ceil(Math.random() * 200 - 100);
+    const y = Math.ceil(Math.random() * 200 - 100);
+    const z = Math.ceil(Math.random() * 200 - 100);
+
+    starSprite.position.set(x, y, z);
+    starSprite.scale.set(0.1, 0.1, 0.1); // Tamaño pequeño
+
+    stars.push({ id: i, sprite: starSprite });
+  }
+  return stars;
+};
+```
 
 [Ir al inicio](#thesis-project)
 

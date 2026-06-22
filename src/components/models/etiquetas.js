@@ -1,154 +1,100 @@
-import {
-  CanvasTexture,
-  Group,
-  LinearFilter,
-  Sprite,
-  SpriteMaterial,
-} from "three";
-
+import { CanvasTexture, LinearFilter, Sprite, SpriteMaterial } from "three";
 import { CSS2DObject } from "three/addons/renderers/CSS2DRenderer.js";
 
-const createTextTexture = (text, type, fontSize = 72, color = "#ff0000") => {
-  // console.log("createTextTexture");
-
-  // cada etiqueta es un canvas
+// Método que crea una Textura a partir de un canvas temporal para el SpriteMaterial
+const createTextTexture = ({
+  type,
+  text,
+  color = "#ff0000",
+  horas = false,
+}) => {
+  // Crear un canvas y contexto temporal
   const mainid = document.querySelector("#mainid");
   const canvas = document.createElement("canvas");
   canvas.id = `spriteid-${Math.random().toString(36).substring(2)}`;
+  const context = canvas.getContext("2d");
 
-  // Tamaño de la etiqueta
-  canvas.width = 192;
-  canvas.height = 64;
-  // contexto del canva 2d
-  const ctx = canvas.getContext("2d");
+  // Tamaño del canvas (ajustable)
+  canvas.width = 1024;
+  canvas.height = 512;
 
-  // Dibuja un Rect en la posición 0,0 del canvas, del ancho y alto del canvas
-  // ctx.fillStyle = "rgba(255,0,0,1)";
-  ctx.fillStyle = "rgba(0,0,0,1)";
-  ctx.fillRect(0, 0, canvas.width, canvas.height);
+  // Estilo del texto
+  context.font = "32px monospace";
+  context.fillStyle = color;
+  context.textAlign = "center";
+  context.textBaseline = "middle";
 
-  // Configura estilo de Text
-  ctx.font = `${fontSize}px monospace`;
-  ctx.fillStyle = color;
-  // ctx.textAlign = "center";
-  ctx.textBaseline = "middle";
-  ctx.fillText(
-    `${type === "dec" && text > 0 ? "+" : ""}${text}°`,
-    0,
-    canvas.height / 2,
+  // Dibujar el texto en el canvas
+  context.fillText(
+    horas ? `${text}h` : `${type === "dec" && text > 0 ? "+" : ""}${text}°`,
+    canvas.width / 2 + 60,
+    canvas.height / 2 - 45,
   );
 
   mainid.appendChild(canvas);
 
-  // Textura con el canvas
+  // Crear una textura a partir del canvas
   const texture = new CanvasTexture(canvas);
+  texture.needsUpdate = true; // Crítico para actualizar
   texture.minFilter = LinearFilter;
+
   return texture;
 };
 
-const ajustarMargenes = (type, pos, sprite) => {
-  if (type === "ra") {
-    sprite.position.set(pos.x - 0.3, pos.y + 1.5, pos.z);
-  }
-  if (type === "dec") {
-    sprite.position.set(pos.x + 0.6, pos.y + 0.3, pos.z);
-  }
-};
-
 // Método para agregar etiqueta mediante Sprite
-const createSpriteLabel = (type, pos, text, radius) => {
-  // console.log('createSpriteLabel')
-  const group = new Group();
+const createSpriteLabel = (type, pos, text, horas = false) => {
+  // Crea textura
+  const texture = createTextTexture({ type: type, text: text, horas: horas });
 
-  const spriteMaterial = new SpriteMaterial({
-    map: createTextTexture(text, type),
-    transparent: true,
+  const material = new SpriteMaterial({
+    map: texture,
     // rotar 90° si es línea ra
     rotation: type === "ra" ? (90 * Math.PI) / 180 : 0,
   });
-  const sprite = new Sprite(spriteMaterial);
 
-  // sprite.position.copy(pos);
-  ajustarMargenes(type, pos, sprite);
+  const sprite = new Sprite(material);
 
-  // sprite.scale.set(0.75, 0.25, 1); // Ajusta según distancia
-  sprite.scale.set(0.9375, 0.3125, 1.25); // Ajusta según distancia
-  group.add(sprite);
+  sprite.position.copy(pos);
+  sprite.scale.set(1, 0.5, 1); // Ajusta el tamaño del sprite según la distancia
+
   return sprite;
 };
 
-// // Etiquetas en líneas paraleas al ecuador
-// const spriteMap = new TextureLoader().load("/favicon.ico");
-// const spriteMaterial = new SpriteMaterial({ map: spriteMap });
-// for (let dec = -90; dec < 90; dec += 20) {
-//   const radio = 20;
-//   for (let ra = 0; ra <= 360; ra++) {
-//     const sprite = new Sprite(spriteMaterial);
-//     const x =
-//       radio *
-//       Math.cos((dec * Math.PI) / 180) *
-//       Math.cos((ra * Math.PI) / 180);
-//     const y = radio * Math.sin((dec * Math.PI) / 180);
-//     const z =
-//       radio *
-//       Math.cos((dec * Math.PI) / 180) *
-//       Math.sin((ra * Math.PI) / 180);
-//     // Posicionar la etiqueta en el punto correspondiente
-//     sprite.position.set(x, y + 0.6, z);
-//     // sprite.position.set(6.82, 19.79, 0.47);
-//     if ([253, 270, 287].includes(ra)) {
-//       group.add(sprite);
-//     }
-//   }
-//   // console.log("-", dec);
-// }
-
-const ajustarMargenesCSS2D = (type, pos, label) => {
-  if (type === "dec") {
-    label.position.set(pos.x + 0.01, pos.y + 0.01, pos.z);
-  }
-  if (type === "ra") {
-    // label.position.set(pos.x - 0.7, pos.y + 0.8, pos.z);
-    label.position.set(pos.x, pos.y, pos.z);
-  }
-};
-
-const addLabelCSS2DObject = (type, pos, text, radiu, horas = false) => {
-  // console.log("addLabel");
-  const group = new Group();
-
+// Método para agregar etiqueta mediante CSS2DObject
+const addLabelCSS2DObject = (type, pos, text, horas = false) => {
   const wrapper = document.createElement("div");
   wrapper.className = "wrapper-label";
 
-  // const labelElement = document.createElement("label");
-  // labelElement.for // for id line
   const labelElement = document.createElement("div");
-  labelElement.className = "label";
   labelElement.id = `labelid-${Math.random().toString(36).substring(2)}`;
+  labelElement.className = "label";
+
+  // horas o grados
   labelElement.textContent = horas
     ? `${text}h`
     : `${type === "dec" && text > 0 ? "+" : ""}${text}°`;
+
   // rotar
   labelElement.style.transform =
     type === "ra" ? "rotate(-90deg)" : "rotate(0deg)";
-  // labelElement.style.backgroundColor = "#ff0000";
-  // labelElement.style.backgroundColor = "transparent";
 
-  // Anidando para poder rotar
+  // Para rotar necesita anidar la etiqueta
   wrapper.appendChild(labelElement);
 
   // CSS2DObject
   const label = new CSS2DObject(wrapper);
 
-  ajustarMargenesCSS2D(type, pos, label);
+  // ajustar
+  label.position.copy(pos);
 
   // Ajusta rotación para que apunte hacia arriba
-  label.rotation.z = Math.atan2(pos.x, pos.y);
+  // label.rotation.z = Math.atan2(pos.x, pos.y);
+
+  // definir el centro de la etiqueta
   type === "ra" ? label.center.set(1, 2.5) : label.center.set(0, 1);
   // label.center.set(0, 1);
-  group.add(label);
 
-  return group;
+  return label;
 };
 
 export { addLabelCSS2DObject, createSpriteLabel };

@@ -1,27 +1,27 @@
-import { Color } from "three";
-import { createStars } from "./estrellas.js";
+import { Color, Group } from "three";
+import { createStars } from "./estrellas";
 import createSphericalGrid from "./grid.js";
 
 const implementacion = (scene) => {
+  let group = new Group();
+
   // Mesh para integrar a scene
 
-  // Instancias de esferas/estrellas
-  const estrellas = createStars(500);
-  // console.log(estrellas.length);
-  estrellas.forEach((estrellas) => {
-    scene.add(estrellas);
-  });
+  // Instancias o Sprites de estrellas
+  const numStars = 500;
+  const starField = createStars(scene, numStars);
+  group.add(starField);
 
   // Grid, Reticula Ecuatorial
   const radio = 1;
   // const color = new Color("#4488ff");
   const color = new Color("#ff0000");
   const grid = createSphericalGrid(scene, radio, color);
-  scene.add(grid);
+  group.add(grid);
 
   // TODO: HUD/GUI
   // const gui = new GUI();
 
-  return grid;
+  return group;
 };
 export default implementacion;

@@ -1,5 +1,5 @@
 // import * as THREE from "three";
-import { AxesHelper, Mesh } from "three";
+import { AxesHelper, Group, Mesh } from "three";
 
 // componentes
 import camara from "./components/camara";
@@ -90,8 +90,9 @@ function init() {
     //--
 
     // IMPLEMENTACIÓN
-    // const group = new Group();
-    const group = implementacion(scene);
+    let group = new Group();
+    group = implementacion(scene);
+    scene.add(group);
 
     // Mesh para integrar a scene
 
@@ -123,7 +124,7 @@ function init() {
       // controls.update();
       orbit.update();
 
-      rotarMesh(group);
+      // rotarMesh(group);
 
       render();
 

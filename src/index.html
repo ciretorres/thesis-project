@@ -74,7 +74,7 @@
       /* font-family: sans-serif; */
       font-family: monospace;
       font-size: 18px;
-      padding: 2px;
+      padding: 15px;
       background: rgba(0, 0, 0, 1);
       /* background-color: #ff0000; */
       background: transparent;
@@ -128,6 +128,7 @@
   <script type="module">
     // import * as THREE from "three";
     import { exportCamera } from './script.js'
+    import { starsSprite } from './components/models/estrellas'
     // módulo para rotar y zoom en la escena
     import { increasePositionZ, decreasePositionZ, resetPosition } from './utils/zoom.js'
     import { imprime } from './components/imprimir.js'
@@ -138,6 +139,8 @@
     window.decreasePositionZ = decreasePositionZ;
     window.resetPosition = resetPosition;
     window.exportCamera = exportCamera;
+    window.starsSprite = starsSprite;
+
 
     // Métodos de acciones para elementos de la interfaz
     function btnIncrementaPosZ() {
@@ -152,6 +155,20 @@
 
     // Eventos del teclado
     document.addEventListener('keydown', function (event) {
+      if (event.key === '+') {
+        console.log('+ key pressed');
+        const sprite = starsSprite.filter(sprite => sprite.id === 1)[0]
+        console.log(sprite.sprite.position)
+        sprite.sprite.position.x += 1;
+        console.log(sprite.sprite.position)
+      }
+      if (event.key === '-') {
+        console.log('+ key pressed');
+        const sprite = starsSprite.filter(sprite => sprite.id === 1)[0]
+        console.log(sprite.sprite.position)
+        sprite.sprite.position.x -= 1;
+        console.log(sprite.sprite.position)
+      }
       if (event.key === 'w') {
         console.log('W key pressed');
         increasePositionZ(exportCamera())
