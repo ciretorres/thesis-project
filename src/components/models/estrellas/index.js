@@ -177,7 +177,8 @@ const createSpritedStars = (numStars = 500) => {
     starSprite.position.set(x, y, z);
     starSprite.scale.set(0.1, 0.1, 0.1); // Tamaño pequeño
 
-    stars.push({ id: i, sprite: starSprite });
+    // stars.push({ id: i, sprite: starSprite });
+    stars.push(starSprite);
   }
   return stars;
 };
@@ -193,7 +194,8 @@ const createStars = (scene, numStars = 500) => {
 
   // usando sprites
   starsSprite = createSpritedStars(numStars);
-  starsSprite.forEach((star) => group.add(star.sprite));
+  // starsSprite.forEach((star) => group.add(star.sprite));
+  starsSprite.forEach((star) => group.add(star));
 
   // usando SphereGeometry (Mesh)
   // const star = createMeshedStar();

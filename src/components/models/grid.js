@@ -181,7 +181,7 @@ const createEcuatorialGrid = ({
   radius = 1,
   coordinates = "all",
 }) => {
-  const group = new Group();
+  let group = new Group();
 
   // Paralelos - Delinación
   if (coordinates == "declination") {
