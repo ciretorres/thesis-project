@@ -2,16 +2,16 @@
 import { AxesHelper, Group, Mesh } from "three";
 
 // componentes
-import camara from "./components/camara";
-import newControls from "./components/controls";
-import escena from "./components/escena";
-import newLights from "./components/lights";
+import addCamara from "./components/camara";
+import addControls from "./components/controls";
+import addEscena from "./components/escena";
+import addLights from "./components/lights";
 import implementacion from "./components/models/index.js";
-import newRenderer from "./components/renderer";
-import newStats from "./components/stats";
+import addRenderer from "./components/renderer";
+import addStats from "./components/stats";
 
 // utils
-import { CSS2DRenderer } from "three/addons/renderers/CSS2DRenderer.js";
+import addCSS2DRenderer from "./components/renderer/css2drenderer.js";
 import onWindowResize from "./utils/resize.js";
 
 // variables globales
@@ -46,44 +46,27 @@ function init() {
 
   function main() {
     // SCENE
-    scene = escena();
-    // scene.background = new Color("#302a73");
+    scene = addEscena();
 
     // CAMERA
-    camera = camara();
-    camera.position.z = 1;
-    // camera.position.z = 80;
-    // camera.position.z = 5;
-    camera.layers.enableAll();
+    camera = addCamara();
 
     // STATS
-    stats = newStats("#mainid");
+    stats = addStats("#mainid");
 
     // RENDERER
-    renderer = newRenderer(animate, "#mainid", "#canvasid");
+    renderer = addRenderer(animate, "#mainid", "#canvasid");
 
     // CSS2DRENDERER (necesario para las etiquetas CSS2DObject)
-    labelCSS2DRenderer = new CSS2DRenderer();
-    labelCSS2DRenderer.setSize(window.innerWidth, window.innerHeight);
-    // labelCSS2DRenderer.setCamera(camera);
-    labelCSS2DRenderer.domElement.id = "labelcss2drendererid";
-    labelCSS2DRenderer.domElement.style.position = "absolute";
-    labelCSS2DRenderer.domElement.style.top = "0px";
-    labelCSS2DRenderer.domElement.style.pointerEvents = "none";
-    const mainid = document.querySelector("#mainid");
-    mainid.appendChild(labelCSS2DRenderer.domElement);
-    // document.body.appendChild(labelCSS2DRenderer.domElement);
+    labelCSS2DRenderer = addCSS2DRenderer("#mainid");
 
     // CONTROLS
-    orbit = newControls(camera, renderer.domElement);
-    orbit.enableZoom = true;
-    orbit.enableDamping = true;
-    // const orbit = new OrbitControls(camera, labelCSS2DRenderer.domElement);
-    // orbit.minDistance = 5;
-    // orbit.maxDistance = 100;
+    orbit = addControls(camera, renderer.domElement);
+    // controls.update() must be called after any manual changes to the camera's transform
+    orbit.update();
 
     // LIGHTS
-    newLights(scene);
+    addLights(scene);
 
     const axesHelper = new AxesHelper(5);
     axesHelper.layers.enableAll();
@@ -198,16 +181,16 @@ function init() {
 
     // render
     function render() {
-      requestAnimationFrame(render);
+      // window.requestAnimationFrame(animate);
+      window.requestAnimationFrame(render);
+
       // group.rotation.x += 0.005;
       // group.rotation.y += 0.005;
-
       // rotarMesh(group);
 
       // updateCullingStarsVisibility(camera);
 
       renderer.render(scene, camera);
-      // window.requestAnimationFrame(animate);
 
       // CSS2DRENDERER (necesario para las etiquetas CSS2DObject)
       labelCSS2DRenderer.render(scene, camera);
@@ -224,7 +207,9 @@ function init() {
     function animate(time) {
       // console.log((time *= 0.001));
       // time *= 0.001; // convert time to seconds
+
       // controls.update();
+      // required if controls.enableDamping or controls.autoRotate are set to true
       orbit.update();
 
       render();

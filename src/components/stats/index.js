@@ -1,7 +1,12 @@
 // módulo para mostrar estadísticas del render en el front
 import Stats from "three/addons/libs/stats.module.js";
 
-const newStats = (id) => {
+/**
+ * Método para agregar las estadísticas al main
+ * @param {String} id : de la etiqueta main del html
+ * @returns {Stats} stats
+ */
+const addStats = (id) => {
   const stats = new Stats();
 
   const mainid = document.querySelector(id);
@@ -13,7 +18,8 @@ const newStats = (id) => {
     "style",
     "position: absolute; top: 0px; right: 0px; cursor: pointer; opacity: 0.9; z-index: 10000;",
   );
+
   return stats;
 };
 
-export default newStats;
+export default addStats;

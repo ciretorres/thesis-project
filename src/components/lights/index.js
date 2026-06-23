@@ -1,32 +1,53 @@
-import { AmbientLight, DirectionalLight } from "three";
+import { AmbientLight, Color, DirectionalLight } from "three";
 
-const createLight = (color = 0xffffff, intensity = 3) => {
-  const light = new DirectionalLight(color, intensity);
-  // light.position.set(-1, 2, 4);
-  // scene.add(light);
-  return light;
+/**
+ * Método para crear una luz direccional
+ * @param {Color} color : The light's color. Default is 0xffffff.
+ * @param {Number} intensity : The light's strength/intensity. Default is 1.
+ * @returns {DirectionalLight} directionalLight
+ * @see https://threejs.org/docs/#DirectionalLight
+ */
+const createDireccionalLight = (color = 0xffffff, intensity = 0.5) => {
+  const directionalLight = new DirectionalLight(color, intensity);
+  return directionalLight;
 };
 
-const newLights = (scene) => {
-  // const light;
-  // const dirLight1 = getLight();
-  // dirLight1.position.set(1, 1, 1);
-  // const dirLight2 = getLight(0x002288);
-  // dirLight2.position.set(-1, -1, -1);
+/**
+ * Método para crear una luz ambiente
+ * @param {Color} color : The light's color. Default is 0xffffff.
+ * @param {Number} intensity : The light's strength/intensity. Default is 1.
+ * @returns {AmbientLight} ambientLight
+ * @see https://threejs.org/docs/#AmbientLight
+ */
+const createAmbientLight = (color = 0x404040, intensity = 1) => {
+  const ambientLight = new AmbientLight(color, intensity);
+  return ambientLight;
+};
 
-  const color = 0xffffff;
-  // const color = 0x555555;
-  const intensity = 1;
+/**
+ * Método para agregar luces a la escena
+ * @param {Object} scene : en donde se van a agregar
+ */
+const addLights = (scene) => {
+  // const color = new Color(0x404040); // soft white light
+  // const color = new Color(0x555555);
+  // const color = new Color(0x002288);
+  const color = new Color(0xffffff);
+  const intensity = 3;
 
-  const light = new AmbientLight(color, intensity);
-  // const light = new AmbientLight( 0x404040 ); // soft white light
+  // crea luz ambiente
+  const light = createAmbientLight(color);
   scene.add(light);
 
+  // crea luz direccional
   const lights = [];
-  lights[0] = createLight(color, 3);
+  // lights[0] = createDireccionalLight(color, 3);
+  lights.push(createDireccionalLight(color, intensity));
+
+  // properties
+  // lights[0].position.set(-1, 2, 4);
   lights[0].position.set(0, 200, 0);
   scene.add(lights[0]);
-  //return light;
 };
 
-export default newLights;
+export default addLights;
