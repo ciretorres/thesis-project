@@ -5,6 +5,7 @@ import {
   Matrix4,
   Mesh,
   MeshBasicMaterial,
+  Object3D,
   SphereGeometry,
   Sprite,
   SpriteMaterial,
@@ -83,13 +84,13 @@ const createSphereMaterial = () => {
 /**
  * Crea una o varias estrellas mediante SphereGeometry (Mesh)
  * @param {Number} numStars : cantidad de estrellas
- * @returns {Array} stars : con los Mesh de las estrellas
+ * @returns {Object3D} stars : con los Mesh de las estrellas
  */
 const createMeshedStars = (numStars = 500) => {
   const geometry = createSphereGeometry();
   const material = createSphereMaterial();
 
-  const stars = [];
+  const stars = new Object3D();
 
   for (let index = 0; index < numStars; index++) {
     const star = new Mesh(geometry, material);
@@ -103,7 +104,7 @@ const createMeshedStars = (numStars = 500) => {
       Math.ceil(Math.random() * 99) * (Math.round(Math.random()) ? 1 : -1);
 
     star.position.set(x, y, z);
-    stars.push(star);
+    stars.add(star);
   }
 
   return stars;
@@ -152,20 +153,32 @@ const createInstancedStars = (numStars = 500, position = new Vector3()) => {
 };
 
 /**
- * Crea una o varias estrellas mediante Sprite
+ * Crea una o varias estrellas utilizando Sprite
  * @param {Number} numStars : cantidad de estrellas
- * @returns {Array} stars : con los sprites de estrellas
+ * @returns {Object3D} stars : con los sprites de estrellas
  */
 const createSpritedStars = (numStars = 500) => {
-  // const textureLoader = new TextureLoader();
-  // const spriteTexture = textureLoader.load('ruta/a/tu/textura.png');
-  // const starMaterial = new SpriteMaterial({map: spriteTexture, color: 0xffffff});
-  const starMaterial = new SpriteMaterial({ color: 0xffffff });
-  // const stars = [];
-  const group3 = new Group();
+  const stars = new Object3D();
 
+  // crea y calcula la posición de los sprites
   for (let i = 0; i < numStars; i++) {
+    // const textureLoader = new TextureLoader();
+    // const spriteTexture = textureLoader.load('ruta/a/tu/textura.png');
+    // const starMaterial = new SpriteMaterial({map: spriteTexture, color: 0xffffff});
+    const starMaterial = new SpriteMaterial({ color: 0xffffff });
     const starSprite = new Sprite(starMaterial);
+
+    // TODO:
+    if (starSprite.id === 22) {
+      // esto para indicar el objeto seleccionado
+      starSprite.material.color.set("green");
+
+      // esto para agregar propiedades al objeto Three.js con info del catálogo hipparcos
+      // const obj = { hip: starSprite.id, sprite: starSprite };
+      starSprite.hip = starSprite.id;
+      starSprite["apparentMagnitude"] = 1;
+      // console.log(starSprite);
+    }
 
     // Genera una posición aleatoria dentro de un rango deseado;
     const x = Math.ceil(Math.random() * 200 - 100);
@@ -177,13 +190,11 @@ const createSpritedStars = (numStars = 500) => {
 
     starSprite.position.set(x, y, z);
     // starSprite.scale.set(0.1, 0.1, 0.1); // Tamaño pequeño
-    starSprite.scale.set(1, 1, 1); // Tamaño pequeño
+    starSprite.scale.set(1, 1, 1);
 
-    // stars.push({ id: i, sprite: starSprite });
-    // stars.push(starSprite);
-    group3.add(starSprite);
+    stars.add(starSprite);
   }
-  return group3;
+  return stars;
 };
 
 let starsSprite = new Group();
@@ -196,32 +207,18 @@ const createStars = ({ numStars = 500 }) => {
   const group = new Group();
 
   // usando sprites
-  // starsSprite = createSpritedStars(numStars);
-  // starsSprite.forEach((star) => group.add(star.sprite));
-  // starsSprite.forEach((star) => group.add(star));
+  starsSprite = createSpritedStars(numStars);
+  group.add(starsSprite);
 
   // usando SphereGeometry (Mesh)
+  // const stars = createInstancedStars();
+  // group.add(stars);
+
   // const star = createMeshedStar();
   // group.add(star);
 
   // const starsMeshed = createMeshedStars();
   // starsMeshed.forEach((star) => group.add(star));
-
-  // const stars = createInstancedStars();
-  // group.add(stars);
-
-  const group3 = new Group();
-  for (let i = 0; i < 500; i++) {
-    const sprite1 = new Sprite(new SpriteMaterial({ color: "#fff" }));
-    // Genera una posición aleatoria dentro de un rango deseado;
-    const x = Math.ceil(Math.random() * 200 - 100);
-    const y = Math.ceil(Math.random() * 200 - 100);
-    const z = Math.ceil(Math.random() * 200 - 100);
-    sprite1.position.set(x, y, z);
-    sprite1.scale.set(1, 1, 1);
-    group3.add(sprite1);
-  }
-  group.add(group3);
 
   return group;
 };

@@ -54,6 +54,7 @@ function init() {
 
   main();
 
+  // función principal
   function main() {
     // SCENE
     scene = addEscena();
@@ -215,6 +216,7 @@ function init() {
 
       updateCullingStarsVisibility(camera);
 
+      // renderiza la escena con la cámara
       renderer.render(scene, camera);
 
       // CSS2DRENDERER (necesario para las etiquetas CSS2DObject)

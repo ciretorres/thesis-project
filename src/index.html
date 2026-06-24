@@ -157,17 +157,17 @@
     document.addEventListener('keydown', function (event) {
       if (event.key === '+') {
         console.log('+ key pressed');
-        const sprite = starsSprite.filter(sprite => sprite.id === 1)[0]
-        console.log(sprite.sprite.position)
-        sprite.sprite.position.x += 1;
-        console.log(sprite.sprite.position)
+        const star = starsSprite.children.find(star => star.id === 22)
+        console.log(star.position)
+        star.position.z += 1;
+        console.log(star.position)
       }
       if (event.key === '-') {
         console.log('+ key pressed');
-        const sprite = starsSprite.filter(sprite => sprite.id === 1)[0]
-        console.log(sprite.sprite.position)
-        sprite.sprite.position.x -= 1;
-        console.log(sprite.sprite.position)
+        const star = starsSprite.children.find(star => star.id === 22)
+        console.log(star.position)
+        star.position.z -= 1;
+        console.log(star.position)
       }
       if (event.key === 'w') {
         console.log('W key pressed');

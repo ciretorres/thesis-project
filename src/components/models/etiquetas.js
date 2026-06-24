@@ -44,7 +44,7 @@ const createTextTexture = ({
 // Método para agregar etiqueta mediante Sprite
 const createSpriteLabel = (type, pos, text, horas = false) => {
   // Crea textura
-  const texture = createTextTexture({ type: type, text: text, horas: horas });
+  const texture = createTextTexture({ type, text, horas });
 
   const material = new SpriteMaterial({
     map: texture,
