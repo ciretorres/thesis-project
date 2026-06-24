@@ -1,6 +1,13 @@
 // módulo para comprobar si es compatible con webgl
 import WebGL from "three/addons/capabilities/WebGL.js";
 
+/**
+ * Método para validar la compatibilidad del navegador con WebGL
+ * @param {Object} renderer
+ * @param {Function} animate
+ * @param {String} mainId
+ * @param {String} canvasId
+ */
 const checaWebGLCompatibilidad = (renderer, animate, mainId, canvasId) => {
   if (WebGL.isWebGL2Available()) {
     // Initiate function or other initializations here
@@ -32,6 +39,7 @@ const checaWebGLCompatibilidad = (renderer, animate, mainId, canvasId) => {
     document
       .querySelector("#webglmessage")
       .appendChild(AdvertenciaWebGLNoCompatible);
+
     console.warn("Tu tarjeta gráfica parece no soportar WebGL2");
   }
 };

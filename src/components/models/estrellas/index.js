@@ -181,9 +181,15 @@ const createSpritedStars = (numStars = 500) => {
     }
 
     // Genera una posición aleatoria dentro de un rango deseado;
-    const x = Math.ceil(Math.random() * 200 - 100);
-    const y = Math.ceil(Math.random() * 200 - 100);
-    const z = Math.ceil(Math.random() * 200 - 100);
+    // const x = Math.ceil(Math.random() * 200 - 100);
+    // const y = Math.ceil(Math.random() * 200 - 100);
+    // const z = Math.ceil(Math.random() * 200 - 100);
+    const x =
+      Math.ceil(Math.random() * 99) * (Math.round(Math.random()) ? 1 : -1);
+    const y =
+      Math.ceil(Math.random() * 99) * (Math.round(Math.random()) ? 1 : -1);
+    const z =
+      Math.ceil(Math.random() * 99) * (Math.round(Math.random()) ? 1 : -1);
 
     // starSprite.magnitude.set(apparentMagnitude);
     // star.push(createStar(position, magnitude));

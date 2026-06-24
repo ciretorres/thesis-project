@@ -97,4 +97,25 @@ const addLabelCSS2DObject = (type, pos, text, horas = false) => {
   return label;
 };
 
+// Ejemplo de texto
+// async function etiquetasTextGeometry() {
+//   const loader = new FontLoader();
+//   let font = await loader.loadAsync("helvetiker_regular.typeface.json");
+//   const textG = new TextGeometry(`hwllo world`, {
+//     font: font,
+//     size: 0.25,
+//     depth: 0,
+//     curveSegments: 12,
+//     bevelEnabled: false,
+//   });
+//   textG.computeBoundingBox();
+
+//   let materialt = new MeshBasicMaterial({ color: "white" });
+//   let mesht = new Mesh(textG, materialt);
+
+//   mesht.position.set(0, 0, -10);
+//   scene.add(mesht);
+// }
+// etiquetasTextGeometry();
+
 export { addLabelCSS2DObject, createSpriteLabel };
