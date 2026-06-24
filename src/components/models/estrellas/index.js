@@ -161,7 +161,8 @@ const createSpritedStars = (numStars = 500) => {
   // const spriteTexture = textureLoader.load('ruta/a/tu/textura.png');
   // const starMaterial = new SpriteMaterial({map: spriteTexture, color: 0xffffff});
   const starMaterial = new SpriteMaterial({ color: 0xffffff });
-  const stars = [];
+  // const stars = [];
+  const group3 = new Group();
 
   for (let i = 0; i < numStars; i++) {
     const starSprite = new Sprite(starMaterial);
@@ -175,27 +176,29 @@ const createSpritedStars = (numStars = 500) => {
     // star.push(createStar(position, magnitude));
 
     starSprite.position.set(x, y, z);
-    starSprite.scale.set(0.1, 0.1, 0.1); // Tamaño pequeño
+    // starSprite.scale.set(0.1, 0.1, 0.1); // Tamaño pequeño
+    starSprite.scale.set(1, 1, 1); // Tamaño pequeño
 
     // stars.push({ id: i, sprite: starSprite });
-    stars.push(starSprite);
+    // stars.push(starSprite);
+    group3.add(starSprite);
   }
-  return stars;
+  return group3;
 };
 
-let starsSprite = [];
+let starsSprite = new Group();
 /**
  * Crea las estrellas
  * @param {Number} numStars : cantidad de estrellas
  * @returns {Group} group
  */
-const createStars = (scene, numStars = 500) => {
+const createStars = ({ numStars = 500 }) => {
   const group = new Group();
 
   // usando sprites
-  starsSprite = createSpritedStars(numStars);
+  // starsSprite = createSpritedStars(numStars);
   // starsSprite.forEach((star) => group.add(star.sprite));
-  starsSprite.forEach((star) => group.add(star));
+  // starsSprite.forEach((star) => group.add(star));
 
   // usando SphereGeometry (Mesh)
   // const star = createMeshedStar();
@@ -206,6 +209,19 @@ const createStars = (scene, numStars = 500) => {
 
   // const stars = createInstancedStars();
   // group.add(stars);
+
+  const group3 = new Group();
+  for (let i = 0; i < 500; i++) {
+    const sprite1 = new Sprite(new SpriteMaterial({ color: "#fff" }));
+    // Genera una posición aleatoria dentro de un rango deseado;
+    const x = Math.ceil(Math.random() * 200 - 100);
+    const y = Math.ceil(Math.random() * 200 - 100);
+    const z = Math.ceil(Math.random() * 200 - 100);
+    sprite1.position.set(x, y, z);
+    sprite1.scale.set(1, 1, 1);
+    group3.add(sprite1);
+  }
+  group.add(group3);
 
   return group;
 };

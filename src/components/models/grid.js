@@ -20,7 +20,7 @@ let labelsCSS2DGroup = new Group();
  * @property {Number} step : los pasos de separación de las líneas en grados
  * @returns {Group} group : con las líneas paralelas y las etiquetas
  */
-const createDecLines = (radius = 20, step = 20) => {
+const createDecLines = (radius = 1, step = 20) => {
   // Calcula los valores de las coordenadas esféricas para cada punto en el grid
   // Crea 9 líneas de declinación de -90° a 90° de 20° en 20°
 
@@ -65,7 +65,9 @@ const createDecLines = (radius = 20, step = 20) => {
     // const material = createMeshBasicMaterial(new Color("#7833aa"));
     // const material = createMeshBasicMaterial(new Color("#4488ff"));
     const material = new LineBasicMaterial({
-      color: color.isColor ? color : new Color("#ff0000"),
+      color: gridMaterialColor.isColor
+        ? gridMaterialColor
+        : new Color("#4488ff"),
       // transparent: true,
       // opacity: 0.6,
     });
@@ -85,7 +87,7 @@ const createDecLines = (radius = 20, step = 20) => {
  * @property {Number} step : los pasos de separación de las líneas en grados
  * @returns {Group} group : con las líneas meridianas y las etiquetas
  */
-const createRaLines = (radius = 20, step = 15) => {
+const createRaLines = (radius = 1, step = 15) => {
   // calcula los valores de las coordenadas esféricas para cada punto en el grid
   // Crea 24 líneas de ascención recta de 0° a 360° de 15° en 15°
   // formulaSphereToEcuatorial
@@ -155,7 +157,9 @@ const createRaLines = (radius = 20, step = 15) => {
 
     const geometry = new BufferGeometry().setFromPoints(points);
     const material = new LineBasicMaterial({
-      color: color.isColor ? color : new Color("#ff0000"),
+      color: gridMaterialColor.isColor
+        ? gridMaterialColor
+        : new Color("#4488ff"),
     });
 
     const line = new LineSegments(geometry, material);
@@ -186,13 +190,11 @@ const createEcuatorialGrid = ({
   // Paralelos - Delinación
   if (coordinates == "declination") {
     group = createDecLines(radius, stepDec);
-
     return group;
   } else {
     // Meridianos - Ascensión Recta
     if (coordinates === "ascension") {
       group = createRaLines(radius, stepRa);
-
       return group;
     } else {
       // Calcula ambas direcciones (meridianos y paralelos)
@@ -219,7 +221,12 @@ const createGrid = (type = "ecuatorial") => {
     case "ecuatorial":
       const stepRa = 15;
       const stepDec = 20;
-      group = createEcuatorialGrid({ stepRa, stepDec });
+
+      group = createEcuatorialGrid({
+        stepRa: stepRa,
+        stepDec: stepDec,
+        radius: gridRadius,
+      });
 
       break;
 
@@ -231,20 +238,19 @@ const createGrid = (type = "ecuatorial") => {
   return group;
 };
 
-let radius = 1;
-let color = new Color("#ff0000");
+let gridRadius = 1;
+let gridMaterialColor = new Color("#4488ff");
 /**
  * Método para crear la retícula esférica
- * @param {Object} scene : para agregar objetos en grupo renderizables
  * @param {Number} radius : radio de la esfera
- * @param {Color} linesGridColor : para las líneas de grid
+ * @param {Color} lines : para las líneas de grid
  * @returns {Group} group
  */
-const createSphericalGrid = (scene, radio, linesGridColor) => {
+const createSphericalGrid = ({ radio, color }) => {
   const group = new Group();
 
-  radius = radio;
-  color = linesGridColor;
+  gridRadius = radio;
+  gridMaterialColor = color;
   // Grid
   const sphericalGrid = createGrid("ecuatorial");
   group.add(sphericalGrid);
