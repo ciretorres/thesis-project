@@ -167,17 +167,17 @@ Necesidades básicas, intermedias y avanzadas para el desarrollo e implementaci�
   - ✅ Dibujar las líneas a partir de los puntos de las coordenadas esféricas.
   - ✅ Agregar etiquetas las líneas clave de ra y dec.
 - **Carga de posiciones astronómicas**
-  - Crear menos de 10 instancias de esferas y posicionarlas alteatoriamente en un radio no mayor de 50 unidades.
-  - ✅ Integrar un módulo de análisis de datos astronómicos para calcular la posición de las estrellas. Este existe en un notebook de python.
+  - ✅ Crear menos de 10 instancias de esferas o sprites y posicionarlas aleatoriamente en un radio no mayor de 50 unidades.
+  - Integrar un módulo de análisis de datos astronómicos para calcular la posición de las estrellas. Este existe en un notebook de python.
 
     (Es un conjunto de datos con información de las estrellas para convertir coordenas galácticas a coordenas esféricas y obtener sus magnitudes de brillo aparente y brillo absoluto).
 
-  - ✅ Leer y generar dinámicamente los puntos para representar la posición de las estrellas en una escala logarítmica.
+  - Leer y generar dinámicamente los puntos para representar la posición de las estrellas en una escala logarítmica.
 
 - **Optimización.**
-  - Considerar técnicas de optimización y rendimiento estable como instancing, LOD (Level of Detail), o frustum culling. Para las escenas con gran cantidad de objetos en una cúpula o domo celeste esférico de estrellas.
+  - ⚡️ Considerar técnicas de optimización y rendimiento estable como instancing, LOD (Level of Detail), o frustum culling. Para las escenas con gran cantidad de objetos en una cúpula o domo celeste esférico de estrellas.
 - **Interactividad.**
-  - Lograr seleccionar objetos celestes, obtener y mostrar información sobre estos (nombre, distancia, tamaño, brillo, etc.).
+  - ✅ Lograr seleccionar objetos celestes, obtener y mostrar información sobre estos (nombre, distancia, tamaño, brillo, etc.).
   - ✅ Cambiar o modificar el brillo/distancia de una estrella mediante botones y menús.
   - Filtrar objetos por tipo (estrellas, brillo, distancia, etc.), buscar objetos específicos por nombre o coordenadas.
 - **Controles de movimiento.**
@@ -219,7 +219,7 @@ Los requerimientos técnicos que tendría que tener como mínimo son:
 
 Construir y visualizar con trigonometría una retícula ecuatorial con líneas RA/Dec detallada. Calcular, transformar y convertir los puntos del sistema de coordenadas ecuatoriales (ra, dec) a coordenadas esféricas (x, y, z).
 
-- ###### Declinación
+- ##### Declinación
 
 Calcular los puntos para nueve líneas de Declinación desde -90° hasta 90° en pasos de 20° en 20° grados.
 
@@ -252,7 +252,7 @@ for (let dec = -90; dec <= 90; dec += 20) {
 
 [Ir al inicio](#thesis-project)
 
-- ###### Ascensión Recta
+- ##### Ascensión Recta
 
 Calcular los puntos para veinticuatro líneas de Ascensión Recta desde 0° hasta 360° en pasos de 15° en 15° grados.
 
@@ -303,7 +303,7 @@ Utilizar `LineSegments` para líneas independientes por tramo mejor para LOD o c
 
 [Ir al inicio](#thesis-project)
 
-- ###### Ángulos rectos
+- ##### Ángulos rectos
 
 Ajustar que las líneas de RA con ángulos rectos de 0°, 90°, 180°, 270° y 360° lleguen hasta los ejes polares. Y los demás hasta -70° y 70° respectivamente.
 
@@ -392,24 +392,30 @@ const addLabelCSS2DObject = (type, pos, text, radius) => {
 
 ###### Bugs
 
-- Hacer que solo se vean hacia las de los extremos. Y ocultarlas cuando estén en el centro de la cámara.
+- 🐛 Mostrar etiquetas a los extremos, ocultándolas del centro de la cámara.
 - Cómo sincronizar la rotación de la cámara con un html canvas overlay que dibuje el grid de lineas sobre los ejes proyectados.
 - Cómo utilizar un shader pesonalizado en una esfera transparente que dibuje las líneas RA/Dec basados en UV/spherical coordinates.
-- ✅ A veces se desposicionan, hacen una transición cuando se rota a los 90 grados.
-- Lograr que la retícula siga a la cámara cuando haga zoom o se desplace. Y pueda rotar para ver los ángulos.
+- 🦋 A veces se desposicionan, hacen una transición cuando se rota a los 90 grados.
+- 🐛 Lograr que el grid siga a la cámara cuando haga zoom o se desplace. Y pueda rotar para ver los ángulos.
+- 🐛 Background de la vía láctea
+- 🐛 Revisar el frustum culling personalizado para no renderizar objetos que no estén dentro del campo de visión de la cámara.
+- 🐛 Al buscar y/o seleccionar una estrella, tener la posibilidad voltear a verla y viajar hacia ella con la cámara.
 
 [Ir al inicio](#thesis-project)
 
 ### Estrellas
 
-`Get Star Field` Instancias de esferas/estrellas.
+`Get Star Field` Instancias o Sprites de estrellas.
+
+<img src="./static/capturas/Screen Shot 2026-06-24 at 0.26.26.webp" width="800">
 
 ```js
 const createSpritedStars = (numStars = 500) => {
-  const starMaterial = new SpriteMaterial({ color: 0xffffff });
-  const stars = [];
+  const stars = new Object3D();
 
+  // crea y calcula la posición de los sprites
   for (let i = 0; i < numStars; i++) {
+    const starMaterial = new SpriteMaterial({ color: 0xffffff });
     const starSprite = new Sprite(starMaterial);
 
     // Genera una posición aleatoria dentro de un rango deseado;
@@ -420,7 +426,7 @@ const createSpritedStars = (numStars = 500) => {
     starSprite.position.set(x, y, z);
     starSprite.scale.set(0.1, 0.1, 0.1); // Tamaño pequeño
 
-    stars.push({ id: i, sprite: starSprite });
+    stars.add(starSprite);
   }
   return stars;
 };
@@ -511,6 +517,8 @@ Entre las similitudes y capacidades de uno y otro en sus respuestas. En general 
 [https://threejs.org/examples/?q=css2d#css2d_label](https://threejs.org/examples/?q=css2d#css2d_label)
 
 [https://threejs.org/examples/?q=css3d#css3d_sprites](https://threejs.org/examples/?q=css3d#css3d_sprites)
+
+[https://threejs.org/examples/webgl_raycaster_sprite.html](https://threejs.org/examples/webgl_raycaster_sprite.html)
 
 --
 
