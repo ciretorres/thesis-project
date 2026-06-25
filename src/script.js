@@ -28,7 +28,9 @@ import onWindowResize from "./utils/resize.js";
 import rotarObject3D from "./utils/rotarObject3d.js";
 
 // variables globales
-let camera, controls, orbit, scene, renderer, stats, labelCSS2DRenderer;
+let camera, lastCameraPosition;
+let renderer, labelCSS2DRenderer;
+let controls, orbit, scene, stats;
 
 init();
 
@@ -84,6 +86,12 @@ function init() {
       radio: 1,
       color: new Color("#ff0000"),
     });
+    lastCameraPosition = {
+      x: camera.position.x,
+      y: camera.position.y,
+      z: camera.position.z,
+    };
+    grid.position.set(0, 0, camera.position.z);
     group2.add(grid);
 
     // Mesh y grupos para integrar a scene
@@ -144,6 +152,24 @@ function init() {
       // const culling = updateCullingVisibility(camera, group);
       // console.log(culling.length);
 
+      // Actualizar la posición del grid para que siga a la cámara
+      if (
+        lastCameraPosition.x !== camera.position.x ||
+        lastCameraPosition.y !== camera.position.y ||
+        lastCameraPosition.z !== camera.position.z
+      ) {
+        grid.position.set(
+          camera.position.x,
+          camera.position.y,
+          camera.position.z,
+        );
+        lastCameraPosition = {
+          x: camera.position.x,
+          y: camera.position.y,
+          z: camera.position.z,
+        };
+      }
+
       // renderiza la escena con la cámara
       renderer.render(scene, camera);
 
@@ -165,11 +191,13 @@ function init() {
 
       // group.rotation.x += 0.005;
       // group.rotation.y += 0.005;
-      rotarObject3D(group3);
+      // rotarObject3D(group3);
+      rotarObject3D(group);
 
       // updateCullingStarsVisibility
-      const culling = updateCullingVisibility(camera, group);
-      // console.log(culling.length);
+      const cullingStars = updateCullingVisibility(camera, group);
+      // updateCullingGridVisibility
+      const cullingGrid = updateCullingVisibility(camera, grid);
 
       // controls.update();
       // required if controls.enableDamping or controls.autoRotate are set to true
