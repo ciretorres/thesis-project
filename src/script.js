@@ -1,5 +1,13 @@
 // import * as THREE from "three";
-import { AxesHelper, Color, Frustum, Group, Matrix4 } from "three";
+import {
+  AxesHelper,
+  Camera,
+  Color,
+  Frustum,
+  Group,
+  Matrix4,
+  Sprite,
+} from "three";
 
 // componentes
 import addCamara from "./components/camara";
@@ -87,14 +95,21 @@ function init() {
     // RAYCASTER
     selectStar(camera, group); // HOVER / CLICK
 
-    const updateCullingStarsVisibility = (camera) => {
+    /**
+     * Método para actualizar el culling basado en la visibilidad utilizando el frustum de la cámara
+     * @param {Camera} camera
+     * @param {Sprite} sprites
+     * @returns {Array}
+     * @see https://threejs.org/docs/#Frustum
+     */
+    const updateCullingVisibility = (camera, sprites) => {
       // Culling personalizado
-      // console.log(starsSprite.filter((sprite) => sprite.sprite.visible).length);
-      // console.log(starField.children.length);
       // Actualizar la matriz de la cámara para asegurar que los cálculos sean correctos
       camera.updateMatrixWorld();
+
       // Obtener objetos visibles en el frustum
       const frustum = new Frustum();
+
       // Obtener la matriz de corte (frustum) a partir de la perspectiva actual de la cámara
       frustum.setFromProjectionMatrix(
         new Matrix4().multiplyMatrices(
@@ -102,19 +117,22 @@ function init() {
           camera.matrixWorldInverse,
         ),
       );
-      starField.children.forEach((star, idx) => {
-        // const star = sprite.sprite;
+
+      // almacena los sprites visibles
+      const visiblesSprites = [];
+
+      // Verifica cada sprite contra el frustum
+      sprites.children.forEach((star) => {
         const isVisible = frustum.containsPoint(star.position);
         // Verificar si la estrella está dentro del frustum de la cámara
         if (isVisible) {
-          // star.visible = isVisible; // Establece visible o no según el resultado
-          // scene.add(star);
+          star.visible = true; // Establece visible o no según el resultado
+          visiblesSprites.push(star);
         } else {
-          // star.visible = isVisible; // Establece visible o no según el resultado
-          // scene.remove(star);
-          // starField.children.splice(idx, -1);
+          star.visible = false;
         }
       });
+      return visiblesSprites;
     };
 
     // render
@@ -122,7 +140,9 @@ function init() {
       // window.requestAnimationFrame(animate);
       window.requestAnimationFrame(render);
 
-      updateCullingStarsVisibility(camera);
+      // updateCullingStarsVisibility
+      // const culling = updateCullingVisibility(camera, group);
+      // console.log(culling.length);
 
       // renderiza la escena con la cámara
       renderer.render(scene, camera);
@@ -146,6 +166,10 @@ function init() {
       // group.rotation.x += 0.005;
       // group.rotation.y += 0.005;
       rotarObject3D(group3);
+
+      // updateCullingStarsVisibility
+      const culling = updateCullingVisibility(camera, group);
+      // console.log(culling.length);
 
       // controls.update();
       // required if controls.enableDamping or controls.autoRotate are set to true
