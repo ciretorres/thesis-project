@@ -36,7 +36,7 @@ refactorización javascript
     - [Ascensión Recta](#ascensión-recta)
       - [Ángulos rectos](#ángulos-rectos)
     - [Etiquetas](#etiquetas)
-- [Estrellas](#estrellas)
+  - [Estrellas](#estrellas)
 - [Three.js](#threejs)
 - [Referencias](#referencias)
 - [Fuentes de información](#fuentes-de-información)
@@ -396,14 +396,14 @@ const addLabelCSS2DObject = (type, pos, text, radius) => {
 - Cómo sincronizar la rotación de la cámara con un html canvas overlay que dibuje el grid de lineas sobre los ejes proyectados.
 - Cómo utilizar un shader pesonalizado en una esfera transparente que dibuje las líneas RA/Dec basados en UV/spherical coordinates.
 - 🦋 A veces se desposicionan, hacen una transición cuando se rota a los 90 grados.
-- 🐛 Lograr que el grid siga a la cámara cuando haga zoom o se desplace. Y pueda rotar para ver los ángulos.
+- 🦋 Lograr que el grid siga a la cámara cuando haga zoom o se desplace. Y pueda rotar para ver los ángulos.
 - 🐛 Background de la vía láctea
-- 🐛 Revisar el frustum culling personalizado para no renderizar objetos que no estén dentro del campo de visión de la cámara.
+- 🦋 Revisar el frustum culling personalizado para no renderizar objetos que no estén dentro del campo de visión de la cámara.
 - 🐛 Al buscar y/o seleccionar una estrella, tener la posibilidad voltear a verla y viajar hacia ella con la cámara.
 
 [Ir al inicio](#thesis-project)
 
-### Estrellas
+#### Estrellas
 
 `Get Star Field` Instancias o Sprites de estrellas.
 
