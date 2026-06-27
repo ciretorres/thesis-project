@@ -38,7 +38,7 @@ const addCamara = () => {
   const camera = createPerspectiveCamera(35, aspect, near, far);
 
   // properties
-  camera.position.z = 1;
+  camera.position.z = -1;
   // camera.position.z = 40;
   // camera.position.z = 80;
   // camera.position.z = 5;

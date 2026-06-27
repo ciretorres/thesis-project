@@ -194,7 +194,13 @@ const createSpritedStars = (numStars = 500) => {
     // starSprite.magnitude.set(apparentMagnitude);
     // star.push(createStar(position, magnitude));
 
-    starSprite.position.set(x, y, z);
+    // starSprite.position.set(x, y, z);
+    // Polaris
+    starSprite.position.set(
+      1.3396481090837498,
+      1.0446215486735597,
+      132.2642231564061,
+    );
     // starSprite.scale.set(0.1, 0.1, 0.1); // Tamaño pequeño
     starSprite.scale.set(1, 1, 1);
 

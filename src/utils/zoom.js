@@ -10,5 +10,6 @@ export const decreasePositionZ = (camera) => {
 export const resetPosition = (camera) => {
   camera.position.x = 0.0;
   camera.position.y = 0.0;
-  camera.position.z = 1.0;
+  // camera.position.z = 1.0; // vista hacia el sur
+  camera.position.z = -1.0; // vista hacia el norte
 };

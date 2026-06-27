@@ -20,24 +20,17 @@ const formulaRaDecToCartesian = (radius = 1, raDeg, decDeg) => {
   // Ascensión Recta en Radians
   const theta = degreesToRadians(raDeg);
 
-  //       // forma uno z-up
-  // const x = radius * Math.sin(phi) * Math.cos(theta);
-  // const y = radius * Math.sin(phi) * Math.sin(theta);
-  // const z = radius * Math.cos(phi);
-  //       // forma dos y-up
-  //       // const x = radio * Math.sin(lat) * Math.cos(lon);
-  //       // const y = radio * Math.cos(lat);
-  //       // const z = radio * Math.sin(lat) * Math.sin(lon);
-  //       // forma tres x-up
-  //       // const x = radio * Math.cos(lat);
-  //       // const y = radio * Math.sin(lat) * Math.cos(lon);
-  //       // const z = radio * Math.sin(lat) * Math.sin(lon);
+  // forma uno z-up
+  // +Z = polo norte celeste (Dec = +90°)
+  const x = radius * Math.cos(phi) * Math.cos(theta);
+  const y = radius * Math.cos(phi) * Math.sin(theta);
+  const z = radius * Math.sin(phi);
 
   // +Y = polo norte celeste (Dec = +90°)
   // RA crece anti-horariamente al mirar desde +Y hacia el plano XZ
-  const x = radius * Math.cos(phi) * Math.cos(theta);
-  const y = radius * Math.sin(phi);
-  const z = radius * Math.cos(phi) * Math.sin(theta);
+  // const x = radius * Math.cos(phi) * Math.cos(theta);
+  // const y = radius * Math.sin(phi);
+  // const z = radius * Math.cos(phi) * Math.sin(theta);
   // const z = -radius * Math.cos(phi) * Math.sin(theta); // signo negativo para conveniencia astronómina en Y-up
 
   // return { x, y, z };

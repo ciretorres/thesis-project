@@ -77,7 +77,11 @@ function init() {
 
     // Instancias o Sprites de estrellas
     const group = new Group();
-    const starField = createStars({ numStars: 500 });
+    const starField = createStars({ numStars: 1 });
+    // const starField = createStars({ numStars: 182 });
+    // const starField = createStars({ numStars: 22982 });
+    // const starField = createStars({ numStars: 107380 });
+    // const starField = createStars({ numStars: 500 });
     group.add(starField);
 
     // Grid, Reticula Ecuatorial
@@ -192,7 +196,8 @@ function init() {
       // group.rotation.x += 0.005;
       // group.rotation.y += 0.005;
       // rotarObject3D(group3);
-      rotarObject3D(group);
+      // rotarObject3D(group);
+      rotarObject3D();
 
       // updateCullingStarsVisibility
       const cullingStars = updateCullingVisibility(camera, group);

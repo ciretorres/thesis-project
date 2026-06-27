@@ -70,13 +70,14 @@ const addLabelCSS2DObject = (type, pos, text, horas = false) => {
   labelElement.className = "label";
 
   // horas o grados
-  labelElement.textContent = horas
-    ? `${text}h`
-    : `${type === "dec" && text > 0 ? "+" : ""}${text}°`;
+  // labelElement.textContent = horas
+  //   ? `${text}h`
+  //   : `${type === "dec" && text > 0 ? "+" : ""}${text}°`;
+  labelElement.textContent = `${text}`;
 
   // rotar
-  labelElement.style.transform =
-    type === "ra" ? "rotate(-90deg)" : "rotate(0deg)";
+  // labelElement.style.transform =
+  //   type === "ra" ? "rotate(-90deg)" : "rotate(0deg)";
 
   // Para rotar necesita anidar la etiqueta
   wrapper.appendChild(labelElement);
@@ -91,7 +92,8 @@ const addLabelCSS2DObject = (type, pos, text, horas = false) => {
   // label.rotation.z = Math.atan2(pos.x, pos.y);
 
   // definir el centro de la etiqueta
-  type === "ra" ? label.center.set(1, 2.5) : label.center.set(0, 1);
+  // type === "ra" ? label.center.set(1, 2.5) : label.center.set(0, 1);
+  label.center.set(0, 1);
   // label.center.set(0, 1);
 
   return label;
