@@ -56,8 +56,8 @@ const createDecLines = (radius = 1, step = 20) => {
       color: gridMaterialColor.isColor
         ? gridMaterialColor
         : new Color("#4488ff"),
-      // transparent: true,
-      // opacity: 0.6,
+      transparent: true,
+      opacity: 0.6,
     });
 
     const line = new LineSegments(geometry, material);
@@ -166,6 +166,8 @@ const createRaLines = (radius = 1, step = 15) => {
       color: gridMaterialColor.isColor
         ? gridMaterialColor
         : new Color("#4488ff"),
+      transparent: true,
+      opacity: 0.6,
     });
 
     const line = new LineSegments(geometry, material);

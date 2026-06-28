@@ -1,5 +1,14 @@
 import { Raycaster, Vector2 } from "three";
 
+const phipid = document.querySelector("#hipid");
+const pvmagid = document.querySelector("#vmagid");
+const pabsmagid = document.querySelector("#absmagid");
+const pdistanciaid = document.querySelector("#distanciaid");
+const prahmsid = document.querySelector("#rahmsid");
+const pdedmsid = document.querySelector("#dedmsid");
+
+const dialogid = document.querySelector("#dialogid");
+
 const selectStar = (camera, group) => {
   const raycaster = new Raycaster();
   const pointer = new Vector2();
@@ -81,6 +90,7 @@ const selectStar = (camera, group) => {
       // Si se hace click en un objeto ya seleccionado, lo deseleccionamos
       if (clickedObject === selectedObject) {
         resetColor(clickedObject);
+        dialogid.close();
         selectedObject = null;
       } else {
         // Resetear el color del objeto previamente seleccionado
@@ -100,11 +110,33 @@ const selectStar = (camera, group) => {
           ABSmag: selectedObject.ABSmag.toFixed(2),
           Pc: selectedObject.Pc.toFixed(2),
         });
+        phipid.innerText = selectedObject.HIP;
+        pvmagid.innerText = selectedObject.Vmag;
+        pabsmagid.innerText = selectedObject.ABSmag.toFixed(2);
+        pdistanciaid.innerText = selectedObject.Pc.toFixed(2);
+
+        const ra = selectedObject.RAhms;
+        const RApartes = ra.split(" ");
+        const RAhoras = RApartes[0];
+        const RAminutos = RApartes[1];
+        const RAsegundos = RApartes[2];
+
+        prahmsid.innerText = `${RAhoras}h ${RAminutos}m ${RAsegundos}s`;
+
+        const dec = selectedObject.DEdms;
+        const DEpartes = dec.split(" ");
+        const DEgrados = DEpartes[0];
+        const DEminutos = DEpartes[1];
+        const DEsegundos = DEpartes[2];
+        pdedmsid.innerText = `${DEgrados}° ${DEminutos}' ${DEsegundos}"`;
+
+        dialogid.showModal();
       }
     } else {
       // Click fuera de cualquier objeto, deseleccionar
       if (selectedObject) {
         resetColor(selectedObject);
+        dialogid.close();
         selectedObject = null;
       }
     }

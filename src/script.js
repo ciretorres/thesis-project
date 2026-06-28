@@ -41,7 +41,9 @@ init();
 async function init() {
   // setup
   // selector html tags
-  const p = document.querySelector("#pid");
+  const px = document.querySelector("#idx");
+  const py = document.querySelector("#idy");
+  const pz = document.querySelector("#idz");
   // consultando datos
   data = await fetchData();
 
@@ -216,7 +218,9 @@ async function init() {
 
       render();
 
-      p.innerText = `x: ${camera.position.x}; y: ${camera.position.y}; z: ${camera.position.z}`;
+      px.innerText = `x: ${camera.position.x.toFixed(2)}`;
+      py.innerText = `y: ${camera.position.y.toFixed(2)}`;
+      pz.innerText = `z: ${camera.position.z.toFixed(2)}`;
 
       stats.update();
     }
