@@ -24,6 +24,7 @@ import createSphericalGrid from "./components/models/grid.js";
 // utils
 import selectStar from "./components/controls/select.js";
 import addCSS2DRenderer from "./components/renderer/css2drenderer.js";
+import fetchData from "./utils/fetch.js";
 import onWindowResize from "./utils/resize.js";
 import rotarObject3D from "./utils/rotarObject3d.js";
 
@@ -32,13 +33,17 @@ let camera, lastCameraPosition;
 let renderer, labelCSS2DRenderer;
 let controls, orbit, scene, stats;
 
+let data;
+
 init();
 
 // función de inicio
-function init() {
+async function init() {
   // setup
   // selector html tags
   const p = document.querySelector("#pid");
+  // consultando datos
+  data = await fetchData();
 
   main();
 
@@ -77,7 +82,8 @@ function init() {
 
     // Instancias o Sprites de estrellas
     const group = new Group();
-    const starField = createStars({ numStars: 1 });
+    const starField = createStars({ data: data });
+    // const starField = createStars({ numStars: 1 });
     // const starField = createStars({ numStars: 182 });
     // const starField = createStars({ numStars: 22982 });
     // const starField = createStars({ numStars: 107380 });

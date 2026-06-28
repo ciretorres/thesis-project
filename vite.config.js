@@ -26,5 +26,6 @@ export default {
     outDir: "../dist",
     emptyOutDir: true,
     sourcemap: true,
+    // target: ["es2022", "chrome97", "edge97", "firefox96", "safari15"],
   },
 };
