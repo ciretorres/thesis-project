@@ -128,7 +128,7 @@
   <script type="module">
     // import * as THREE from "three";
     import { exportCamera } from './script.js'
-    import { starsSprite } from './components/models/estrellas'
+    import { starsCatalogue } from './components/models/estrellas'
     // módulo para rotar y zoom en la escena
     import { increasePositionZ, decreasePositionZ, resetPosition } from './utils/zoom.js'
     import { imprime } from './scripts/imprimir.js'
@@ -139,7 +139,7 @@
     window.decreasePositionZ = decreasePositionZ;
     window.resetPosition = resetPosition;
     window.exportCamera = exportCamera;
-    window.starsSprite = starsSprite;
+    window.starsCatalogue = starsCatalogue;
 
 
     // Métodos de acciones para elementos de la interfaz
@@ -157,14 +157,14 @@
     document.addEventListener('keydown', function (event) {
       if (event.key === '+') {
         console.log('+ key pressed');
-        const star = starsSprite.children.find(star => star.id === 22)
+        const star = starsCatalogue.children.find(star => star.id === 22)
         console.log(star.position)
         star.position.z += 1;
         console.log(star.position)
       }
       if (event.key === '-') {
         console.log('+ key pressed');
-        const star = starsSprite.children.find(star => star.id === 22)
+        const star = starsCatalogue.children.find(star => star.id === 22)
         console.log(star.position)
         star.position.z -= 1;
         console.log(star.position)

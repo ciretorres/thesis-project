@@ -168,18 +168,6 @@ const createSpritedStars = (numStars = 500) => {
     const starMaterial = new SpriteMaterial({ color: 0xffffff });
     const starSprite = new Sprite(starMaterial);
 
-    // TODO:
-    if (starSprite.id === 22) {
-      // esto para indicar el objeto seleccionado
-      starSprite.material.color.set("green");
-
-      // esto para agregar propiedades al objeto Three.js con info del catálogo hipparcos
-      // const obj = { hip: starSprite.id, sprite: starSprite };
-      starSprite.hip = starSprite.id;
-      starSprite["apparentMagnitude"] = 1;
-      // console.log(starSprite);
-    }
-
     // Genera una posición aleatoria dentro de un rango deseado;
     // const x = Math.ceil(Math.random() * 200 - 100);
     // const y = Math.ceil(Math.random() * 200 - 100);
@@ -191,10 +179,36 @@ const createSpritedStars = (numStars = 500) => {
     const z =
       Math.ceil(Math.random() * 99) * (Math.round(Math.random()) ? 1 : -1);
 
-    // starSprite.magnitude.set(apparentMagnitude);
-    // star.push(createStar(position, magnitude));
+    // console.log(starSprite);
 
-    // starSprite.position.set(x, y, z);
+    starSprite.position.set(x, y, z);
+    // starSprite.scale.set(0.1, 0.1, 0.1); // Tamaño pequeño
+    starSprite.scale.set(1, 1, 1);
+
+    stars.add(starSprite);
+  }
+  return stars;
+};
+
+const createPolarisStar = (numStars = 1) => {
+  const stars = new Object3D();
+
+  // crea y calcula la posición de los sprites
+  for (let i = 0; i < numStars; i++) {
+    const starMaterial = new SpriteMaterial({ color: 0xffffff });
+    const starSprite = new Sprite(starMaterial);
+
+    starSprite.material.color.set("orange");
+
+    starSprite.HIP = 11767;
+    starSprite.RAhms = "02 31 47.08";
+    starSprite.DEdms = "+89 15 50.9";
+    starSprite["Vmag"] = 1.97;
+    starSprite["ABSmag"] = -3.637391;
+    starSprite["Pc"] = 132.275132;
+
+    // console.log(starSprite);
+
     // Polaris
     starSprite.position.set(
       1.3396481090837498,
@@ -246,10 +260,15 @@ const createCatalogueStars = (starCatalogue = []) => {
 
     stars.add(starSprite);
   }
+  // polaris
+  let polarisSprite = new Group();
+  polarisSprite = createPolarisStar();
+  stars.add(polarisSprite);
   return stars;
 };
 
-let starsSprite = new Group();
+let starsCatalogue,
+  starsSprites = new Group();
 /**
  * Crea las estrellas
  * @param {Number} numStars : cantidad de estrellas
@@ -259,9 +278,11 @@ const createStars = ({ data = [] }) => {
   const group = new Group();
 
   // usando sprites
-  starsSprite = createCatalogueStars(data);
-  // starsSprite = createSpritedStars({ numStars = 500 });
-  group.add(starsSprite);
+  starsSprites = createSpritedStars(500);
+  // group.add(starsSprites)
+
+  starsCatalogue = createCatalogueStars(data);
+  group.add(starsCatalogue);
 
   // usando SphereGeometry (Mesh)
   // const stars = createInstancedStars();
@@ -276,4 +297,4 @@ const createStars = ({ data = [] }) => {
   return group;
 };
 
-export { createStars, starsSprite };
+export { createStars, starsCatalogue };
