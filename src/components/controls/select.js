@@ -1,6 +1,7 @@
 import { Raycaster, Vector2 } from "three";
 
 const selectStar = (camera, group) => {
+  let hoveredObject = null;
   let selectedObject = null;
 
   const raycaster = new Raycaster();
@@ -8,9 +9,9 @@ const selectStar = (camera, group) => {
 
   // Raycaster para detección de mouse hover
   const onPointerMove = (event) => {
-    if (selectedObject) {
-      selectedObject.material.color.set("#fff");
-      selectedObject = null;
+    if (hoveredObject) {
+      hoveredObject.material.color.set("#fff");
+      hoveredObject = null;
     }
 
     pointer.x = (event.clientX / window.innerWidth) * 2 - 1;
@@ -29,8 +30,8 @@ const selectStar = (camera, group) => {
       //
       if (res && res.object) {
         // Obtener información del objeto seleccionado
-        selectedObject = res.object;
-        selectedObject.material.color.set("#f00");
+        hoveredObject = res.object;
+        hoveredObject.material.color.set("#f00");
       }
     }
   };
@@ -38,6 +39,10 @@ const selectStar = (camera, group) => {
 
   // Detección de clics en sprites
   const onMouseClick = (event) => {
+    // if (selectedObject) {
+    //   selectedObject.material.color.set("#fff");
+    //   selectedObject = null;
+    // }
     pointer.x = (event.clientX / window.innerWidth) * 2 - 1;
     pointer.y = -(event.clientY / window.innerHeight) * 2 + 1;
     //   const mouseX = (event.clientX / window.innerWidth) * 2 - 1;
@@ -66,9 +71,18 @@ const selectStar = (camera, group) => {
         // Obtener información del objeto seleccionado
         selectedObject = res.object;
         // selectedObject.material.color.set("#f00");
-        console.log("Objeto seleccionado:", selectedObject);
-        console.log("Id:", selectedObject.id);
-        console.log("Posición actual:", selectedObject.position);
+        selectedObject.material.color.set("green");
+        console.log("selectedObject: ", selectedObject);
+        console.log({
+          HIP: selectedObject.HIP,
+          RAhms: selectedObject.RAhms,
+          DEdms: selectedObject.DEdms,
+          Vmag: selectedObject.Vmag,
+          ABSmag: selectedObject.ABSmag.toFixed(2),
+          Pc: selectedObject.Pc.toFixed(2),
+        });
+        // console.log("Id:", selectedObject.id);
+        // console.log("Posición actual:", selectedObject.position);
         // Modificar la distancia del objeto (ejemplo: alejarlo)
         // selectedObject.position.z += 1; // Aumenta la distancia en el eje Z
       }

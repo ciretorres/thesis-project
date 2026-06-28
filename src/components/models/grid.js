@@ -46,21 +46,6 @@ const createDecLines = (radius = 1, step = 20) => {
       // }
 
       points.push(new Vector3(x, y, z));
-
-      // Coloca etiquetas
-      // if (ra % 15 === 0) {
-      if (
-        ra % 45 === 0 &&
-        [-90, -80, -70, -50, -30, -10, 10, 30, 50, 70, 80, 90].includes(dec)
-      ) {
-        // labelsSpriteGroup.add(
-        //   createSpriteLabel("dec", new Vector3(x, y, z), dec),
-        // );
-        //
-        // labelsCSS2DGroup.add(
-        //   addLabelCSS2DObject("dec", new Vector3(x, y, z), dec),
-        // );
-      }
     }
 
     const geometry = new BufferGeometry().setFromPoints(points);
@@ -110,69 +95,30 @@ const createRaLines = (radius = 1, step = 15) => {
         points.push(sphericalCoords);
 
         // Colocar etiquetas
-        // if (
-        //   dec % 10 === 0 &&
-        //   dec % 20 !== 0 &&
-        //   ra !== 0 &&
-        //   dec !== 90 &&
-        //   dec !== -90
-        // ) {
         if (
           ra !== 0 &&
-          [-90, -80, -70, -50, -30, -10, 10, 30, 50, 70, 80, 90].includes(dec)
+          [-90, -80, -70, -50, -30, -10, 0, 10, 30, 50, 70, 80, 90].includes(
+            dec,
+          )
         ) {
+          let text = "";
           const raHours = ra / 15;
           const horas = true;
           // labelsSpriteGroup.add(
           //   createSpriteLabel("ra", sphericalCoords, raHours, horas),
           // );
           //
-          // let text = `${dec}° / ${raHours == 12 && dec > 0 ? raHours + "h" : ""}`;
-          let text = "";
-          if (raHours === 6) {
-            if (dec === 90) {
+          if ([6, 12, 18, 24].includes(raHours)) {
+            if (dec === 90 && raHours !== 12) {
+              // nada
             } else {
               if (dec < 0) {
-                if (dec === -90) {
-                } else {
-                  text = `${dec}° / ${raHours}h`;
+                // nada
+                if (dec !== -90) {
+                  text = `${dec}° | ${raHours}h`;
                 }
               } else {
-                text = `+${dec}° / ${raHours}h`;
-              }
-            }
-          }
-          if (raHours === 12) {
-            if (dec < 0) {
-              if (dec === -90) {
-                //
-              } else {
-                text = `${dec}° / ${raHours}h`;
-              }
-            } else {
-              text = `+${dec}° / ${raHours}h`;
-            }
-          }
-          if (raHours === 18) {
-            if (dec === 90) {
-            } else {
-              if (dec < 0) {
-                if (dec === -90) {
-                } else {
-                  text = `${dec}° / ${raHours}h`;
-                }
-              } else {
-                text = `+${dec}° / ${raHours}h`;
-              }
-            }
-          }
-          if (raHours === 24) {
-            if (dec === 90) {
-            } else {
-              if (dec < 0) {
-                text = `${dec}° / ${raHours}h`;
-              } else {
-                text = `+${dec}° / ${raHours}h`;
+                text = `+${dec}° | ${raHours}h`;
               }
             }
           }
@@ -189,24 +135,28 @@ const createRaLines = (radius = 1, step = 15) => {
         points.push(sphericalCoords);
 
         // Colocar etiquetas
-        // if (
-        //   dec % 10 === 0 &&
-        //   dec % 20 !== 0 &&
-        // )
         if (
-          [-70, -50, -30, -10, 10, 30, 50, 70].includes(dec) &&
-          [45, 135, 225, 315].includes(ra)
+          [-80, -70, -50, -30, -10, 0, 10, 30, 50, 70, 80].includes(dec) &&
+          [30, 60, 120, 150, 210, 240, 300, 330].includes(ra)
         ) {
+          let text = "";
           const raHours = ra / 15;
           const horas = true;
           // labelsSpriteGroup.add(
           //   createSpriteLabel("ra", sphericalCoords, raHours, horas),
           // );
           //
-          const text = `${dec}° / ${raHours}h`;
-          // labelsCSS2DGroup.add(
-          //   addLabelCSS2DObject("ra", sphericalCoords, text, horas),
-          // );
+          if (dec < 0) {
+            // nada
+            if (dec !== -90) {
+              text = `${dec}° | ${raHours}h`;
+            }
+          } else {
+            text = `+${dec}° | ${raHours}h`;
+          }
+          labelsCSS2DGroup.add(
+            addLabelCSS2DObject("ra", sphericalCoords, text, horas),
+          );
         }
       }
     }

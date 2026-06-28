@@ -209,6 +209,72 @@ const createSpritedStars = (numStars = 500) => {
   return stars;
 };
 
+const normalizar = (n) => {
+  /* Scale the stellar distance from 1 pársec to 100 pixels (1:100)
+   */
+  return n * 10;
+};
+
+const createCatalogueStars = (starCatalogue = []) => {
+  const stars = new Object3D();
+
+  // crea y calcula la posición de los sprites
+  for (let i = 0; i < starCatalogue.length; i++) {
+    // const textureLoader = new TextureLoader();
+    // const spriteTexture = textureLoader.load('ruta/a/tu/textura.png');
+    // const starMaterial = new SpriteMaterial({map: spriteTexture, color: 0xffffff});
+    const starMaterial = new SpriteMaterial({ color: 0xffffff });
+    const starSprite = new Sprite(starMaterial);
+
+    // Asigna la posición en Z-up
+    const x = normalizar(starCatalogue[i].X);
+    const y = normalizar(starCatalogue[i].Y);
+    const z = normalizar(starCatalogue[i].Z);
+
+    starSprite["HIP"] = starCatalogue[i].HIP;
+    starSprite["RAhms"] = starCatalogue[i].RAhms;
+    starSprite["DEdms"] = starCatalogue[i].DEdms;
+    starSprite["Vmag"] = starCatalogue[i].Vmag;
+    starSprite["ABSmag"] = starCatalogue[i].ABSmag;
+    starSprite["Pc"] = starCatalogue[i].Pc;
+    // starSprite.magnitude.set(apparentMagnitude);
+    // star.push(createStar(position, magnitude));
+
+    starSprite.position.set(x, y, z);
+    // starSprite.scale.set(0.1, 0.1, 0.1); // Tamaño pequeño
+    starSprite.scale.set(1, 1, 1);
+
+    stars.add(starSprite);
+  }
+  return stars;
+};
+
+let data = [];
+async function fetchData() {
+  const url =
+    "../../../assets/notebooks/data_clean/vizier_I_239_hip_main_10pc.json";
+
+  try {
+    const response = await fetch(url);
+
+    // la promesa resuelta es la respuesta HTTP (no el cuerpo)
+    if (!response.ok) {
+      // response.ok es true si el estado está entre 200 y 399
+      throw new Error("Network response was not ok", response.status);
+    }
+
+    // parsea el cuerpo de la respuesta como JSON
+    const json = await response.json();
+
+    // asigna data
+    data = json.data;
+    // console.log(data);
+  } catch (error) {
+    console.error(`Error: ${error.message}`);
+  }
+}
+await fetchData();
+
 let starsSprite = new Group();
 /**
  * Crea las estrellas
@@ -218,8 +284,11 @@ let starsSprite = new Group();
 const createStars = ({ numStars = 500 }) => {
   const group = new Group();
 
+  console.log(data);
+
   // usando sprites
-  starsSprite = createSpritedStars(numStars);
+  starsSprite = createCatalogueStars(data);
+  // starsSprite = createSpritedStars(numStars);
   group.add(starsSprite);
 
   // usando SphereGeometry (Mesh)
