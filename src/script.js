@@ -1,19 +1,11 @@
 // import * as THREE from "three";
-import {
-  AxesHelper,
-  Camera,
-  Color,
-  Frustum,
-  Group,
-  Matrix4,
-  Sprite,
-} from "three";
+import { Color, Group } from "three";
 
 // componentes
 import addCamara from "./components/camara";
-import addControls from "./components/controls";
+import addControles from "./components/controls";
 import addEscena from "./components/escena";
-import addLights from "./components/lights";
+import addLuces from "./components/lights";
 import addRenderer from "./components/renderer";
 import addStats from "./components/stats";
 
@@ -22,24 +14,25 @@ import { createStars } from "./components/models/estrellas";
 import createSphericalGrid from "./components/models/grid.js";
 
 // utils
-import selectStar from "./components/controls/select.js";
 import addCSS2DRenderer from "./components/renderer/css2drenderer.js";
+import updateCullingVisibility from "./utils/culling.js";
+import resize from "./utils/events/resize.js";
+import selectStar from "./utils/events/select.js";
 import fetchData from "./utils/fetch.js";
-import onWindowResize from "./utils/resize.js";
-import rotarObject3D from "./utils/rotarObject3d.js";
+import cameraFollowGrid from "./utils/follow.js";
+import addHelper from "./utils/helper/index.js";
+import rotarXY from "./utils/rotarXY.js";
 
 // variables globales
 let camera, lastCameraPosition;
 let renderer, labelCSS2DRenderer;
 let controls, orbit, scene, stats;
-
 let data;
 
 init();
 
 // función de inicio
 async function init() {
-  // setup
   // selector html tags
   const px = document.querySelector("#idx");
   const py = document.querySelector("#idy");
@@ -51,6 +44,7 @@ async function init() {
 
   // función principal
   function main() {
+    // setup
     // SCENE
     scene = addEscena();
 
@@ -67,16 +61,15 @@ async function init() {
     labelCSS2DRenderer = addCSS2DRenderer("#mainid");
 
     // CONTROLS
-    orbit = addControls(camera, renderer.domElement);
-    // controls.update() must be called after any manual changes to the camera's transform
+    orbit = addControles(camera, renderer.domElement);
+    // update must be called after any manual changes to the camera's transform
     orbit.update();
 
     // LIGHTS
-    addLights(scene);
+    addLuces(scene);
 
-    const axesHelper = new AxesHelper(5);
-    axesHelper.layers.enableAll();
-    scene.add(axesHelper);
+    // HELPER
+    addHelper(scene);
 
     //--
 
@@ -115,47 +108,6 @@ async function init() {
     // RAYCASTER
     selectStar(camera, group); // HOVER / CLICK
 
-    /**
-     * Método para actualizar el culling basado en la visibilidad utilizando el frustum de la cámara
-     * @param {Camera} camera
-     * @param {Sprite} sprites
-     * @returns {Array}
-     * @see https://threejs.org/docs/#Frustum
-     */
-    const updateCullingVisibility = (camera, sprites) => {
-      // Culling personalizado
-      // Actualizar la matriz de la cámara para asegurar que los cálculos sean correctos
-      camera.updateMatrixWorld();
-
-      // Obtener objetos visibles en el frustum
-      const frustum = new Frustum();
-
-      // Obtener la matriz de corte (frustum) a partir de la perspectiva actual de la cámara
-      frustum.setFromProjectionMatrix(
-        new Matrix4().multiplyMatrices(
-          camera.projectionMatrix,
-          camera.matrixWorldInverse,
-        ),
-      );
-
-      // almacena los sprites visibles
-      const visiblesSprites = [];
-
-      // Verifica cada sprite contra el frustum
-      sprites.children.forEach((star) => {
-        const isVisible = frustum.containsPoint(star.position);
-        // Verificar si la estrella está dentro del frustum de la cámara
-        if (isVisible) {
-          star.visible = true; // Establece visible o no según el resultado
-          visiblesSprites.push(star);
-        } else {
-          star.visible = false;
-        }
-      });
-      return visiblesSprites;
-    };
-
-    // render
     function render() {
       // window.requestAnimationFrame(animate);
       window.requestAnimationFrame(render);
@@ -165,22 +117,7 @@ async function init() {
       // console.log(culling.length);
 
       // Actualizar la posición del grid para que siga a la cámara
-      if (
-        lastCameraPosition.x !== camera.position.x ||
-        lastCameraPosition.y !== camera.position.y ||
-        lastCameraPosition.z !== camera.position.z
-      ) {
-        grid.position.set(
-          camera.position.x,
-          camera.position.y,
-          camera.position.z,
-        );
-        lastCameraPosition = {
-          x: camera.position.x,
-          y: camera.position.y,
-          z: camera.position.z,
-        };
-      }
+      lastCameraPosition = cameraFollowGrid(lastCameraPosition, camera, grid);
 
       // renderiza la escena con la cámara
       renderer.render(scene, camera);
@@ -190,11 +127,7 @@ async function init() {
     }
 
     // resize
-    window.addEventListener(
-      "resize",
-      () => onWindowResize(camera, renderer, labelCSS2DRenderer),
-      false,
-    );
+    resize(camera, renderer, labelCSS2DRenderer);
 
     // animation
     function animate(time) {
@@ -203,13 +136,13 @@ async function init() {
 
       // group.rotation.x += 0.005;
       // group.rotation.y += 0.005;
-      // rotarObject3D(group3);
-      // rotarObject3D(group);
-      rotarObject3D();
+      // rotarXY(group3);
+      // rotarXY(group);
+      rotarXY();
 
-      // updateCullingStarsVisibility
+      // cullingStarsVisibility
       const cullingStars = updateCullingVisibility(camera, group);
-      // updateCullingGridVisibility
+      // cullingGridVisibility
       const cullingGrid = updateCullingVisibility(camera, grid);
 
       // controls.update();
@@ -218,6 +151,7 @@ async function init() {
 
       render();
 
+      // manda la posición de la cámara al html
       px.innerText = `x: ${camera.position.x.toFixed(2)}`;
       py.innerText = `y: ${camera.position.y.toFixed(2)}`;
       pz.innerText = `z: ${camera.position.z.toFixed(2)}`;

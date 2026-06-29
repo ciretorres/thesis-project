@@ -2,23 +2,24 @@ import { PerspectiveCamera } from "three";
 
 /**
  * A perspective view that simulates the behaviour of a film camera in real life
- * @property {fov}: the vertical field of view.
- * @property {aspect}: this is the aspect ratio you use to create the horizontal field of view based off the vertical.
- * @property {near}: this is the nearest plane of view (where the camera's view begins) .
- * @property {far}: this is far plane of view (where the camera's view ends).
+ * @property {Number} fov: the vertical field of view.
+ * @property {Number} aspect: this is the aspect ratio you use to create the horizontal field of view based off the vertical.
+ * @property {Number} near: this is the nearest plane of view (where the camera's view begins) .
+ * @property {Number} far: this is far plane of view (where the camera's view ends).
+ * @returns {PerspectiveCamera} perspectiveCamera
  * @see https://threejs.org/docs/api/en/cameras/PerspectiveCamera.html
  */
-const createPerspectiveCamera = (
+const createPerspectiveCamara = (
   fov = 50,
   aspect = 1,
   near = 1,
   far = 2000,
 ) => {
   const perspectiveCamera = new PerspectiveCamera(fov, aspect, near, far);
-
   return perspectiveCamera;
 };
 
+// var
 let size = {
   width: window.innerWidth,
   height: window.innerHeight,
@@ -35,7 +36,7 @@ const addCamara = () => {
   const far = 1000;
 
   // crea cámara
-  const camera = createPerspectiveCamera(35, aspect, near, far);
+  const camera = createPerspectiveCamara(35, aspect, near, far);
 
   // properties
   camera.position.z = -1;

@@ -9,10 +9,17 @@ const pdedmsid = document.querySelector("#dedmsid");
 
 const dialogid = document.querySelector("#dialogid");
 
+/**
+ *
+ * @param {PerspectiveCamera} camera :
+ * @param {Group} group : con el Sprite, Object3D, Mesh
+ * @returns
+ */
 const selectStar = (camera, group) => {
   const raycaster = new Raycaster();
   const pointer = new Vector2();
 
+  // var
   let selectedObject = null;
   let hoveredObject = null;
 

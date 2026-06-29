@@ -60,41 +60,37 @@ const createSpriteLabel = (type, pos, text, horas = false) => {
   return sprite;
 };
 
-// Método para agregar etiqueta mediante CSS2DObject
-const addLabelCSS2DObject = (type, pos, text, horas = false) => {
+/**
+ * Método para agregar una etiqueta mediante CSS2DObject
+ * @param {String} text: texto con el ángulo de dec o ra
+ * @param {Object} pos: para la posición de la etiqueta
+ * @returns {CSS2DObject} label: la etiqueta
+ */
+const addLabelCSS2DObject = (text, pos) => {
   const wrapper = document.createElement("div");
   wrapper.className = "wrapper-label";
 
   const labelElement = document.createElement("div");
   labelElement.id = `labelid-${Math.random().toString(36).substring(2)}`;
   labelElement.className = "label";
-
-  // horas o grados
-  // labelElement.textContent = horas
-  //   ? `${text}h`
-  //   : `${type === "dec" && text > 0 ? "+" : ""}${text}°`;
   labelElement.textContent = `${text}`;
 
   // rotar
-  // labelElement.style.transform =
-  //   type === "ra" ? "rotate(-90deg)" : "rotate(0deg)";
-
+  // labelElement.style.transform = "rotate(-90deg)";
   // Para rotar necesita anidar la etiqueta
   wrapper.appendChild(labelElement);
 
   // CSS2DObject
   const label = new CSS2DObject(wrapper);
 
-  // ajustar
+  // ajustar posición
   label.position.copy(pos);
 
   // Ajusta rotación para que apunte hacia arriba
   // label.rotation.z = Math.atan2(pos.x, pos.y);
 
   // definir el centro de la etiqueta
-  // type === "ra" ? label.center.set(1, 2.5) : label.center.set(0, 1);
   label.center.set(0, 1);
-  // label.center.set(0, 1);
 
   return label;
 };

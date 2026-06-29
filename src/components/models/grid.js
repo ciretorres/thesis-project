@@ -103,7 +103,6 @@ const createRaLines = (radius = 1, step = 15) => {
         ) {
           let text = "";
           const raHours = ra / 15;
-          const horas = true;
           // labelsSpriteGroup.add(
           //   createSpriteLabel("ra", sphericalCoords, raHours, horas),
           // );
@@ -122,9 +121,7 @@ const createRaLines = (radius = 1, step = 15) => {
               }
             }
           }
-          labelsCSS2DGroup.add(
-            addLabelCSS2DObject("ra", sphericalCoords, text, horas),
-          );
+          labelsCSS2DGroup.add(addLabelCSS2DObject(text, sphericalCoords));
         }
       }
     } else {
@@ -141,7 +138,6 @@ const createRaLines = (radius = 1, step = 15) => {
         ) {
           let text = "";
           const raHours = ra / 15;
-          const horas = true;
           // labelsSpriteGroup.add(
           //   createSpriteLabel("ra", sphericalCoords, raHours, horas),
           // );
@@ -154,9 +150,7 @@ const createRaLines = (radius = 1, step = 15) => {
           } else {
             text = `+${dec}° | ${raHours}h`;
           }
-          labelsCSS2DGroup.add(
-            addLabelCSS2DObject("ra", sphericalCoords, text, horas),
-          );
+          labelsCSS2DGroup.add(addLabelCSS2DObject(text, sphericalCoords));
         }
       }
     }

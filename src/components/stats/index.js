@@ -3,15 +3,17 @@ import Stats from "three/addons/libs/stats.module.js";
 
 /**
  * Método para agregar las estadísticas al main
- * @param {String} id : de la etiqueta main del html
- * @returns {Stats} stats
+ * @param {String} id: de la etiqueta main en el html
+ * @returns {Stats} estadisticas
  */
 const addStats = (id) => {
-  const stats = new Stats();
+  const estadisticas = new Stats();
 
+  // append a la etiqueta main
   const mainid = document.querySelector(id);
-  mainid.appendChild(stats.dom).setAttribute("id", "statsid");
+  mainid.appendChild(estadisticas.dom).setAttribute("id", "statsid");
 
+  // estilo css
   const statsid = document.querySelector("#statsid");
   // statsid.setAttribute("style", "position:block");
   statsid.setAttribute(
@@ -19,7 +21,7 @@ const addStats = (id) => {
     "position: absolute; top: 0px; right: 0px; cursor: pointer; opacity: 0.9; z-index: 10000;",
   );
 
-  return stats;
+  return estadisticas;
 };
 
 export default addStats;

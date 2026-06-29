@@ -5,7 +5,7 @@ import { Object3D } from "three";
  * @param {Object3D} object : objeto que va a rotar
  * @param {Number} value : la cantidad que va a rotar cada vez
  */
-const rotarObject3D = (object = new Object3D(), value = 0.001) => {
+const rotarXY = (object = new Object3D(), value = 0.001) => {
   object.rotation.x += value;
   object.rotation.y += value;
   // console.log(object.rotation.x, object.rotation.y);
@@ -18,4 +18,4 @@ const rotarObject3D = (object = new Object3D(), value = 0.001) => {
   // });
 };
 
-export default rotarObject3D;
+export default rotarXY;

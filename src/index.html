@@ -107,7 +107,8 @@
           rebeccapurple,
           dodgerblue,
           green);
-      opacity: 0.75;
+      /* opacity: 0.75; */
+      opacity: 0.1;
     }
   </style>
 </head>
@@ -116,44 +117,45 @@
   <main id="mainid">
     <!-- TODO: modal-instructivo -->
     <dialog id="dialogid" class="modal-informativo tarjeta-informativa">
-      <button style="position: absolute; right: 15px;" type="button" autofocus>X</button>
-      <h2 style="color: #0ff; margin-top: 0;">Polaris</h2>
+      <button class="boton-cerrar" style="position: absolute; right: 15px;" type="button" autofocus>X</button>
+
+      <h2 class="titulo" style="color: #0ff; margin-top: 0;">Polaris</h2>
 
       <div>
-        <div style="color: rgb(221, 221, 221); display: flex; column-gap: 15px;">
-          <div style="flex: 0 0 33.33%; max-width: 33.33%;">
+        <div style="color:#fff; display: flex; column-gap: 15px;">
+          <div style="color: rgb(221, 221, 221); flex: 0 0 33.33%; max-width: 33.33%;">
             <p>HIP</p>
           </div>
           <div style="flex: 0 0 66.66%; max-width: 66.66%;">
             <p id="hipid">0</p>
           </div>
         </div>
-        <div style="color: rgb(221, 221, 221); display: flex; column-gap: 15px;">
-          <div style="flex: 0 0 33.33%; max-width: 33.33%;">
+        <div style="color:#fff;display: flex; column-gap: 15px;">
+          <div style="color: rgb(221, 221, 221); flex: 0 0 33.33%; max-width: 33.33%;">
             <p>Magnitud Aparente</p>
           </div>
           <div style="flex: 0 0 66.66%; max-width: 66.66%;">
             <p id="vmagid">0</p>
           </div>
         </div>
-        <div style="color: rgb(221, 221, 221); display: flex; column-gap: 15px;">
-          <div style="flex: 0 0 33.33%; max-width: 33.33%;">
+        <div style="color:#fff;display: flex; column-gap: 15px;">
+          <div style="color: rgb(221, 221, 221); flex: 0 0 33.33%; max-width: 33.33%;">
             <p>Magnitud Absoluta</p>
           </div>
           <div style="flex: 0 0 66.66%; max-width: 66.66%;">
             <p id="absmagid">0</p>
           </div>
         </div>
-        <div style="color: rgb(221, 221, 221); display: flex; column-gap: 15px;">
-          <div style="flex: 0 0 33.33%; max-width: 33.33%;">
+        <div style="color:#fff;display: flex; column-gap: 15px;">
+          <div style="color: rgb(221, 221, 221); flex: 0 0 33.33%; max-width: 33.33%;">
             <p>Distancia</p>
           </div>
           <div style="flex: 0 0 66.66%; max-width: 66.66%;">
             <p><span id="distanciaid">0</span> pársecs</p>
           </div>
         </div>
-        <div style="color: rgb(221, 221, 221); display: flex; column-gap: 15px;">
-          <div style="flex: 0 0 33.33%; max-width: 33.33%;">
+        <div style="color:#fff;display: flex; column-gap: 15px;">
+          <div style="color: rgb(221, 221, 221); flex: 0 0 33.33%; max-width: 33.33%;">
             <p>RA/dec</p>
           </div>
           <div style="flex: 0 0 66.66%; max-width: 66.66%;">
@@ -314,7 +316,7 @@
     //   dialog.showModal();
     // });
     // abrir diálogo para editar estilo
-    dialog.show();
+    // dialog.show();
 
     // "Close" button closes the dialog
     closeButton.addEventListener("click", () => {

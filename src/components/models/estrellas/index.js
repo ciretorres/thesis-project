@@ -12,6 +12,8 @@ import {
   Vector3,
 } from "three";
 
+import normalizar from "../../../utils/normalizar.js";
+
 /**
  * Creates a geometry
  * @property {radius}:
@@ -132,7 +134,10 @@ const createMeshedStar = (position = new Vector3(0, 2, -10)) => {
  * @param {Vector3} position : posición esférica en la escena
  * @returns {InstancedMesh} stars : con las instancias del mesh de estrellas
  */
-const createInstancedStars = (numStars = 500, position = new Vector3()) => {
+const createInstancedMeshedStars = (
+  numStars = 500,
+  position = new Vector3(),
+) => {
   const starGeometry = createSphereGeometry();
   const starMaterial = createSphereMaterial();
 
@@ -179,8 +184,6 @@ const createSpritedStars = (numStars = 500) => {
     const z =
       Math.ceil(Math.random() * 99) * (Math.round(Math.random()) ? 1 : -1);
 
-    // console.log(starSprite);
-
     starSprite.position.set(x, y, z);
     // starSprite.scale.set(0.1, 0.1, 0.1); // Tamaño pequeño
     starSprite.scale.set(1, 1, 1);
@@ -190,80 +193,83 @@ const createSpritedStars = (numStars = 500) => {
   return stars;
 };
 
+/**
+ * Método para crear a Polaris
+ * @param {Number} numStars
+ * @returns {Object3D} stars
+ */
 const createPolarisStar = (numStars = 1) => {
   const stars = new Object3D();
+  // sprite
+  const starMaterial = new SpriteMaterial({ color: 0xffffff });
+  const starSprite = new Sprite(starMaterial);
 
-  // crea y calcula la posición de los sprites
-  for (let i = 0; i < numStars; i++) {
-    const starMaterial = new SpriteMaterial({ color: 0xffffff });
-    const starSprite = new Sprite(starMaterial);
+  // color
+  starSprite.material.color.set("orange");
 
-    starSprite.material.color.set("orange");
+  // info
+  starSprite.HIP = 11767;
+  starSprite.RAhms = "02 31 47.08";
+  starSprite.DEdms = "+89 15 50.9";
+  starSprite["Vmag"] = 1.97;
+  starSprite["ABSmag"] = -3.637391;
+  starSprite["Pc"] = 132.275132;
+  // console.log(starSprite);
 
-    starSprite.HIP = 11767;
-    starSprite.RAhms = "02 31 47.08";
-    starSprite.DEdms = "+89 15 50.9";
-    starSprite["Vmag"] = 1.97;
-    starSprite["ABSmag"] = -3.637391;
-    starSprite["Pc"] = 132.275132;
+  // Polaris
+  starSprite.position.set(
+    1.3396481090837498,
+    1.0446215486735597,
+    132.2642231564061,
+  );
+  // starSprite.scale.set(0.1, 0.1, 0.1); // Tamaño pequeño
+  starSprite.scale.set(1, 1, 1);
 
-    // console.log(starSprite);
-
-    // Polaris
-    starSprite.position.set(
-      1.3396481090837498,
-      1.0446215486735597,
-      132.2642231564061,
-    );
-    // starSprite.scale.set(0.1, 0.1, 0.1); // Tamaño pequeño
-    starSprite.scale.set(1, 1, 1);
-
-    stars.add(starSprite);
-  }
+  stars.add(starSprite);
   return stars;
 };
 
-const normalizar = (n) => {
-  /* Scale the stellar distance from 1 pársec to 100 pixels (1:100)
-   */
-  return n * 10;
-};
-
+/**
+ * Método para crear los Sprite de las estrellas a partir del cátalogo
+ * @param {Array} starCatalogue: con los datos del catálogo estelar
+ * @returns {Object3D} stars
+ */
 const createCatalogueStars = (starCatalogue = []) => {
   const stars = new Object3D();
 
   // crea y calcula la posición de los sprites
-  for (let i = 0; i < starCatalogue.length; i++) {
-    // const textureLoader = new TextureLoader();
-    // const spriteTexture = textureLoader.load('ruta/a/tu/textura.png');
-    // const starMaterial = new SpriteMaterial({map: spriteTexture, color: 0xffffff});
+  starCatalogue.forEach((star) => {
     const starMaterial = new SpriteMaterial({ color: 0xffffff });
     const starSprite = new Sprite(starMaterial);
 
-    // Asigna la posición en Z-up
-    const x = normalizar(starCatalogue[i].X);
-    const y = normalizar(starCatalogue[i].Y);
-    const z = normalizar(starCatalogue[i].Z);
+    // Asigna la posición en Z-up y normaliza (1:100)
+    const x = normalizar(star.X);
+    const y = normalizar(star.Y);
+    const z = normalizar(star.Z);
 
-    starSprite["HIP"] = starCatalogue[i].HIP;
-    starSprite["RAhms"] = starCatalogue[i].RAhms;
-    starSprite["DEdms"] = starCatalogue[i].DEdms;
-    starSprite["Vmag"] = starCatalogue[i].Vmag;
-    starSprite["ABSmag"] = starCatalogue[i].ABSmag;
-    starSprite["Pc"] = starCatalogue[i].Pc;
+    // agrega estos campos del catálogo al ojeto del sprite
+    starSprite["HIP"] = star.HIP;
+    starSprite["RAhms"] = star.RAhms;
+    starSprite["DEdms"] = star.DEdms;
+    starSprite["Vmag"] = star.Vmag;
+    starSprite["ABSmag"] = star.ABSmag;
+    starSprite["Pc"] = star.Pc;
     // starSprite.magnitude.set(apparentMagnitude);
     // star.push(createStar(position, magnitude));
 
+    // posición
     starSprite.position.set(x, y, z);
     // starSprite.scale.set(0.1, 0.1, 0.1); // Tamaño pequeño
     starSprite.scale.set(1, 1, 1);
 
     stars.add(starSprite);
-  }
-  // polaris
+  });
+
+  // agrega a polaris
   let polarisSprite = new Group();
   polarisSprite = createPolarisStar();
   stars.add(polarisSprite);
+
   return stars;
 };
 
@@ -285,7 +291,7 @@ const createStars = ({ data = [] }) => {
   group.add(starsCatalogue);
 
   // usando SphereGeometry (Mesh)
-  // const stars = createInstancedStars();
+  // const stars = createInstancedMeshedStars();
   // group.add(stars);
 
   // const star = createMeshedStar();
