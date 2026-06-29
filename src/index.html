@@ -1,116 +1,19 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es-mx">
 
 <head>
   <meta charset="UTF-8">
-  <link rel="shortcut icon" href="./public/favicon.ico" type="image/x-icon">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
   <title>proto</title>
-  <!-- <link rel="stylesheet" href="./style.css"> -->
-  <link rel="stylesheet" type="text/css" href="./assets/main.css">
+  <meta name="keywords" content="three, three.js, vite, javascript, 3d, canvas, svg, html5" />
+  <meta name="description" content="Interfaz-interactiva para la visualización de un fenómeno astronómico" />
 
-  <style>
-    #canvasid {
-      position: relative;
-      width: 100%;
-      /* height: 200px; */
-      /* border: 3px solid green; */
-    }
+  <meta name="robots" content="noindex, nofollow" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
 
-    #hudsvgid {
-      /* background-color: black; */
-      border: 3px solid red;
-      position: absolute;
-      right: 0;
-      border: 3px solid red;
-      z-index: 1;
-    }
-
-    #lineaid,
-    #lineaverticalid {
-      stroke: white;
-      stroke-width: 3;
-    }
-
-    #sectionid {
-      /* position: absolute; */
-      /*background-color: orangered;*/
-      /* background-color: rgba(255, 0, 0, 0.3); */
-      /* background-color: #0ff; */
-      /* background-color: #f08; */
-      /* background-color: #002; */
-      z-index: 1;
-    }
-
-    #mainid {
-      position: relative;
-    }
-
-    #dialogid {
-      position: absolute;
-      background-color: rgba(0, 0, 34, 0.8);
-
-      width: 380px;
-      max-width: calc(-12px + 100vw);
-      top: 0px;
-      right: 0px;
-      margin: 6px;
-      padding: 16px
-    }
-
-    #spanid {
-      position: absolute;
-      top: 50%;
-      right: 50%;
-      background-color: orangered;
-      color: white;
-      transform: translate(50%, -50%);
-      z-index: 99;
-    }
-
-    #statid {
-      /* position: absolute;
-      top: 0px;
-      right: 0px;
-      cursor: pointer;
-      opacity: 0.9;
-      z-index: 10000; */
-    }
-
-    .labelCSS2DRenderer {
-      /* position: "absolute";
-      top: "0px";
-      pointer-events: "none"; */
-    }
-
-    .label {
-      /* color: #FFF; */
-      /* color: #000; */
-      /* color: #FF0000; */
-      color: rgba(255, 0, 0, 0.5);
-
-      /* font-family: sans-serif; */
-      font-family: monospace;
-      font-size: 12px;
-      padding: 15px;
-      background: rgba(0, 0, 0, 1);
-      /* background-color: #ff0000; */
-      background: transparent;
-      /* transform: rotate(-90deg); */
-      display: block;
-    }
-
-    ::backdrop {
-      background-image: linear-gradient(45deg,
-          magenta,
-          rebeccapurple,
-          dodgerblue,
-          green);
-      /* opacity: 0.75; */
-      opacity: 0.1;
-    }
-  </style>
+  <style></style>
 </head>
 
 <body class="body">
@@ -169,41 +72,8 @@
         <p id="idz">-</p>
       </div>
     </dialog>
-    <!-- <button style="position: absolute; display: none;">Show the dialog</button> -->
-    <!-- <dialog id="dialogid">
-      <button id="jsCloseBtn" style="position: absolute; right: 15px;" type="button">X</button>
 
-      <h2 style="color: #0ff;">Polaris</h2>
-
-      <div style="display: flex; gap: 15px;">
-        <div style="color: rgb(221, 221, 221);">
-          <p>HIP</p>
-          <p>Magnitud Aparente</p>
-          <p>Magnitud Absoluta</p>
-          <p>Distancia</p>
-          <p>RA/dec</p>
-        </div>
-        <div style="color: #f08;font-weight: 500;">
-          <p id="hipid">0</p>
-          <p id="vmagid">0</p>
-          <p id="absmagid">0</p>
-          <p><span id="distanciaid">0</span> pársecs</p>
-          <p><span id="rahmsid">00h 00m 00.00s</span> <span id="dedmsid">+00° 00' 00.0"</span></p>
-          <p></p>
-        </div>
-      </div>
-
-      <button type="button" onclick="btnIncrementaPosZ()"
-        style="width: 50px;height: 50px; padding: 16px; font-size: 24px;">+</button>
-      <button type="button" onclick="btnDecrementaPosZ()"
-        style="width: 50px;height: 50px;padding: 16px; font-size: 24px;">-</button>
-
-      
-    </dialog> -->
-
-    <!-- <section>
-      
-    </section> -->
+    <!-- <section></section> -->
     <span id="spanid">+</span>
 
     <!-- <svg id="hudsvgid" xmlns="http://www.w3.org/2000/svg"></svg> -->
@@ -231,7 +101,7 @@
 
   <script type="module">
     // import * as THREE from "three";
-    import { exportCamera } from './script.js'
+    import { exportCamera } from './scripts/index.js'
     import { starsCatalogue } from './components/models/estrellas'
     // módulo para rotar y zoom en la escena
     import { increasePositionZ, decreasePositionZ, resetPosition } from './utils/zoom.js'

@@ -1,4 +1,6 @@
-*{
+@import "./styles/main.css";
+/* @import "./_normalizar.css";
+/* *{
     padding: 0;
     margin: 0;
     overflow: hidden;
@@ -15,4 +17,106 @@ body, html {
     height: 100%;
     display: block;
   }
-  
+   */
+
+#canvasid {
+  position: relative;
+  width: 100%;
+  /* height: 200px; */
+  /* border: 3px solid green; */
+}
+
+#hudsvgid {
+  /* background-color: black; */
+  border: 3px solid red;
+  position: absolute;
+  right: 0;
+  border: 3px solid red;
+  z-index: 1;
+}
+
+#lineaid,
+#lineaverticalid {
+  stroke: white;
+  stroke-width: 3;
+}
+
+#sectionid {
+  /* position: absolute; */
+  /*background-color: orangered;*/
+  /* background-color: rgba(255, 0, 0, 0.3); */
+  /* background-color: #0ff; */
+  /* background-color: #f08; */
+  /* background-color: #002; */
+  z-index: 1;
+}
+
+#mainid {
+  position: relative;
+}
+
+#dialogid {
+  position: absolute;
+  background-color: rgba(0, 0, 34, 0.8);
+
+  width: 380px;
+  max-width: calc(-12px + 100vw);
+  top: 0px;
+  right: 0px;
+  margin: 6px;
+  padding: 16px;
+}
+
+#spanid {
+  position: absolute;
+  top: 50%;
+  right: 50%;
+  background-color: orangered;
+  color: white;
+  transform: translate(50%, -50%);
+  z-index: 99;
+}
+
+#statid {
+  /* position: absolute;
+      top: 0px;
+      right: 0px;
+      cursor: pointer;
+      opacity: 0.9;
+      z-index: 10000; */
+}
+
+.labelCSS2DRenderer {
+  /* position: "absolute";
+      top: "0px";
+      pointer-events: "none"; */
+}
+
+.label {
+  /* color: #FFF; */
+  /* color: #000; */
+  /* color: #FF0000; */
+  color: rgba(255, 0, 0, 0.5);
+
+  /* font-family: sans-serif; */
+  font-family: monospace;
+  font-size: 12px;
+  padding: 15px;
+  background: rgba(0, 0, 0, 1);
+  /* background-color: #ff0000; */
+  background: transparent;
+  /* transform: rotate(-90deg); */
+  display: block;
+}
+
+::backdrop {
+  background-image: linear-gradient(
+    45deg,
+    magenta,
+    rebeccapurple,
+    dodgerblue,
+    green
+  );
+  /* opacity: 0.75; */
+  opacity: 0.1;
+}

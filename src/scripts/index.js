@@ -1,114 +1,164 @@
 // import * as THREE from "three";
-import { Mesh } from "three";
+import { Color, Group } from "three";
 
 // componentes
-import camara from "../components/camara";
-import newControls from "../components/controls";
-import escena from "../components/escena";
-import newLights from "../components/lights";
-import implementacion from "../components/models/index.js";
-import newRenderer from "../components/renderer";
-import newStats from "../components/stats";
+import addCamara from "../components/camara";
+import addControles from "../components/controls";
+import addEscena from "../components/escena";
+import addLuces from "../components/lights";
+import addRenderer from "../components/renderer";
+import addStats from "../components/stats";
+
+// Mesh / Sprite
+import { createStars } from "../components/models/estrellas";
+import createSphericalGrid from "../components/models/grid.js";
 
 // utils
-import onWindowResize from "../utils/resize.js";
+import addCSS2DRenderer from "../components/renderer/css2drenderer.js";
+import updateCullingVisibility from "../utils/culling.js";
+import resize from "../utils/events/resize.js";
+import selectStar from "../utils/events/select.js";
+import fetchData from "../utils/fetch.js";
+import cameraFollowGrid from "../utils/follow.js";
+import addHelper from "../utils/helper/index.js";
+import rotarXY from "../utils/rotarXY.js";
 
 // variables globales
-let camera, controls, orbit, scene, renderer, stats;
+let camera, lastCameraPosition;
+let renderer, labelCSS2DRenderer;
+let controls, orbit, scene, stats;
+let data;
 
 init();
 
 // función de inicio
-function init() {
-  // setup
+async function init() {
   // selector html tags
-  const p = document.querySelector("#pid");
-
-  function rotarMesh(object = new Mesh(), value = 0.001) {
-    // // mesh.rotation.x += 0.001;
-    // // mesh.rotation.y += 0.001;
-    // //
-    object.rotation.x += value;
-    object.rotation.y += value;
-    //
-    // cubes.forEach((cube, ndx) => {
-    //   const speed = 1 + ndx * 0.1;
-    //   const rot = time * speed;
-    //   cube.rotation.x = rot;
-    //   cube.rotation.y = rot;
-    // });
-  }
+  const px = document.querySelector("#idx");
+  const py = document.querySelector("#idy");
+  const pz = document.querySelector("#idz");
+  // consultando datos
+  data = await fetchData();
 
   main();
 
   // función principal
   function main() {
-    // SCENE en donde puedes agregar luces, mesh o grupos
-
-    scene = escena();
+    // setup
+    // SCENE
+    scene = addEscena();
 
     // CAMERA
-
-    camera = camara();
+    camera = addCamara();
 
     // STATS
+    stats = addStats("#mainid");
 
-    stats = newStats("#mainid");
+    // RENDERER
+    renderer = addRenderer(animate, "#mainid", "#canvasid");
 
-    // RENDERER to render a view with camera contained
-
-    renderer = newRenderer(animate, "#mainid", "#canvasid");
+    // CSS2DRENDERER (necesario para las etiquetas CSS2DObject)
+    labelCSS2DRenderer = addCSS2DRenderer("#mainid");
 
     // CONTROLS
-
-    orbit = newControls(camera, renderer);
+    orbit = addControles(camera, renderer.domElement);
+    // update must be called after any manual changes to the camera's transform
+    orbit.update();
 
     // LIGHTS
+    addLuces(scene);
 
-    newLights(scene);
-
-    //--
-
-    // Implementación
-    // const group = new Group();
-    const group = implementacion(scene);
-
-    // Mesh para integrar a scene
+    // HELPER
+    addHelper(scene);
 
     //--
 
-    // render
+    // IMPLEMENTACIÓN
+
+    // Instancias o Sprites de estrellas
+    const group = new Group();
+    const starField = createStars({ data: data });
+    // const starField = createStars({ numStars: 1 });
+    // const starField = createStars({ numStars: 182 });
+    // const starField = createStars({ numStars: 22982 });
+    // const starField = createStars({ numStars: 107380 });
+    // const starField = createStars({ numStars: 500 });
+    group.add(starField);
+
+    // Grid, Reticula Ecuatorial
+    const group2 = new Group();
+    const grid = createSphericalGrid({
+      radio: 1,
+      color: new Color("#ff0000"),
+    });
+    lastCameraPosition = {
+      x: camera.position.x,
+      y: camera.position.y,
+      z: camera.position.z,
+    };
+    grid.position.set(0, 0, camera.position.z);
+    group2.add(grid);
+
+    // Mesh y grupos para integrar a scene
+    const group3 = new Group();
+    group3.add(group);
+    group3.add(group2);
+    scene.add(group3);
+
+    // RAYCASTER
+    selectStar(camera, group); // HOVER / CLICK
+
     function render() {
-      requestAnimationFrame(render);
-      // group.rotation.x += 0.005;
-      // group.rotation.y += 0.005;
+      // window.requestAnimationFrame(animate);
+      window.requestAnimationFrame(render);
+
+      // updateCullingStarsVisibility
+      // const culling = updateCullingVisibility(camera, group);
+      // console.log(culling.length);
+
+      // Actualizar la posición del grid para que siga a la cámara
+      lastCameraPosition = cameraFollowGrid(lastCameraPosition, camera, grid);
+
+      // renderiza la escena con la cámara
       renderer.render(scene, camera);
+
+      // CSS2DRENDERER (necesario para las etiquetas CSS2DObject)
+      labelCSS2DRenderer.render(scene, camera);
     }
 
     // resize
-    window.addEventListener(
-      "resize",
-      () => onWindowResize(camera, renderer),
-      false,
-    );
+    resize(camera, renderer, labelCSS2DRenderer);
 
     // animation
     function animate(time) {
       // console.log((time *= 0.001));
       // time *= 0.001; // convert time to seconds
 
-      // requestAnimationFrame(render);
-      // controls.update();
-      orbit.update();
+      // group.rotation.x += 0.005;
+      // group.rotation.y += 0.005;
+      // rotarXY(group3);
+      // rotarXY(group);
+      rotarXY();
 
-      rotarMesh(group);
+      // cullingStarsVisibility
+      const cullingStars = updateCullingVisibility(camera, group);
+      // cullingGridVisibility
+      const cullingGrid = updateCullingVisibility(camera, grid);
+
+      // controls.update();
+      // required if controls.enableDamping or controls.autoRotate are set to true
+      orbit.update();
 
       render();
 
-      p.innerText = `x: ${camera.position.x}; y: ${camera.position.y}; z: ${camera.position.z}`;
+      // manda la posición de la cámara al html
+      px.innerText = `x: ${camera.position.x.toFixed(2)}`;
+      py.innerText = `y: ${camera.position.y.toFixed(2)}`;
+      pz.innerText = `z: ${camera.position.z.toFixed(2)}`;
 
       stats.update();
     }
+    // animate();
   }
 }
 
