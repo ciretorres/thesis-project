@@ -19,59 +19,62 @@
 <body class="body">
   <main id="mainid">
     <!-- TODO: modal-instructivo -->
-    <dialog id="dialogid" class="modal-informativo tarjeta-informativa">
+    <!-- <dialog id="dialogid" class="modal-instructivo">
       <button class="boton-cerrar" style="position: absolute; right: 15px;" type="button" autofocus>X</button>
+      <h2>modal instructivo</h2>
+    </dialog> -->
 
-      <h2 class="titulo" style="color: #0ff; margin-top: 0;">Polaris</h2>
+    <div id="tarjetainfoid" class="tarjeta-info">
+      <button class="btn-cerrar" type="button" autofocus>X</button>
+      <h2 class="titulo">Polaris</h2>
 
-      <div>
-        <div style="color:#fff; display: flex; column-gap: 15px;">
-          <div style="color: rgb(221, 221, 221); flex: 0 0 33.33%; max-width: 33.33%;">
+      <div class="tarjeta-info-contenedor">
+        <div class="flex">
+          <div class="columna-3">
             <p>HIP</p>
           </div>
-          <div style="flex: 0 0 66.66%; max-width: 66.66%;">
+          <div class="columna-4">
             <p id="hipid">0</p>
           </div>
         </div>
-        <div style="color:#fff;display: flex; column-gap: 15px;">
-          <div style="color: rgb(221, 221, 221); flex: 0 0 33.33%; max-width: 33.33%;">
+        <div class="flex">
+          <div class="columna-3">
             <p>Magnitud Aparente</p>
           </div>
-          <div style="flex: 0 0 66.66%; max-width: 66.66%;">
+          <div class="columna-4">
             <p id="vmagid">0</p>
           </div>
         </div>
-        <div style="color:#fff;display: flex; column-gap: 15px;">
-          <div style="color: rgb(221, 221, 221); flex: 0 0 33.33%; max-width: 33.33%;">
+        <div class="flex">
+          <div class="columna-3">
             <p>Magnitud Absoluta</p>
           </div>
-          <div style="flex: 0 0 66.66%; max-width: 66.66%;">
+          <div class="columna-4">
             <p id="absmagid">0</p>
           </div>
         </div>
-        <div style="color:#fff;display: flex; column-gap: 15px;">
-          <div style="color: rgb(221, 221, 221); flex: 0 0 33.33%; max-width: 33.33%;">
+        <div class="flex">
+          <div class="columna-3">
             <p>Distancia</p>
           </div>
-          <div style="flex: 0 0 66.66%; max-width: 66.66%;">
+          <div class="columna-4">
             <p><span id="distanciaid">0</span> pársecs</p>
           </div>
         </div>
-        <div style="color:#fff;display: flex; column-gap: 15px;">
-          <div style="color: rgb(221, 221, 221); flex: 0 0 33.33%; max-width: 33.33%;">
-            <p>RA/dec</p>
+        <div class="flex">
+          <div class="columna-3">
+            <p>RA/Dec</p>
           </div>
-          <div style="flex: 0 0 66.66%; max-width: 66.66%;">
+          <div class="columna-4">
             <p><span id="rahmsid">00h 00m 00.00s</span> <span id="dedmsid">+00° 00' 00.0"</span></p>
           </div>
         </div>
       </div>
-      <div style="color: #fff;">
-        <p id="idx">-</p>
-        <p id="idy">-</p>
-        <p id="idz">-</p>
+
+      <div>
+        <span id="idx">0.00</span>, <span id="idy">0.00</span>, <span id="idz">0.00</span>
       </div>
-    </dialog>
+    </div>
 
     <!-- <section></section> -->
     <span id="spanid">+</span>
@@ -91,30 +94,30 @@
   </script> -->
 
   <script type="module" src="./script.js"></script>
-  <!-- <script type="module" src="./src/main.js"></script> -->
-  <script type="text/javascript">
-    function greetFromHtml() {
-      alert("Hello");
-    }
 
+  <script type="text/javascript">
+    function greetFromHtml() { alert("Hello"); }
   </script>
 
   <script type="module">
     // import * as THREE from "three";
     import { exportCamera } from './scripts/index.js'
     import { starsCatalogue } from './components/models/estrellas'
+
     // módulo para rotar y zoom en la escena
     import { increasePositionZ, decreasePositionZ, resetPosition } from './utils/zoom.js'
-    import { imprime } from './scripts/imprimir.js'
-    imprime();
-    window.imprime = imprime;
 
+    import { imprime } from './scripts/imprimir.js'
+
+    imprime();
+
+    // esto es necesario cuando es type="module"
+    window.imprime = imprime;
     window.increasePositionZ = increasePositionZ;
     window.decreasePositionZ = decreasePositionZ;
     window.resetPosition = resetPosition;
     window.exportCamera = exportCamera;
     window.starsCatalogue = starsCatalogue;
-
 
     // Métodos de acciones para elementos de la interfaz
     function btnIncrementaPosZ() {
@@ -176,10 +179,11 @@
     });
 
 
-
+    // módulo del diálogo modal
+    const tarjetainfoid = document.querySelector("#tarjetainfoid");
     const dialog = document.querySelector("#dialogid");
     // const showButton = document.querySelector("#dialogid + button");
-    const closeButton = document.querySelector("#dialogid button");
+    const closeButton = document.querySelector("#tarjetainfoid button");
 
     // "Show the dialog" button opens the dialog modally
     // showButton.addEventListener("click", () => {
@@ -190,8 +194,11 @@
 
     // "Close" button closes the dialog
     closeButton.addEventListener("click", () => {
-      dialog.close();
+      // dialog.close();
+      tarjetainfoid.style.display = "none";
     });
+
+    // HUD
     // const svg = document.getElementById('hudsvgid');
     // svg.setAttribute("height", "200");
     // svg.setAttribute("width", "400");

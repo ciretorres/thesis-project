@@ -77,15 +77,16 @@ bun run dev
 
 ```md
 thesis-project/
-├── src/
-| ├── assets/
-| ├── components/
-| ├── scripts/
-| ├── utils/
-| ├── index.html
-| ├── script.js
-| └── style.css
-|
+└── src/
+│   ├── assets/
+│   ├── assets/
+│   ├── componentes/
+│   ├── notebooks/
+│   ├── scripts/
+│   ├── utils
+│   ├── index.html
+│   ├── script.js
+│   └── style.css
 ├── static/
 ├── .gitignore
 ├── package.json
@@ -199,7 +200,36 @@ Los requerimientos técnicos que tendría que tener como mínimo son:
 - ✅ Colocar el `<canvas />` dentro del la etiqueta `<main />`.
 - ✅ Ajustar y reescalar **resize** del ancho del canvas al ancho de la pantalla con `window.innerWidth` y `window.innerHeight`.
 - Utilizar un entorno de **pruebas** unitarias y de componentes.
-- Utilizar una configuración en **docker** para la creación de una imagen del entorno de ejecucción.
+- Utilizar una configuración en **docker** para la creación de una imagen del entorno de ejecucción. Propesta de estructura de archivos:
+
+```md
+thesis-project/
+└── backend/
+│   ├── api/
+│   ├── chat/
+│   └── src/
+│      ├── requirements
+│      └── README.md
+├── client/
+│   ├── src/
+│   │   ├── assets/
+│   │   ├── componentes/
+│   │   ├── scripts/
+│   │   ├── utils
+│   │   ├── index.html
+│   │   ├── script.js
+│   │   └── style.css
+│   ├── static/
+│   ├── .gitignore
+│   ├── package.json
+│   ├── README.md
+│   └── vite.config.js
+├── compose.yml
+├── Dockerfile
+├── LICENSE
+└── README.md
+```
+
 - Ordenar folders y archivos por jerarquía, tipo, extensión, js, css, etc.
 
 [Ir al inicio](#thesis-project)

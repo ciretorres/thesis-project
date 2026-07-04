@@ -7,7 +7,8 @@ const pdistanciaid = document.querySelector("#distanciaid");
 const prahmsid = document.querySelector("#rahmsid");
 const pdedmsid = document.querySelector("#dedmsid");
 
-const dialogid = document.querySelector("#dialogid");
+const closeButton = document.querySelector("#tarjetainfoid button");
+const tarjetainfoid = document.querySelector("#tarjetainfoid");
 
 /**
  *
@@ -97,7 +98,7 @@ const selectStar = (camera, group) => {
       // Si se hace click en un objeto ya seleccionado, lo deseleccionamos
       if (clickedObject === selectedObject) {
         resetColor(clickedObject);
-        dialogid.close();
+        tarjetainfoid.style.display = "none";
         selectedObject = null;
       } else {
         // Resetear el color del objeto previamente seleccionado
@@ -108,15 +109,15 @@ const selectStar = (camera, group) => {
         setSelectedColor(clickedObject);
         selectedObject = clickedObject;
 
-        console.log("selectedObject: ", selectedObject);
-        console.log({
-          HIP: selectedObject.HIP,
-          RAhms: selectedObject.RAhms,
-          DEdms: selectedObject.DEdms,
-          Vmag: selectedObject.Vmag,
-          ABSmag: selectedObject.ABSmag.toFixed(2),
-          Pc: selectedObject.Pc.toFixed(2),
-        });
+        // console.log("selectedObject: ", selectedObject);
+        // console.log({
+        //   HIP: selectedObject.HIP,
+        //   RAhms: selectedObject.RAhms,
+        //   DEdms: selectedObject.DEdms,
+        //   Vmag: selectedObject.Vmag,
+        //   ABSmag: selectedObject.ABSmag.toFixed(2),
+        //   Pc: selectedObject.Pc.toFixed(2),
+        // });
         phipid.innerText = selectedObject.HIP;
         pvmagid.innerText = selectedObject.Vmag;
         pabsmagid.innerText = selectedObject.ABSmag.toFixed(2);
@@ -137,14 +138,25 @@ const selectStar = (camera, group) => {
         const DEsegundos = DEpartes[2];
         pdedmsid.innerText = `${DEgrados}° ${DEminutos}' ${DEsegundos}"`;
 
-        dialogid.showModal();
+        // mostrar la tarjeta informativa
+        tarjetainfoid.style.display = "block";
       }
     } else {
       // Click fuera de cualquier objeto, deseleccionar
       if (selectedObject) {
-        resetColor(selectedObject);
-        dialogid.close();
-        selectedObject = null;
+        // si la tarjeta no fue clickeada
+        if (!tarjetainfoid.contains(event.target)) {
+          resetColor(selectedObject);
+          // quita la tarjeta informativa
+          tarjetainfoid.style.display = "none";
+          selectedObject = null;
+        } else {
+          // si dió click en el botón de cerrar
+          if (closeButton.contains(event.target)) {
+            resetColor(selectedObject);
+            selectedObject = null;
+          }
+        }
       }
     }
   };

@@ -55,18 +55,6 @@ body, html {
   position: relative;
 }
 
-#dialogid {
-  position: absolute;
-  background-color: rgba(0, 0, 34, 0.8);
-
-  width: 380px;
-  max-width: calc(-12px + 100vw);
-  top: 0px;
-  right: 0px;
-  margin: 6px;
-  padding: 16px;
-}
-
 #spanid {
   position: absolute;
   top: 50%;
@@ -107,6 +95,53 @@ body, html {
   background: transparent;
   /* transform: rotate(-90deg); */
   display: block;
+}
+
+.tarjeta-info {
+  display: none;
+  position: absolute;
+  background-color: rgba(34, 0, 0, 0.8);
+  color: white;
+  top: 0px;
+  left: 0px;
+  width: 380px;
+  max-width: calc(-12px + 100vw);
+  margin: 6px;
+  padding: 16px;
+  z-index: 999;
+}
+.btn-cerrar {
+  position: absolute;
+  right: 16px;
+}
+
+.flex {
+  display: flex;
+  column-gap: 16px;
+}
+.columna-3 {
+  color: rgb(221, 221, 221);
+  flex: 0 0 33.33%;
+  max-width: 33.33%;
+  p {
+    color: rgb(221, 221, 221);
+  }
+}
+.columna-4 {
+  flex: 0 0 66.66%;
+  max-width: 66.66%;
+}
+
+#dialogid {
+  position: absolute;
+  background-color: rgba(0, 0, 34, 0.8);
+
+  width: 380px;
+  max-width: calc(-12px + 100vw);
+  top: 0px;
+  right: 0px;
+  margin: 6px;
+  padding: 16px;
 }
 
 ::backdrop {
