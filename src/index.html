@@ -55,7 +55,7 @@
         </div>
         <div class="flex">
           <div class="columna-3">
-            <p>Distancia</p>
+            <p>Distancia/Sol</p>
           </div>
           <div class="columna-4">
             <p><span id="distanciaid">0</span> pársecs</p>
@@ -73,6 +73,47 @@
 
       <div>
         <span id="idx">0.00</span>, <span id="idy">0.00</span>, <span id="idz">0.00</span>
+      </div>
+    </div>
+
+    <div class="contenedor-controles">
+      <div>
+        <div id="controlesid" class="controles">
+          <button class="boton-controles" type="button" onclick="console.log('click on APPmag')">
+            <svg class="svg-vmag" xmlns="http://www.w3.org/2000/svg">
+              <!-- <rect x="0" y="0" width="90" height="100" fill="red" /> -->
+              <g class="g-svg" fill-opacity="1">
+                <circle r="21" cx="45" cy="45" />
+
+                <circle r="6" cx="6" cy="45" />
+                <circle r="6" cx="18" cy="18" />
+                <circle r="6" cx="45" cy="6" />
+                <circle r="6" cx="72" cy="18" />
+                <circle r="6" cx="82" cy="45" />
+                <circle r="6" cx="72" cy="72" />
+                <circle r="6" cx="45" cy="82" />
+                <circle r="6" cx="18" cy="72" />
+
+              </g>
+            </svg>
+          </button>
+          <!-- <button class="boton-controles" type="button" onclick="console.log('click on ABSmag')">
+            <img src="./assets/icons/Artboard 52.webp" alt="" srcset="">
+          </button>
+          <button class="boton-controles" type="button" onclick="console.log('click on grid')">
+            <img src="./assets/icons/Artboard 56.webp" alt="" srcset="">
+          </button> -->
+          <form class="form-controles" onsubmit="console.log('click on ABSmag'); return false">
+            <input type="image" src="./assets/icons/Artboard 52.webp" alt="ABSmag">
+          </form>
+          <form class="form-controles" onsubmit="console.log('click on grid'); return false">
+            <input type="image" src="./assets/icons/Artboard 56.webp" alt="Grid">
+          </form>
+        </div>
+        <div class="toggle-controles">
+          <button id="botontogglecontrolesid" class="boton-toggle-controles" type="button"
+            onclick="toogleControles()">⌄</button>
+        </div>
       </div>
     </div>
 
@@ -120,6 +161,23 @@
     window.starsCatalogue = starsCatalogue;
 
     // Métodos de acciones para elementos de la interfaz
+
+    let toogle = true;
+    function toogleControles() {
+      const controlesid = document.querySelector("#controlesid")
+      const botontogglecontrolesid = document.querySelector("#botontogglecontrolesid")
+      if (toogle) {
+        controlesid.style.visibility = "hidden";
+        botontogglecontrolesid.textContent = "^";
+        toogle = false
+      } else {
+        controlesid.style.visibility = "visible";
+        botontogglecontrolesid.textContent = "⌄";
+        toogle = true;
+      }
+    }
+    window.toogleControles = toogleControles;
+
     function btnIncrementaPosZ() {
       increasePositionZ(exportCamera())
     }
