@@ -9,7 +9,7 @@ import {
 
 import { addLabelCSS2DObject } from "./etiquetas";
 
-import { formulaRaDecToCartesian } from "../../utils/convert.js";
+import { formulaRaDecToCartesian } from "../../scripts/utils/convert.js";
 
 let labelsSpriteGroup = new Group();
 let labelsCSS2DGroup = new Group();

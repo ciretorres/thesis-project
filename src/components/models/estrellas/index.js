@@ -12,7 +12,7 @@ import {
   Vector3,
 } from "three";
 
-import normalizar from "../../../utils/normalizar.js";
+import normalizar from "../../../scripts/utils/normalizar.js";
 
 /**
  * Creates a geometry

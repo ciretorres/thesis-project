@@ -15,13 +15,13 @@ import createSphericalGrid from "../components/models/grid.js";
 
 // utils
 import addCSS2DRenderer from "../components/renderer/css2drenderer.js";
-import updateCullingVisibility from "../utils/culling.js";
-import resize from "../utils/events/resize.js";
-import selectStar from "../utils/events/select.js";
-import fetchData from "../utils/fetch.js";
-import cameraFollowGrid from "../utils/follow.js";
-import addHelper from "../utils/helper/index.js";
-import rotarXY from "../utils/rotarXY.js";
+import resize from "./events/resize.js";
+import selectStar from "./events/select.js";
+import addHelper from "./helpers/index.js";
+import updateCullingVisibility from "./utils/culling.js";
+import fetchData from "./utils/fetch.js";
+import cameraFollowGrid from "./utils/follow.js";
+import rotarXY from "./utils/rotarXY.js";
 
 // variables globales
 let camera, lastCameraPosition;

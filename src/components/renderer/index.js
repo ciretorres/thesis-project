@@ -1,5 +1,5 @@
 import { WebGLRenderer } from "three";
-import checaWebGLCompatibilidad from "../../utils/warning.js";
+import checaWebGLCompatibilidad from "../../scripts/utils/warning.js";
 
 /**
  * Renders a view that contains your camera's "picture"
