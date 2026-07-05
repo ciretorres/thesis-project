@@ -24,38 +24,34 @@ refactorización javascript
 
 ---
 
-- [Instalar y ejecutar local](#instalar)
+- [Instalar y ejecutar local](#instalación)
 - [Estructura de archivos](#estructura-de-archivos)
 - [Requerimientos](#requerimientos)
   - Básicos, intermedios y avanzados.
   - [Técnicos](#técnicos)
 - [Implementación](#implementación)
   - Escena, Cámara, Renderer, Controles, Luces.
-  - [Retícula](#retícula)
-    - [Declinación](#declinación)
-    - [Ascensión Recta](#ascensión-recta)
-      - [Ángulos rectos](#ángulos-rectos)
-    - [Etiquetas](#etiquetas)
+  - [Retícula](#retícula) ([Declinación](#declinación), [Ascensión Recta](#ascensión-recta), [Etiquetas](#etiquetas))
   - [Estrellas](#estrellas)
 - [Three.js](#threejs)
 - [Referencias](#referencias)
 - [Fuentes de información](#fuentes-de-información)
 
-## Instalar
+## Instalación
 
-1. Clonar repositorio
+1. Clona el repositorio
 
 ```
 git clone https://github.com/ciretorres/thesis-project.git
 ```
 
-2. Entrar a la carpeta con el proyecto
+2. Entra a la carpeta del proyecto
 
 ```
 cd thesis-project
 ```
 
-3. Dentro instalar dependencias
+3. Dentro instala las dependencias del paquete
 
 ```
 npm install
@@ -65,9 +61,9 @@ npm install
 bun install
 ```
 
-### Ejecutar
+### Levantamiento local
 
-4. Para compilar y levantar el proyecto local
+4. Compila y levanta el proyecto en local
 
 ```
 bun run dev
@@ -79,11 +75,9 @@ bun run dev
 thesis-project/
 └── src/
 │   ├── assets/
-│   ├── assets/
 │   ├── componentes/
 │   ├── notebooks/
 │   ├── scripts/
-│   ├── utils
 │   ├── index.html
 │   ├── script.js
 │   └── style.css
@@ -96,20 +90,18 @@ thesis-project/
 
 [Ir al inicio](#thesis-project)
 
-### Planeación y documentación.
+### Planteamiento y documentación
 
-Los modelos de ollama `mistral-small3.2:24b`, `granite4.1:30b` y `qwen3.6:27b` me ayudaron con ejemplos en código para el cálculo de una retícula geométrica en 3d mediante líneas de punto en el espacio esférico o superficie curva.
+Los modelos de ollama `mistral-small3.2:24b`, `granite4.1:30b` y `qwen3.6:27b` me ayudaron con ejemplos en código para el desarrollo de un planetario interactivo y para el cálculo de una retícula geométrica en 3d mediante líneas de punto en el espacio esférico o superficie curva.
 
-#### Conversión de sistemas de coordenadas
+#### Conversión y convención de sistemas de coordenadas
 
-Las coordenadas ecuatoriales son un sistema de referencia astronómico. En la astronomía estándar (ICRS/J2000) o los sistemas ecuatoriales las coordenadas son:
+Las coordenadas ecuatoriales son un sistema de referencia astronómico. En la astronomía estándar (ICRS/J2000) o en los sistemas ecuatoriales los ángulos de dirección de las coordenadas son:
 
 - **Ascensión Recta (RA).** Es el ángulo del ecuador medido desde el equinoccio vernal (0,0) hasta el meridiano. Equivale a la coordenada de longitud angular en el plano Norte. Crece hacia el Este. Y va desde los 0° hasta los 360° así como de 0h hasta 24h.
 - **Declinación (Dec).** Es la distancia angular desde el plano ecuatorial al Sur (-90°) y al Norte (90°). Equivale a la coordenada de latitud.
 
-Se trata de transformar las **coordenas ecuatoriales** (ra, dec) a **coordenas esféricas** (x, y, z). Utilizando la información sobre la RA para los meridianos que pasan por los ejes (0° a 360°) y la Dec paralelos al ecuador celeste (-90° a +90°).
-
-##### Conveciones de sistemas de coordenadas
+Para transformar las **coordenas ecuatoriales** (ra, dec) a **coordenas esféricas** (x, y, z), se utiliza la información sobre la RA para los meridianos que pasan por los ejes (0° a 360°) y la Dec paralelos al ecuador celeste (-90° a +90°).
 
 En un sistema cartesiano estándar (x,y) la 'Y' siempre es arriba 'Y-Up.' En modelos celestes se usa 'Z-Up' como arriba para representar la dirección del polo Norte o el eje vertical celeste.
 
@@ -139,18 +131,17 @@ function raDecToVec3(ra, dec, radius) {
 }
 ```
 
-#### Definición:
+#### Se define:
 
 - Sistema de coordenadas 'Z-up' para la fórmula matemática de conversión.
 - Rango para RA (0 a 2π) y Dec (-π/2 a π/2).
-- Construcción geométrica eficiente mediante segmentos de líneas, sprites, css2dobject.
-- Agregar etiquetas de texto a cada intersección clave.
+- Construcción geométrica y eficiente mediante segmentos de líneas, sprites, css2dobject, entre otros.
 
 [Ir al inicio](#thesis-project)
 
 ## Requerimientos
 
-Necesidades básicas, intermedias y avanzadas para el desarrollo e implementación del sistema interactivo:
+Necesidades básicas, intermedias y avanzadas para la implementación del sistema interactivo:
 
 - **Planetario simple**
   - ✅ Mostrar/Visualizar una esfera de estrellas fijas.
@@ -162,8 +153,13 @@ Necesidades básicas, intermedias y avanzadas para el desarrollo e implementaci�
 
 - **Retícula geométrica con coordenadas ecuatoriales**
   - ✅ Calcular y convertir los puntos de las líneas en función del sistema de coordenadas ecuatoriales (ra,dec) a coordenadas esféricas (x,y,z).
-  - ✅ Dibujar los segmentos de llas líneas a partir de los puntos de coordenadas esféricas.
+  - ✅ Dibujar los segmentos de las líneas a partir de los puntos de coordenadas esféricas.
   - ✅ Agregar etiquetas a las líneas clave de ra y dec.
+  - 🐛 Mostrar las etiquetas a los extremos y ocultarlas del centro de la cámara.
+  - 🦋 A veces se desposicionan las etiquetas, hacen una transición cuando se rota a los 90 grados.
+  - 🦋 Que el grid siga a la cámara cuando haga zoom o se desplace. Y pueda rotar para ver los ángulos.
+  - Cómo sincrsonizar la rotación de la cámara con un html canvas overlay que dibuje el grid de lineas sobre los ejes proyectados.
+  - Cómo utilizar un shader pesonalizado en una esfera transparente que dibuje las líneas RA/Dec basados en UV/spherical coordinates.
 - **Carga de posiciones astronómicas**
   - ✅ Crear menos de 10 instancias de esferas o sprites y posicionarlas aleatoriamente en un radio no mayor de 50 unidades.
   - ✅ Leer y generar dinámicamente los puntos con la posición de las estrellas en una escala logarítmica (1, 10, 100).
@@ -173,8 +169,9 @@ Necesidades básicas, intermedias y avanzadas para el desarrollo e implementaci�
 
 - **Interactividad.**
   - ✅ Lograr seleccionar objetos celestes, obtener y mostrar información sobre estos (nombre, distancia, tamaño, brillo, etc.).
-  - Cambiar o modificar el brillo/distancia de una estrella mediante botones y menús.
+  - Cambiar o modificar el brillo/distancia de una estrella mediante la selección de elementos como botones y menús.
   - Filtrar objetos por tipo (estrellas, brillo, distancia, etc.), buscar objetos específicos por nombre o coordenadas, voltear a verlos y acercarse.
+  - 🐛 Al buscar y seleccionar una estrella, tener la posibilidad enfocar la cámara a esta y viajar hasta allá.
 - **Controles de movimiento.**
   - ✅ Integrar controles de cámara en órbita para permitir con el ratón o teclado moverse, navegar, hacer zoom, girar, rotar y cambiar el ángulo de la vista del planetario en escena.
   - Fijar distancia mínima/máxima. No zoom más allá del cielo.
@@ -182,6 +179,7 @@ Necesidades básicas, intermedias y avanzadas para el desarrollo e implementaci�
   - 💻 Añadir controles para interfaz (interactiva, II) gráfica (UI) HUD (HeadsUpDisplay) como botones, sliders o menús.
 - **Optimización.**
   - ⚡️ Considerar técnicas de optimización y rendimiento estable como instancing, LOD (Level of Detail), o frustum culling. Para las escenas con gran cantidad de objetos en una cúpula o domo celeste esférico de estrellas.
+  - 🦋 Revisar frustum culling personalizado y no renderizar objetos fuera del campo de visión de la cámara.
 - **Testeo.**
 - **Realidad virtual (VR) / Realidad aumentada (AR).** Integrar soporte para VR/AR utilizando bibliotecas como WebXR para crear una experiencia inmersiva. La integración en interfaz gráfica UI es más flexible con mejor performance para actualizaciones dinámicas.
 - **Sistema de color.** Añadir botones para cambiar entre diferentes sistemas de colores. Claro, oscuro, rojo. Realizar análisis como parte de la accesibilidad web.
@@ -236,18 +234,21 @@ thesis-project/
 
 ### Implementación
 
-- Definir el setup con una **escena**, **cámara** y un **renderer**.
+- Definición del setup mediante una **escena**, una **cámara** y un **renderer**.
 - Validar compatibilidad del navegador con [WebGL](./src/utils/warning.js).
-- Definir un CSS2DRenderer para las etiquetas en el grid ecuatorial.
-- Definir **controles** para la cámara y **luces** para la escena.
+- Definir un CSS2DRenderer para el etiquetado en el grid.
+- Definir **controles** para la cámara.
+- Definir **luces** para la escena.
 
-#### Retícula 🌐
+#### Modelos
 
-Trigonometría para una retícula ecuatorial con líneas RA/Dec detallada en 3D. Calcular y transformar la posición de los puntos del sistema de coordenadas ecuatoriales (ra, dec) a cartesianas esféricas (x, y, z).
+##### Retícula 🌐
 
-- ##### Declinación
+Se utiliza la trigonometría para construir una retícula ecuatorial con líneas RA/Dec detallada en 3D. Por lo que se calcula y transforman la posición de los puntos del sistema de coordenadas ecuatoriales (ra, dec) al cartesianas esféricas (x, y, z).
 
-Nueve líneas para la declinación a partir de -90° hasta 90° en pasos de 20° en 20° grados.
+- Declinación
+
+Se trazan nueve líneas para representar la declinación a partir de -90° hasta 90° en pasos de 20° en 20° grados.
 
 <img src="./static/capturas/Screen Shot 2026-06-14 at 16.51.17.webp" width="800">
 
@@ -269,18 +270,16 @@ for (let dec = -90; dec <= 90; dec += 20) {
     const y = radius * Math.cos(phi) * Math.sin(theta);
     const z = radius * Math.sin(phi);
 
-    points.push(new Vector3(x, y, z));
+    points.push(new THREE.Vector3(x, y, z));
   }
   // Line Geometry
   //
 }
 ```
 
-[Ir al inicio](#thesis-project)
+- Ascensión Recta
 
-- ##### Ascensión Recta
-
-Veinticuatro líneas para la ascensión recta de 0° a 360° en pasos de 15° en 15° grados.
+Se trazan veinticuatro líneas para representar la ascensión recta de 0° a 360° en pasos de 15° en 15° grados.
 
 <img src="./static/capturas/Screen Shot 2026-06-14 at 16.52.41.webp" width="800">
 
@@ -299,7 +298,7 @@ for (let ra = 0; ra <= 360; ra += 15) {
     const y = radius * Math.cos(phi) * Math.sin(theta);
     const z = radius * Math.sin(phi);
 
-    points.push(new Vector3(x, y, z));
+    points.push(new THREE.Vector3(x, y, z));
   }
   // Line Geometry
   //
@@ -310,12 +309,12 @@ Para asignar los puntos a una geometría de línea y agregarlas a la escena se u
 
 ```js
 // Line Geometry
-const geometry = new BufferGeometry().setFromPoints(points);
+const geometry = new THREE.BufferGeometry().setFromPoints(points);
 
 // línea
-const line = new Line(
+const line = new THREE.Line(
   geometry,
-  new LineBasicMaterial({
+  new THREE.LineBasicMaterial({
     color: 0xff0000,
   }),
 );
@@ -331,7 +330,7 @@ Se utiliza `BufferGeometry` y `LineSegments` para líneas independientes. Mejor 
 
 [Ir al inicio](#thesis-project)
 
-Se ajustaron las líneas de RA (0°, 90°, 180°, 270°, 360°) que están en ángulos rectos para que lleguen hasta los ejes polares y las demás solo hasta los -70° y 70° en Dec respectivamente.
+Se ajustan las líneas de RA (0°, 90°, 180°, 270°, 360°) que están en ángulos rectos para que lleguen hasta los ejes polares y las demás solo hasta los -70° y 70° en Dec respectivamente.
 
 <img src="./static/capturas/Screen Shot 2026-06-14 at 16.53.52.webp" width="800">
 
@@ -358,13 +357,13 @@ if (angulosRectos.includes(i)) {
 
 ##### Etiquetas
 
-Three.js no renderiza texto nativamente en WebGL. Se trata de añadir etiquetas entre las intersecciones de las líneas paralelas (dec) y las meridianas (ra). Normalizar un espacio de margen entre la línea y la etiqueta. Evaluar el mejor método para agregarlas entre TextGeometry, Sprite y **CSS2DObject**.
+Debido a que Three.js no renderiza texto nativamente en WebGL. Se añaden etiquetas entre las intersecciones de las líneas paralelas (dec) y las meridianas (ra). Normalizando un espacio de margen entre la línea y la etiqueta. Y se evalua el mejor método para agregarlas entre TextGeometry, Sprite y **CSS2DObject**.
 
 Ventajas de usar Sprite:
 
-- Se crea una textura de texto con un elemento html **canvas**: `new CanvasTexture(canvas)`. Al método `fillText()` del contexto 2D se le pasa el texto.
-- Para rotar se hace en la propiedad del material del sprite. Esto es, la escala y rotación son locales.
-- Crea una etiqueta visual para ver desde fuera sin tener que invertir la posición de lectura. Es decir, sigue a la cámara, pero puede requerir lookAt(camera).
+- Crea una textura de texto con un elemento **canvas** de html: `new CanvasTexture(canvas)`. Por lo que al método `fillText()` del contexto 2D se le pasa el texto.
+- Para rotar la etiqueta se hace desde la propiedad del material del sprite. Tanto la escala como la rotación son locales.
+- Crea una etiqueta visual para ver desde fuera sin tener que invertir la posición de lectura. Es decir, la etiqueta sigue a la cámara, pero podría requerir lookAt(camera).
 - Ideal para muchas etiquetas. Mejor rendimiento. Más rápido. Más eficiente.
 - Se recomienda cargar la fuente tipográfica asíncrona o previamente en el contexto.
 - Mejor rendimiento de TextGeometry.
@@ -393,7 +392,7 @@ const addLabelCSS2DObject = (type, pos, text, radius) => {
   wrapper.appendChild(labelElement);
 
   // CSS2DObject
-  const label = new CSS2DObject(wrapper);
+  const label = new THREE.CSS2DObject(wrapper);
 
   // ajustar posición
   label.position.copy(pos);
@@ -402,27 +401,6 @@ const addLabelCSS2DObject = (type, pos, text, radius) => {
   return label;
 };
 ```
-
-###### Bugs
-
-- 🐛 Mostrar las etiquetas a los extremos y ocultarlas del centro de la cámara.
-- 🐛 Background de la vía láctea
-- 🐛 Al buscar y seleccionar una estrella, tener la posibilidad enfocar la cámara a esta y viajar hasta allá.
-- Cómo sincronizar la rotación de la cámara con un html canvas overlay que dibuje el grid de lineas sobre los ejes proyectados.
-- Cómo utilizar un shader pesonalizado en una esfera transparente que dibuje las líneas RA/Dec basados en UV/spherical coordinates.
-- 🦋 A veces se desposicionan las etiquetas, hacen una transición cuando se rota a los 90 grados.
-- 🦋 Que el grid siga a la cámara cuando haga zoom o se desplace. Y pueda rotar para ver los ángulos.
-- 🦋 Revisar frustum culling personalizado y no renderizar objetos fuera del campo de visión de la cámara.
-
-###### Issues
-
-- Al revisar el framerate.
-- El desarrollo del planetario interactivo en Three.js no es viable.
-- Se generan 500 Sprites con posición aleatoria a escala de tamaño a 0.1
-- Culling manual personalizado de visibilidad tanto para Sprites como el grid de LineSegments y etiquetas CSS2DObjet. Este grid se actualiza cada que cámara se mueve.
-- El framerate inicia en el navegador con 20 frames por segundo y en menos de 1 minuto se cae hasta los 2 frames. A consecuencia de esto la interacción se vuelve lenta.
-- Si quisiéramos mostrar 107,380 sprites, que es en donde alcanzamos a ver a Polaris en el catálogo, el rendimiento comienza desde 1 frame, aun con el culling manual.
-- Quizá se pueda hacer la prueba posteriomente en Unity o Unreal utilizando una arquitectura similar, los códigos y flujos de este.
 
 [Ir al inicio](#thesis-project)
 
@@ -434,12 +412,12 @@ const addLabelCSS2DObject = (type, pos, text, radius) => {
 
 ```js
 const createSpritedStars = (numStars = 500) => {
-  const stars = new Object3D();
+  const stars = new THREE.Object3D();
 
   // crea y calcula la posición de los sprites
   for (let i = 0; i < numStars; i++) {
-    const starMaterial = new SpriteMaterial({ color: 0xffffff });
-    const starSprite = new Sprite(starMaterial);
+    const starMaterial = new THREE.SpriteMaterial({ color: 0xffffff });
+    const starSprite = new THREE.Sprite(starMaterial);
 
     // Genera una posición aleatoria dentro de un rango deseado;
     const x = Math.ceil(Math.random() * 200 - 100);
@@ -472,9 +450,11 @@ Es una librería en Javascript que facilita la creación y visualización de gr�
 - **Animación:** mecanismos para animar objetos, cámaras, luces.
 - **Importación de modelos 3d:** de Blender, Maya en gltF, OBJ, FBX.
 
-La ventaja de usar Three.js para el desarrollo de un planetario interactivo es la creación de una experiencia interactiva donde el usuario puede navegar por el cielo, seleccionar objetos, obtener información, etcétera. Además, la compatibilidad con navegadores web es suficiente, puesto que funciona con la mayoría de los navegadores modernos sin necesidad de plugins adicionales. Una comunidad activa de desarrolladores ofrecen soporte, ejemplos y recursos. Por lo que, crear un planetario interactivo con Three.js es un proyecto totalmente viable.
+La ventaja de usar Three.js para el desarrollo de un planetario interactivo es la creación de una experiencia interactiva donde el usuario puede navegar por el cielo, seleccionar objetos, obtener información, etcétera. Además, la compatibilidad con navegadores web es suficiente, puesto que funciona con la mayoría de los navegadores modernos sin necesidad de plugins adicionales. Una comunidad activa de desarrolladores ofrecen soporte, ejemplos y recursos.
 
-Three.js no incluye funciones astronómicas nativas. Las matemáticas deben hacerse de manera externa. Sin embargo; su arquitectura de escena, sistemas de coordenas, shaders, controles de cámara y demás, permiten construirlo desde cero o integrando librerías efímeras.
+Por lo que, crear un planetario interactivo con Three.js es un proyecto totalmente viable.
+
+Three.js no incluye funciones astronómicas nativas. Las matemáticas se realizan de manera externa. Sin embargo; su arquitectura de escena, sistemas de coordenas, shaders, controles de cámara y entre otras, permiten construirlo desde cero o integrando librerías efímeras.
 
 ### Consejos
 
@@ -488,18 +468,15 @@ Three.js no incluye funciones astronómicas nativas. Las matemáticas deben hace
 
 ## Por qué se dejó de mantener el proyecto de Processing
 
-- Processing utiliza un IDE que se tiene que descargar de la página. Desarrollar en el IDE es pesado y aburrido.
+- Processing utiliza un IDE que se tiene que descargar de la página. Desarrollar en el IDE es pesado.
 - Los archivos de la aplicación ejecutable pesan 520.5MB para **macos-aarch64**, 277.9MB **macos-x86_64** , 277MB **windows-amd64** y 277.4MB **linux-amd64**.
 - Los archivos de extensión .pde (processing development) son clases en java.
-- La sintáxis de java no es tan amihable como la de javascript.
-- Es más fácil encontrar y entender la documentación de librerías js que paquetes java.
-- Darle mantenimiento a funciones básicas como hacer click en un botón en Processing es muy lento que con elementos de html y javascript. Para correr el proyecto con el IDE es necesario instalar e importar la librería peasy para la creación de una cámara virtual en el ambiente.
+- Me resulta mejor la sintáxis en javascript o typescript en java.
+- Me resulta más fácil encontrar y entender la documentación de librerías js que paquetes java.
+- Mantener funciones básicas como hacer click en un botón en Processing es más rápido con elementos de html y js que en Processing.
+- Para correr el proyecto con el IDE es necesario instalar e importar la librería peasy para la creación de una cámara virtual en el ambiente.
 
-Esto último me llevó a la reflexión de mejor hacerlo en un ambiente más abierto y controlado con frameworks o librerías flexibles y modernas para el desarrollo de gráficos en 3D.
-
-Se utilizaron modelos como `gemma3:27b, gemma2:27b, qwen3.6:27b, qwen3.5:9b, mistral-small3.2:24b, mistral:7b, granite3.3:8b` para realizar consultas sobre el desarrollo de un planetario interactivo mediante el uso de la librería de Javascript [Three.js](https://threejs.org/docs/)
-
-Entre las similitudes y capacidades de uno y otro en sus respuestas. En general todos me ayudaron por comenzar a estructurar mejor la arquitectura del sistema, a definir las necesidades básicas y requerimientos técnicos generales del desarrollo e implementación completa de la interfaz-interativa.
+Lo anterior me llevó a la reflexión de hacerlo mejor en un ambiente más abierto y controlado con frameworks o librerías flexibles y modernas para el desarrollo de gráficos en 3D.
 
 [Ir al inicio](#thesis-project)
 
