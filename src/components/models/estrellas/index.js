@@ -214,6 +214,7 @@ const createPolarisStar = (numStars = 1) => {
   starSprite["Vmag"] = 1.97;
   starSprite["ABSmag"] = -3.637391;
   starSprite["Pc"] = 132.275132;
+  starSprite["Ly"] = 431.428307;
   // console.log(starSprite);
 
   // Polaris
@@ -254,6 +255,7 @@ const createCatalogueStars = (starCatalogue = []) => {
     starSprite["Vmag"] = star.Vmag;
     starSprite["ABSmag"] = star.ABSmag;
     starSprite["Pc"] = star.Pc;
+    starSprite["Ly"] = star.Ly;
     // starSprite.magnitude.set(apparentMagnitude);
     // star.push(createStar(position, magnitude));
 
