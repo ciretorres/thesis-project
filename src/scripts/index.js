@@ -11,7 +11,7 @@ import addStats from "../components/stats";
 
 // Mesh / Sprite
 import { createStars } from "../components/models/estrellas";
-import createSphericalGrid from "../components/models/grid.js";
+import createSphericalGrid from "../components/models/grid";
 
 // utils
 import addCSS2DRenderer from "../components/renderer/css2drenderer.js";
@@ -28,6 +28,21 @@ let camera, lastCameraPosition;
 let renderer, labelCSS2DRenderer;
 let controls, orbit, scene, stats;
 let data;
+
+// const fibonacci = () => {
+//   let fibo = [];
+//   let a = 1;
+//   let b = 1;
+//   let c = a + b;
+//   fibo.push(a, b, c);
+//   for (let index = 0; index < 20; index++) {
+//     a = b;
+//     b = c;
+//     c = a + b;
+//     fibo.push(c);
+//   }
+//   console.log(fibo.slice(-2));
+// };
 
 init();
 
