@@ -163,9 +163,7 @@ Necesidades básicas, intermedias y avanzadas para la implementación del sistem
 - **Carga de posiciones astronómicas**
   - ✅ Crear menos de 10 instancias de esferas o sprites y posicionarlas aleatoriamente en un radio no mayor de 50 unidades.
   - ✅ Leer y generar dinámicamente los puntos con la posición de las estrellas en una escala logarítmica (1, 10, 100).
-  - 📈 Integrar un módulo de análisis de datos astronómicos para calcular la posición de las estrellas. Este existe en un notebook de python.
-
-    (Es un conjunto de datos con información de las estrellas para convertir coordenas galácticas a coordenas esféricas con el módulo de `SkyCoord` y obtener sus magnitudes de brillo aparente y brillo absoluto).
+  - 📈 Integrar un módulo de análisis de datos astronómicos para calcular la posición de las estrellas. Este existe en un módulo de notebooks en python.
 
 - **Interactividad.**
   - ✅ Lograr seleccionar objetos celestes, obtener y mostrar información sobre estos (nombre, distancia, tamaño, brillo, etc.).
@@ -173,7 +171,12 @@ Necesidades básicas, intermedias y avanzadas para la implementación del sistem
   - Filtrar objetos por tipo (estrellas, brillo, distancia, etc.), buscar objetos específicos por nombre o coordenadas, voltear a verlos y acercarse.
   - 🐛 Al buscar y seleccionar una estrella, tener la posibilidad enfocar la cámara a esta y viajar hasta allá.
 - **Controles de movimiento.**
-  - ✅ Integrar controles de cámara en órbita para permitir con el ratón o teclado moverse, navegar, hacer zoom, girar, rotar y cambiar el ángulo de la vista del planetario en escena.
+  - 💻 Integrar controles de cámara en órbita para permitir con el ratón o teclado moverse o navegar:
+    - Hacer zoom
+    - Girar
+    - Rotar
+    - Paneo
+    - y cambiar el ángulo de la vista del planetario en escena.
   - Fijar distancia mínima/máxima. No zoom más allá del cielo.
   - ✅ Resetear 0,0,0.
   - 💻 Añadir controles para interfaz (interactiva, II) gráfica (UI) HUD (HeadsUpDisplay) como botones, sliders o menús.
@@ -198,7 +201,7 @@ Los requerimientos técnicos que tendría que tener como mínimo son:
 - ✅ Colocar el `<canvas />` dentro del la etiqueta `<main />`.
 - ✅ Ajustar y reescalar **resize** del ancho del canvas al ancho de la pantalla con `window.innerWidth` y `window.innerHeight`.
 - Utilizar un entorno de **pruebas** unitarias y de componentes.
-- Utilizar una configuración en **docker** para la creación de una imagen del entorno de ejecucción. Propesta de estructura de archivos:
+- Utilizar una configuración con **docker** para la creación de una imagen del entorno de ejecucción con un backend en node, mongodb o django, postgress. Propesta de estructura de archivos:
 
 ```md
 thesis-project/
@@ -244,7 +247,7 @@ thesis-project/
 
 ##### Retícula 🌐
 
-Se utiliza la trigonometría para construir una retícula ecuatorial con líneas RA/Dec detallada en 3D. Por lo que se calcula y transforman la posición de los puntos del sistema de coordenadas ecuatoriales (ra, dec) al cartesianas esféricas (x, y, z).
+Con la ayuda de la geometría analítica y la trigonometría se construye una figura esférica como retícula ecuatorial con líneas RA/Dec detallada en 3D. Por lo que se calcula y transforman la posición de los puntos del sistema de coordenadas ecuatoriales (ra, dec) al cartesianas esféricas (x, y, z).
 
 - Declinación
 
