@@ -116,4 +116,10 @@ const addLabelCSS2DObject = (text, pos) => {
 // }
 // etiquetasTextGeometry();
 
+const addEtiquetas = (type, pos, text) => {
+  // const etiqueta = createSpriteLabel();
+  const etiqueta = addLabelCSS2DObject();
+  return etiqueta;
+};
+
 export { addLabelCSS2DObject, createSpriteLabel };
