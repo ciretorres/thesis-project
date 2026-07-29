@@ -286,7 +286,7 @@ const createStars = ({ data = [] }) => {
   const group = new Group();
 
   // usando sprites
-  starsSprites = createSpritedStars(500);
+  // starsSprites = createSpritedStars(500);
   // group.add(starsSprites)
 
   starsCatalogue = createCatalogueStars(data);

@@ -26,7 +26,7 @@
 
     <div id="tarjetainfoid" class="tarjeta-info">
       <button class="btn-cerrar" type="button" autofocus>X</button>
-      <h2 class="titulo">Polaris</h2>
+      <h2 id="titleid" class="titulo">-</h2>
 
       <!-- <table></table> -->
       <div class="tarjeta-info-contenedor">
@@ -199,20 +199,6 @@
 
     // Eventos del teclado
     document.addEventListener('keydown', function (event) {
-      if (event.key === '+') {
-        console.log('+ key pressed');
-        const star = starsCatalogue.children.find(star => star.id === 22)
-        console.log(star.position)
-        star.position.z += 1;
-        console.log(star.position)
-      }
-      if (event.key === '-') {
-        console.log('+ key pressed');
-        const star = starsCatalogue.children.find(star => star.id === 22)
-        console.log(star.position)
-        star.position.z -= 1;
-        console.log(star.position)
-      }
       if (event.key === 'w') {
         console.log('W key pressed');
         increasePositionZ(exportCamera())

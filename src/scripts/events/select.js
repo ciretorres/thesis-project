@@ -1,5 +1,6 @@
 import { Raycaster, Vector2 } from "three";
 
+const titleid = document.querySelector("#titleid");
 const phipid = document.querySelector("#hipid");
 const pvmagid = document.querySelector("#vmagid");
 const pabsmagid = document.querySelector("#absmagid");
@@ -11,6 +12,7 @@ const pdedmsid = document.querySelector("#dedmsid");
 const closeButton = document.querySelector("#tarjetainfoid button");
 const tarjetainfoid = document.querySelector("#tarjetainfoid");
 
+let selectedObject = null;
 /**
  *
  * @param {PerspectiveCamera} camera :
@@ -22,7 +24,7 @@ const selectStar = (camera, group) => {
   const pointer = new Vector2();
 
   // var
-  let selectedObject = null;
+  // let selectedObject = null;
   let hoveredObject = null;
 
   // Función para resetear el color de un objeto
@@ -119,6 +121,17 @@ const selectStar = (camera, group) => {
         //   ABSmag: selectedObject.ABSmag.toFixed(2),
         //   Pc: selectedObject.Pc.toFixed(2),
         // });
+        if (selectedObject.HIP === 11767) {
+          titleid.innerHTML = "Polaris";
+        } else {
+          if (selectedObject.HIP === 85665) {
+            titleid.innerHTML = "SAO 122446";
+          } else {
+            titleid.innerHTML = "indefinido";
+          }
+        }
+
+        selectedObject.HIP === 11767 ? "Polaris" : "SAO 122446";
         phipid.innerText = selectedObject.HIP;
         pvmagid.innerText = selectedObject.Vmag;
         pabsmagid.innerText = selectedObject.ABSmag.toFixed(2);
@@ -171,4 +184,5 @@ const selectStar = (camera, group) => {
   };
 };
 
-export default selectStar;
+// export default selectStar;
+export { selectedObject, selectStar };
