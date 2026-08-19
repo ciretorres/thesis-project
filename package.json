@@ -25,10 +25,11 @@
     "reinstall": "rm -rf node_modules && rm -f package-lock.json && npm cache clean -f && npm cache verify && npm i"
   },
   "dependencies": {
-    "three": "^0.176.0"
+    "three": "^0.185.1"
   },
   "devDependencies": {
-    "vite": "^6.4.1"
+    "vite": "^8.2.0",
+    "vitest": "^4.1.10"
   },
   "keywords": [
     "three",
