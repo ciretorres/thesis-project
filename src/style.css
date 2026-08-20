@@ -102,18 +102,59 @@ body, html {
   display: none;
   position: absolute;
   background-color: rgba(34, 0, 0, 0.8);
+  /* background-color: red; */
   color: white;
-  top: 0px;
-  left: 0px;
-  width: 380px;
-  max-width: calc(-12px + 100vw);
-  margin: 6px;
-  padding: 16px;
+  top: 9px;
+  left: 18px;
+  right: 18px;
+
+  max-width: calc(-18px + 100vw);
+  /* margin: 6px; */
+  padding: 9px;
   z-index: 999;
+}
+@media screen and (min-width: 500px) {
+  .tarjeta-info {
+    width: 380px;
+  }
 }
 .btn-cerrar {
   position: absolute;
-  right: 16px;
+  right: 9px;
+}
+table {
+  .titulo {
+    text-align: left;
+  }
+
+  thead {
+    float: left;
+    /* background-color: red; */
+  }
+
+  thead th {
+    display: block;
+    text-align: left;
+  }
+
+  th,
+  td {
+    /* padding: 9px 9px; */
+    padding-right: 18px;
+    padding-top: 10px;
+    padding-bottom: 9px;
+  }
+
+  td {
+    /* padding: 9px 9px; */
+    /* padding-right: 18px; */
+    padding-top: 8.2px;
+    /* padding-bottom: 9px; */
+  }
+
+  tbody {
+    float: right;
+  }
 }
 
 .flex {
@@ -158,13 +199,17 @@ body, html {
 }
 
 .contenedor-controles {
-  width: 100%;
   position: absolute;
-  bottom: 0px;
-  left: 0px;
-  margin-bottom: 6px;
+  bottom: 9px;
+  left: 18px;
+  right: 18px;
+  /* margin-bottom: 6px; */
   display: flex;
-  justify-content: center;
+  flex-direction: column;
+  gap: 6px;
+  /* justify-content: center; */
+  /* background-color: red; */
+  border: 1px solid red;
 }
 
 .form-controles {
@@ -191,6 +236,18 @@ body, html {
   --height-svg: 100px;
   --width-g: var(--width-svg)-10px;
   --height-g: var(--height-svg)-10px; */
+}
+
+.control {
+  background-color: yellow;
+  display: flex;
+  gap: 6px;
+  justify-content: center;
+  .button-control {
+    width: 100px;
+    height: 100px;
+    /* flex-grow: 4; */
+  }
 }
 
 .controles {
@@ -234,17 +291,21 @@ body, html {
   display: flex;
   align-items: center;
   justify-content: center;
+  /* background-color: green; */
+  /* border-radius: 50%; */
 
   .boton-toggle-controles {
-    width: 40px;
-    height: 40px;
+    width: 60px;
+    height: 60px;
     font-size: 16px;
-    color: white;
-    background-color: transparent;
-    border: none;
+    /* color: white; */
+    border-radius: 50%;
+    /* background-color: transparent; */
+    /* background-color: red; */
+    /* border: none; */
     cursor: pointer;
   }
-  .boton-toggle-controles:hover {
+  /* .boton-toggle-controles:hover {
     border: 1px solid red;
-  }
+  } */
 }

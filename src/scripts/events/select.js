@@ -136,7 +136,8 @@ const selectStar = (camera, group) => {
         pvmagid.innerText = selectedObject.Vmag;
         pabsmagid.innerText = selectedObject.ABSmag.toFixed(2);
         pdistanciaid.innerText = selectedObject.Pc.toFixed(2);
-        plyid.innerText = selectedObject.Ly.toFixed(2);
+        plyid.innerText = (selectedObject.Pc * 3.261598).toFixed(2);
+        // plyid.innerText = selectedObject.Ly.toFixed(2);
 
         const ra = selectedObject.RAhms;
         const RApartes = ra.split(" ");

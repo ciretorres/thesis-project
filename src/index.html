@@ -26,103 +26,64 @@
 
     <div id="tarjetainfoid" class="tarjeta-info">
       <button class="btn-cerrar" type="button" autofocus>X</button>
-      <h2 id="titleid" class="titulo">-</h2>
 
-      <!-- <table></table> -->
-      <div class="tarjeta-info-contenedor">
-        <div class="flex">
-          <div class="columna-3">
-            <p>HIP</p>
-          </div>
-          <div class="columna-4">
-            <p id="hipid">0</p>
-          </div>
-        </div>
-        <div class="flex">
-          <div class="columna-3">
-            <p>Magnitud Aparente</p>
-          </div>
-          <div class="columna-4">
-            <p id="vmagid">0.00</p>
-          </div>
-        </div>
-        <div class="flex">
-          <div class="columna-3">
-            <p>Magnitud Absoluta</p>
-          </div>
-          <div class="columna-4">
-            <p id="absmagid">0.00</p>
-          </div>
-        </div>
-        <div class="flex">
-          <div class="columna-3">
-            <p>Distancia del Sol</p>
-          </div>
-          <div class="columna-4">
-            <p><span id="distanciaid">0.00</span> pársecs / <span id="lyid">0.00</span> años luz</p>
-          </div>
-        </div>
-        <div class="flex">
-          <div class="columna-3">
-            <p>Ascensión Recta</p>
-          </div>
-          <div class="columna-4">
-            <p><span id="rahmsid">00h 00m 00.00s</span></p>
-          </div>
-        </div>
-        <div class="flex">
-          <div class="columna-3">
-            <p>Declinación</p>
-          </div>
-          <div class="columna-4">
-            <p><span id="dedmsid">+00° 00' 00.0"</span></p>
-          </div>
-        </div>
-      </div>
+      <table>
+        <caption id="titleid" class="titulo">
+          <h2>Nombre de la estrella</h2>
+        </caption>
+        <thead>
+          <tr>
+            <th>HIP</th>
+            <th>Magnitud Aparente</th>
+            <th>Magnitud Absoluta</th>
+            <th>Distancia del Sol</th>
+            <th>-</th>
+            <th>Ascención Recta</th>
+            <th>Declinación</th>
+          </tr>
+        </thead>
 
-      <div>
-        <span id="idx">0.00</span>, <span id="idy">0.00</span>, <span id="idz">0.00</span>
-      </div>
+        <tbody>
+          <tr>
+            <td id="hipid">0</td>
+          </tr>
+          <tr>
+            <td id="vmagid">0.0</td>
+          </tr>
+          <tr>
+            <td id="absmagid">0.0</td>
+          </tr>
+          <tr>
+            <td><span id="distanciaid">0.00</span> pársecs</td>
+          </tr>
+          <tr>
+            <td><span id="lyid">0.00</span> años luz</td>
+          </tr>
+          <tr>
+            <td id="rahmsid">00h 00m 00.00s</td>
+          </tr>
+          <tr>
+            <td id="dedmsid">+00° 00' 00.0"</td>
+          </tr>
+        </tbody>
+
+        <tfoot>
+          <tr>
+            <td><span id="idx">0.00</span>, <span id="idy">0.00</span>, <span id="idz">0.00</span></td>
+          </tr>
+        </tfoot>
+      </table>
     </div>
 
     <div class="contenedor-controles">
-      <div>
-        <div id="controlesid" class="controles">
-          <button class="boton-controles" type="button" onclick="console.log('click on APPmag')">
-            <svg class="svg-vmag" xmlns="http://www.w3.org/2000/svg">
-              <!-- <rect x="0" y="0" width="90" height="100" fill="red" /> -->
-              <g class="g-svg" fill-opacity="1">
-                <circle r="21" cx="45" cy="45" />
-
-                <circle r="6" cx="6" cy="45" />
-                <circle r="6" cx="18" cy="18" />
-                <circle r="6" cx="45" cy="6" />
-                <circle r="6" cx="72" cy="18" />
-                <circle r="6" cx="82" cy="45" />
-                <circle r="6" cx="72" cy="72" />
-                <circle r="6" cx="45" cy="82" />
-                <circle r="6" cx="18" cy="72" />
-
-              </g>
-            </svg>
-          </button>
-          <!-- <button class="boton-controles" type="button" onclick="console.log('click on ABSmag')">
-            <img src="./assets/icons/Artboard 52.webp" alt="" srcset="">
-          </button>
-          <button class="boton-controles" type="button" onclick="console.log('click on grid')">
-            <img src="./assets/icons/Artboard 56.webp" alt="" srcset="">
-          </button> -->
-          <form class="form-controles" onsubmit="console.log('click on ABSmag'); return false">
-            <input type="image" src="./assets/icons/Artboard 52.webp" alt="ABSmag">
-          </form>
-          <form class="form-controles" onsubmit="console.log('click on grid'); return false">
-            <input type="image" src="./assets/icons/Artboard 56.webp" alt="Grid">
-          </form>
-        </div>
-        <div class="toggle-controles">
-          <button id="botontogglecontrolesid" class="boton-toggle-controles" type="button"
-            onclick="toogleControles()">⌄</button>
-        </div>
+      <div id="controlesid" class="control">
+        <button id="" class="button-control" type="button" onclick="toogleControles()">.</button>
+        <!-- <button id="" class="button-control" type="button" onclick="toogleControles()">.</button>
+        <button id="" class="button-control" type="button" onclick="toogleControles()">.</button> -->
+      </div>
+      <div class="toggle-controles">
+        <button id="botontogglecontrolesid" class="boton-toggle-controles" type="button"
+          onclick="toogleControles()">.</button>
       </div>
     </div>
 
@@ -172,16 +133,19 @@
     // Métodos de acciones para elementos de la interfaz
 
     let toogle = true;
+    toogleControles();
     function toogleControles() {
       const controlesid = document.querySelector("#controlesid")
       const botontogglecontrolesid = document.querySelector("#botontogglecontrolesid")
       if (toogle) {
-        controlesid.style.visibility = "hidden";
-        botontogglecontrolesid.textContent = "^";
+        // controlesid.style.visibility = "hidden";
+        controlesid.style.display = "none";
+        // botontogglecontrolesid.textContent = "^";
         toogle = false
       } else {
-        controlesid.style.visibility = "visible";
-        botontogglecontrolesid.textContent = "⌄";
+        // controlesid.style.visibility = "visible";
+        controlesid.style.display = "flex";
+        // botontogglecontrolesid.textContent = "⌄";
         toogle = true;
       }
     }
