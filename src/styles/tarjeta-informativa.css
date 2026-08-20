@@ -1,0 +1,61 @@
+.tarjeta-info {
+  display: none;
+  position: absolute;
+  background-color: rgba(34, 0, 0, 0.8);
+  /* background-color: red; */
+  color: white;
+  top: 9px;
+  left: 18px;
+  right: 18px;
+
+  max-width: calc(-18px + 100vw);
+  /* margin: 6px; */
+  padding: 9px;
+  z-index: 999;
+}
+
+@media screen and (min-width: 500px) {
+  .tarjeta-info {
+    width: 380px;
+  }
+}
+
+.btn-cerrar {
+  position: absolute;
+  right: 9px;
+}
+
+table {
+  .titulo {
+    text-align: left;
+  }
+
+  thead {
+    float: left;
+    /* background-color: red; */
+  }
+
+  thead th {
+    display: block;
+    text-align: left;
+  }
+
+  th,
+  td {
+    /* padding: 9px 9px; */
+    padding-right: 18px;
+    padding-top: 10px;
+    padding-bottom: 9px;
+  }
+
+  td {
+    /* padding: 9px 9px; */
+    /* padding-right: 18px; */
+    padding-top: 8.2px;
+    /* padding-bottom: 9px; */
+  }
+
+  tbody {
+    float: right;
+  }
+}
