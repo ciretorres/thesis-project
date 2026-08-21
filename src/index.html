@@ -19,11 +19,14 @@
 <body class="body">
   <main id="mainid">
     <div id="dialogid" class="modal-instructivo">
-      <button id="" class="" type="">boton</button>
-      <div>
-        <h2>Modal Instructivo</h2>
-      </div>
-      <button id="" class="" type="">boton</button>
+      <h2>¡Bienvenido!</h2>
+      <p>Ahora puedes jugar a encontrar la luz y distancia de las estrellas. ¡Es fácil!</p>
+      <ul>
+        <li><b>Selecciona</b> o elige una estrella</li>
+        <li><b>Encuentra</b> su luminosidad en la Magnitud Aparente y Magnitud Absoluta</li>
+        <li><b>Relaciona</b> su Brillo modificando su Distancia</li>
+      </ul>
+      <p>¡Mira cómo cambian al mismo tiempo según le agregues o quites cantidad!</p>
     </div>
 
     <div id="tarjetainfoid" class="tarjeta-info">
@@ -36,9 +39,9 @@
         <thead>
           <tr>
             <th>HIP</th>
-            <th>Magnitud Aparente</th>
+            <th class="text-stroke">Magnitud Aparente</th>
             <th>Magnitud Absoluta</th>
-            <th>Distancia del Sol</th>
+            <th class="text-stroke">Distancia del Sol</th>
             <th>-</th>
             <th>Ascención Recta</th>
             <th>Declinación</th>
@@ -50,16 +53,16 @@
             <td id="hipid">0</td>
           </tr>
           <tr>
-            <td id="vmagid">0.0</td>
+            <td id="vmagid" class="text-stroke">0.0</td>
           </tr>
           <tr>
             <td id="absmagid">0.0</td>
           </tr>
           <tr>
-            <td><span id="distanciaid">0.00</span> pársecs</td>
+            <td class="text-stroke"><span id="distanciaid">0.00</span> pársecs</td>
           </tr>
           <tr>
-            <td><span id="lyid">0.00</span> años luz</td>
+            <td class="text-stroke"><span id="lyid">0.00</span> años luz</td>
           </tr>
           <tr>
             <td id="rahmsid">00h 00m 00.00s</td>
@@ -75,6 +78,12 @@
           </tr>
         </tfoot>
       </table>
+
+      <div class="botones-modifica-distancia">
+        <button class="agregar-distancia" type="button" onclick="restarDistancia()">-</button>
+        <button class="restar-distancia" type="button" onclick="agregarDistancia()">+</button>
+      </div>
+
     </div>
 
     <div class="contenedor-controles">
@@ -108,10 +117,14 @@
     // import * as THREE from "three";
     import { exportCamera } from './scripts/index.js'
     import { starsCatalogue } from './components/models/estrellas'
+    // modal instructivo
     import { toogleModal } from './scripts/modal/index.js'
 
     // módulo para rotar y zoom en la escena
     import { increasePositionZ, decreasePositionZ, resetPosition } from './scripts/utils/zoom.js'
+
+    //
+    import { agregarDistancia, restarDistancia } from './components/controls/decreaseVmag.js'
 
     import { imprime } from './scripts/imprimir.js'
 
@@ -125,6 +138,8 @@
     window.exportCamera = exportCamera;
     window.starsCatalogue = starsCatalogue;
     window.toogleModal = toogleModal;
+    window.agregarDistancia = agregarDistancia
+    window.restarDistancia = restarDistancia
 
     // Métodos de acciones para elementos de la interfaz
 
@@ -156,6 +171,8 @@
       decreasePositionZ(exportCamera())
     }
     window.btnDecrementaPosZ = btnDecrementaPosZ;
+
+    const tarjetainfoid = document.querySelector("#tarjetainfoid");
 
     // Eventos del teclado
     document.addEventListener('keydown', function (event) {
@@ -189,14 +206,19 @@
         console.log("E key pressed");
         exportCamera().position.y += 5;
       }
-    });
-
-    const tarjetainfoid = document.querySelector("#tarjetainfoid");
-    const closeButton = document.querySelector("#tarjetainfoid button");
-
-    // "Close" button closes tarjeta informativa
-    closeButton.addEventListener("click", () => {
-      tarjetainfoid.style.display = "none";
+      if (event.key === "Escape") {
+        console.log("Escape key pressed");
+        // cierra tarjeta informativa
+        if (document.querySelector("#tarjetainfoid").style.display === "block") {
+          document.querySelector("#tarjetainfoid")
+            .style.display = "none";
+        }
+        // cierra modal informativo
+        if (document.querySelector("#dialogid").style.display === "block") {
+          document.querySelector("#dialogid")
+            .style.display = "none";
+        }
+      }
     });
 
     // HUD

@@ -1,6 +1,6 @@
 import { Raycaster, Vector2 } from "three";
 
-const titleid = document.querySelector("#titleid");
+const titleid = document.querySelector("#titleid h2");
 const phipid = document.querySelector("#hipid");
 const pvmagid = document.querySelector("#vmagid");
 const pabsmagid = document.querySelector("#absmagid");
@@ -12,7 +12,9 @@ const pdedmsid = document.querySelector("#dedmsid");
 const closeButton = document.querySelector("#tarjetainfoid button");
 const tarjetainfoid = document.querySelector("#tarjetainfoid");
 
+// objeto seleccionado
 let selectedObject = null;
+
 /**
  *
  * @param {PerspectiveCamera} camera :
@@ -83,6 +85,13 @@ const selectStar = (camera, group) => {
   };
   document.addEventListener("pointermove", onPointerMove);
 
+  // diccionario
+  const dict_hip = {
+    11767: "Polaris",
+    85665: "SAO 122446",
+    70890: "Proxima Centauri",
+  };
+
   // Detección de clics en sprites
   const onMouseClick = (event) => {
     pointer.x = (event.clientX / window.innerWidth) * 2 - 1;
@@ -121,17 +130,10 @@ const selectStar = (camera, group) => {
         //   ABSmag: selectedObject.ABSmag.toFixed(2),
         //   Pc: selectedObject.Pc.toFixed(2),
         // });
-        if (selectedObject.HIP === 11767) {
-          titleid.innerHTML = "Polaris";
-        } else {
-          if (selectedObject.HIP === 85665) {
-            titleid.innerHTML = "SAO 122446";
-          } else {
-            titleid.innerHTML = "indefinido";
-          }
-        }
 
-        selectedObject.HIP === 11767 ? "Polaris" : "SAO 122446";
+        titleid.innerText = dict_hip[selectedObject.HIP]
+          ? dict_hip[selectedObject.HIP]
+          : "Estrella No encontrada";
         phipid.innerText = selectedObject.HIP;
         pvmagid.innerText = selectedObject.Vmag;
         pabsmagid.innerText = selectedObject.ABSmag.toFixed(2);
@@ -184,6 +186,10 @@ const selectStar = (camera, group) => {
     document.removeEventListener("click", onMouseClick);
   };
 };
+
+closeButton.addEventListener("click", () => {
+  tarjetainfoid.style.display = "none";
+});
 
 // export default selectStar;
 export { selectedObject, selectStar };

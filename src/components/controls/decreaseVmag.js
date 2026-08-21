@@ -70,3 +70,36 @@ document.addEventListener("keydown", function (event) {
     console.log("selecciona una estrella");
   }
 });
+
+// Eventos del mouse y botón
+const agregarDistancia = () => {
+  console.log("+ button clicked");
+  let star = selectedObject;
+
+  star.Pc += 1;
+  star.position.z += 1;
+
+  star.Vmag = getApparentMagnitude(star.ABSmag, star.Pc);
+  pvmagid.innerText = star.Vmag.toFixed(2);
+  pdistanciaid.innerText = star.Pc.toFixed(2);
+  plyid.innerText = (star.Pc * 3.261598).toFixed(2);
+  console.log(star.HIP, star.Pc, star.position.z);
+};
+
+const restarDistancia = () => {
+  console.log("- button clicked");
+  let star = selectedObject;
+
+  if (star.Pc > 1) {
+    star.Pc -= 1;
+    star.position.z -= 1;
+  }
+  star.Vmag = getApparentMagnitude(star.ABSmag, star.Pc);
+  pvmagid.innerText = star.Vmag.toFixed(2);
+
+  pdistanciaid.innerText = star.Pc.toFixed(2);
+  plyid.innerText = (star.Pc * 3.261598).toFixed(2);
+  console.log(star.HIP, star.Pc, star.position.z);
+};
+
+export { agregarDistancia, restarDistancia };
