@@ -1,17 +1,18 @@
 # thesis-project
 
 ![](https://img.shields.io/badge/status-in%20progress-yellow)
-![](https://img.shields.io/badge/npm%20v1.0.1-orange)
+![](https://img.shields.io/badge/npm%20v2.0.0-alpha.0-orange)
 
 refactorización javascript
 
 ```json
 {
   "dependencies": {
-    "three": "^0.176.0"
+    "three": "^0.185.1"
   },
   "devDependencies": {
-    "vite": "^6.4.1"
+    "vite": "^8.2.0",
+    "vitest": "^4.1.10"
   }
 }
 ```
@@ -25,13 +26,11 @@ refactorización javascript
 ---
 
 - [Instalar y ejecutar local](#instalación)
-- [Estructura de archivos](#estructura-de-archivos)
 - [Requerimientos](#requerimientos)
-  - Básicos, intermedios y avanzados.
-  - [Técnicos](#técnicos)
+  - Básicos, intermedios y avanzados. Técnicos.
 - [Implementación](#implementación)
   - Escena, Cámara, Renderer, Controles, Luces.
-  - [Retícula](#retícula) ([Declinación](#declinación), [Ascensión Recta](#ascensión-recta), [Etiquetas](#etiquetas))
+  - [Retícula](#retícula-) (Declinación, Ascensión Recta, [Etiquetas](#etiquetas))
   - [Estrellas](#estrellas)
 - [Three.js](#threejs)
 - [Referencias](#referencias)
@@ -39,7 +38,7 @@ refactorización javascript
 
 ## Instalación
 
-1. Clona el repositorio
+1. Clona el repositorio con la terminal
 
 ```
 git clone https://github.com/ciretorres/thesis-project.git
@@ -51,7 +50,7 @@ git clone https://github.com/ciretorres/thesis-project.git
 cd thesis-project
 ```
 
-3. Dentro instala las dependencias del paquete
+3. Instala las dependencias del paquete
 
 ```
 npm install
@@ -94,54 +93,9 @@ thesis-project/
 
 Los modelos de ollama `mistral-small3.2:24b`, `granite4.1:30b` y `qwen3.6:27b` me ayudaron con ejemplos en código para el desarrollo de un planetario interactivo y para el cálculo de una retícula geométrica en 3d mediante líneas de punto en el espacio esférico o superficie curva.
 
-#### Conversión y convención de sistemas de coordenadas
-
-Las coordenadas ecuatoriales son un sistema de referencia astronómico. En la astronomía estándar (ICRS/J2000) o en los sistemas ecuatoriales los ángulos de dirección de las coordenadas son:
-
-- **Ascensión Recta (RA).** Es el ángulo del ecuador medido desde el equinoccio vernal (0,0) hasta el meridiano. Equivale a la coordenada de longitud angular en el plano Norte. Crece hacia el Este. Y va desde los 0° hasta los 360° así como de 0h hasta 24h.
-- **Declinación (Dec).** Es la distancia angular desde el plano ecuatorial al Sur (-90°) y al Norte (90°). Equivale a la coordenada de latitud.
-
-Para transformar las **coordenas ecuatoriales** (ra, dec) a **coordenas esféricas** (x, y, z), se utiliza la información sobre la RA para los meridianos que pasan por los ejes (0° a 360°) y la Dec paralelos al ecuador celeste (-90° a +90°).
-
-En un sistema cartesiano estándar (x,y) la 'Y' siempre es arriba 'Y-Up.' En modelos celestes se usa 'Z-Up' como arriba para representar la dirección del polo Norte o el eje vertical celeste.
-
-```bash
-# Se normaliza el radio de la esfera mediante `R = radius`
-
-# ecuador celeste con el plano XZ
-x = radius * cos(phi = φ) * cos(theta = θ)
-y = radius * sin(phi = φ)
-z = radius * cos(phi = φ) * sin(theta = θ)
-
-# ecuador celeste con el plano XY
-x = radius * cos(phi = φ) * cos(theta = θ)
-y = radius * cos(phi = φ) * sin(theta = θ)
-z = radius * sin(phi = φ)
-
-```
-
-```js
-// ejemplo de función para convertir valores
-function raDecToVec3(ra, dec, radius) {
-  return new THREE.Vector3(
-    radius * Math.cos(dec) * Math.cos(ra),
-    radius * Math.cos(dec) * Math.sin(ra),
-    radius * Math.sin(dec),
-  );
-}
-```
-
-#### Se define:
-
-- Sistema de coordenadas 'Z-up' para la fórmula matemática de conversión.
-- Rango para RA (0 a 2π) y Dec (-π/2 a π/2).
-- Construcción geométrica y eficiente mediante segmentos de líneas, sprites, css2dobject, entre otros.
-
-[Ir al inicio](#thesis-project)
-
 ## Requerimientos
 
-Necesidades básicas, intermedias y avanzadas para la implementación del sistema interactivo:
+Necesidades básicas, intermedias y avanzadas para el sistema interactivo:
 
 - **Planetario simple**
   - ✅ Mostrar/Visualizar una esfera de estrellas fijas.
@@ -158,18 +112,18 @@ Necesidades básicas, intermedias y avanzadas para la implementación del sistem
   - 🐛 Mostrar las etiquetas a los extremos y ocultarlas del centro de la cámara.
   - 🦋 A veces se desposicionan las etiquetas, hacen una transición cuando se rota a los 90 grados.
   - 🦋 Que el grid siga a la cámara cuando haga zoom o se desplace. Y pueda rotar para ver los ángulos.
-  - Cómo sincrsonizar la rotación de la cámara con un html canvas overlay que dibuje el grid de lineas sobre los ejes proyectados.
+  - Cómo sincronizar la rotación de la cámara con un html canvas overlay que dibuje el grid de lineas sobre los ejes proyectados.
   - Cómo utilizar un shader pesonalizado en una esfera transparente que dibuje las líneas RA/Dec basados en UV/spherical coordinates.
 - **Carga de posiciones astronómicas**
   - ✅ Crear menos de 10 instancias de esferas o sprites y posicionarlas aleatoriamente en un radio no mayor de 50 unidades.
   - ✅ Leer y generar dinámicamente los puntos con la posición de las estrellas en una escala logarítmica (1, 10, 100).
-  - 📈 Integrar un módulo de análisis de datos astronómicos para calcular la posición de las estrellas. Este existe en un módulo de notebooks en python.
+  - 📈 Integrar un módulo de análisis de datos astronómicos en notebooks para calcular la posición, las coordenadas, la distancia y el brillo de las estrellas.
 
 - **Interactividad.**
   - ✅ Lograr seleccionar objetos celestes, obtener y mostrar información sobre estos (nombre, distancia, tamaño, brillo, etc.).
-  - Cambiar o modificar el brillo/distancia de una estrella mediante la selección de elementos como botones y menús.
+  - ✅ Cambiar o modificar el brillo/distancia de una estrella mediante la selección de elementos como botones y menús.
   - Filtrar objetos por tipo (estrellas, brillo, distancia, etc.), buscar objetos específicos por nombre o coordenadas, voltear a verlos y acercarse.
-  - 🐛 Al buscar y seleccionar una estrella, tener la posibilidad enfocar la cámara a esta y viajar hasta allá.
+  - Al buscar y seleccionar una estrella, tener la posibilidad enfocar la cámara a esta y viajar hasta allá.
 - **Controles de movimiento.**
   - 💻 Integrar controles de cámara en órbita para permitir con el ratón o teclado moverse o navegar:
     - Hacer zoom
@@ -186,6 +140,7 @@ Necesidades básicas, intermedias y avanzadas para la implementación del sistem
 - **Testeo.**
 - **Realidad virtual (VR) / Realidad aumentada (AR).** Integrar soporte para VR/AR utilizando bibliotecas como WebXR para crear una experiencia inmersiva. La integración en interfaz gráfica UI es más flexible con mejor performance para actualizaciones dinámicas.
 - **Sistema de color.** Añadir botones para cambiar entre diferentes sistemas de colores. Claro, oscuro, rojo. Realizar análisis como parte de la accesibilidad web.
+- **Desplegar la app en línea.** ✈️ Utilizar github pages para deplegarlo como sitio.
 - **Descarga de app.** Descarga la aplicación para móvil en android.
 - **Integrar app.** Integrar la aplicación en otros sitios instalando la herramienta o mediante `<iframe>`.
 
@@ -201,7 +156,7 @@ Los requerimientos técnicos que tendría que tener como mínimo son:
 - ✅ Colocar el `<canvas />` dentro del la etiqueta `<main />`.
 - ✅ Ajustar y reescalar **resize** del ancho del canvas al ancho de la pantalla con `window.innerWidth` y `window.innerHeight`.
 - Utilizar un entorno de **pruebas** unitarias y de componentes.
-- Utilizar una configuración con **docker** para la creación de una imagen del entorno de ejecucción con un backend en node, mongodb o django, postgress. Propesta de estructura de archivos:
+- 🐳 Utilizar una configuración con **docker** para la creación de una imagen del entorno de ejecucción con un backend en node, mongodb o django, postgress. Propesta de estructura de archivos:
 
 ```md
 thesis-project/
@@ -230,8 +185,6 @@ thesis-project/
 ├── LICENSE
 └── README.md
 ```
-
-- Ordenar folders y archivos por jerarquía, tipo, extensión, js, css, etc.
 
 [Ir al inicio](#thesis-project)
 
@@ -464,7 +417,7 @@ Three.js no incluye funciones astronómicas nativas. Las matemáticas se realiza
 - Comienza con un planetario básico y añade funcionalidades gradualmente.
 - Aprovecha los recursos disponibles en líneas. Como los datos astronómicos.
 - Mantenlo técnico pero accionable.
-- Mantén los fragmentos del código minimalista, pero ilustrativos.
+- 🖼 Mantén los fragmentos del código minimalista, pero ilustrativos.
 - Mantenlo práctico y alineado con el Three.js actual.
 
 [Ir al inicio](#thesis-project)
@@ -472,14 +425,12 @@ Three.js no incluye funciones astronómicas nativas. Las matemáticas se realiza
 ## Por qué se dejó de mantener el proyecto de Processing
 
 - Processing utiliza un IDE que se tiene que descargar de la página. Desarrollar en el IDE es pesado.
-- Los archivos de la aplicación ejecutable pesan 520.5MB para **macos-aarch64**, 277.9MB **macos-x86_64** , 277MB **windows-amd64** y 277.4MB **linux-amd64**.
+- Los archivos de la aplicación ejecutable pesan 520.5MB para **macos-aarch64**, 277.9MB **macos-x86_64** , 277MB **windows-amd64** y 277.4MB **linux-amd64**. Los logré subir a [https://ciretorres.itch.io/prototype-v1](https://ciretorres.itch.io/prototype-v1).
 - Los archivos de extensión .pde (processing development) son clases en java.
-- Me resulta mejor la sintáxis en javascript o typescript en java.
-- Me resulta más fácil encontrar y entender la documentación de librerías js que paquetes java.
 - Mantener funciones básicas como hacer click en un botón en Processing es más rápido con elementos de html y js que en Processing.
 - Para correr el proyecto con el IDE es necesario instalar e importar la librería peasy para la creación de una cámara virtual en el ambiente.
 
-Lo anterior me llevó a la reflexión de hacerlo mejor en un ambiente más abierto y controlado con frameworks o librerías flexibles y modernas para el desarrollo de gráficos en 3D.
+Lo anterior me llevó a la reflexión de hacerlo mejor en un ambiente más abierto y controlado con frameworks o librerías flexibles y modernas para el desarrollo de gráficos en 3D. Sin descartar la idea de utilizar motores como Unreal Engine o Unity como para el desarrollo de videojuegos.
 
 [Ir al inicio](#thesis-project)
 

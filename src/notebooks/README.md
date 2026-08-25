@@ -10,7 +10,7 @@ Los catálogos de [The Hipparcos and Tycho Catalogue: I/239](http://cdsarc.u-str
 
 ## Módulo de análisis pandas de datos astronómicos
 
-La idea es integrar todo lo analizado del proyecto anterior de **HipparcosMainCatalogue.ipynb** y mejorarlo.
+La idea es integrar todo lo analizado del proyecto anterior de [**HipparcosMainCatalogue.ipynb**](https://github.com/ciretorres/thesis-project/blob/v1.0.0/Prototype_v1/data/HipparcosMainCatalogue.ipynb) y mejorarlo.
 
 Los submódulos son los siguientes:
 
@@ -27,7 +27,6 @@ Los submódulos son los siguientes:
   - Se calcula la distancia de las estrellas en unidades pársecs (Pc) y años luz (Ly) utilizando las columnas de **Vmag** y **ABSmag**.
   - Se transforman las coordenas ecuatoriales de las columnas **RAICRS** y **DEICRS** con la distancia **Pc** a coordenadas cartesianas esféricas **X**, **Y**, **Z** mediante el módulo de [astropy](https://www.astropy.org/) y la instancia de [SkyCoord](https://docs.astropy.org/en/stable/coordinates/index.html).
   - Se exporta este dataframe en un nuevo archivo json para el desarrollo en la interfaz del frontend de un planetario interactivo.
--
 - `Estadistica.ipynb` se integran diversos métodos con el fin de responder a preguntas específicas y visualizarlas mediante gráficas de plots. Por ejemplo:
   - El sistema de coordenadas astronómico
   - El movimiento propio de las estrellas
@@ -37,7 +36,7 @@ Los submódulos son los siguientes:
   - Las 5 o 20 estrellas más cercas al sol
   - Machine learning
   - Probabilidad, kmeans, DBSCAN, por mencionar algunos.
-- `hip_main.ipynb` es un intento por realizar el análisis utilizando el módulo de [pandas](https://pandas.pydata.org/) en lugar de [datascience](https://github.com/data-8/datascience) con el archivo con extensión .dat que obtuve al principio de la construcción del prototipo, con el fin de realizar el análisis con . Este último módulo lo utilizó la [Universidad de Berkeley](https://github.com/ds-modules) para el desarrollo del curso de ciencia de datos en edX donde comencé la introducción al lenguaje de python.
+- `hip_main.ipynb` es un intento por realizar el análisis utilizando el módulo de [pandas](https://pandas.pydata.org/) en lugar de [datascience](https://github.com/data-8/datascience) con el archivo con extensión .dat que obtuve al principio de la construcción del prototipo. Este último módulo se utilizó en la [Universidad de Berkeley](https://github.com/ds-modules) para el desarrollo del curso de ciencia de datos en edX donde comencé la introducción al lenguaje de python.
 
 ### Introducción
 
