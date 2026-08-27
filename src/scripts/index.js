@@ -2,7 +2,7 @@
 import { Color, Group } from "three";
 
 // componentes
-import addCamara from "../components/camara";
+import camara from "../components/camara";
 import addControles from "../components/controls";
 import "../components/controls/decreaseVmag.js";
 import addEscena from "../components/escena";
@@ -65,7 +65,8 @@ async function init() {
     scene = addEscena();
 
     // CAMERA
-    camera = addCamara();
+    // camera = addCamara();
+    camera = camara;
 
     // STATS
     stats = addStats("#mainid");
