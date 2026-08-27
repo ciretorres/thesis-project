@@ -283,6 +283,9 @@ SkyCoord
 
 [https://www.kaggle.com/code/monicamartinezalba/astropy-coords-monica-martinez](https://www.kaggle.com/code/monicamartinezalba/astropy-coords-monica-martinez)
 
+Astropy
+[https://www.kaggle.com/code/edwinmelgarejoaburto/astropy-coords-edwin-melgarejo-aburto?select=hipparcos-voidmain.csv](https://www.kaggle.com/code/edwinmelgarejoaburto/astropy-coords-edwin-melgarejo-aburto?select=hipparcos-voidmain.csv)
+
 DBSCAN
 
 [https://www.kaggle.com/code/ernestbavarsad/galactic-dynamics-w-hippacros](https://www.kaggle.com/code/ernestbavarsad/galactic-dynamics-w-hippacros)
@@ -300,3 +303,11 @@ ML
 D3js
 
 [https://www.kaggle.com/code/therohk/hipparcos-stars-spherical-skymap/report](https://www.kaggle.com/code/therohk/hipparcos-stars-spherical-skymap/report)
+
+--
+
+[http://casu.ast.cam.ac.uk/casuadc](http://casu.ast.cam.ac.uk/casuadc)
+
+[https://www.cosmos.esa.int/web/hipparcos/closest-stars](https://www.cosmos.esa.int/web/hipparcos/closest-stars)
+
+[https://www.kaggle.com/code/konivat/hipparcos-dataset-profiling-report/notebook](https://www.kaggle.com/code/konivat/hipparcos-dataset-profiling-report/notebook)

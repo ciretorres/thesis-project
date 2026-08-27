@@ -16,7 +16,7 @@
   }
 } */
 
-.control {
+/* .control {
   background-color: yellow;
   display: flex;
   gap: 6px;
@@ -25,9 +25,8 @@
   .button-control {
     width: 100px;
     height: 100px;
-    /* flex-grow: 4; */
   }
-}
+} */
 
 .toggle-controles {
   display: flex;

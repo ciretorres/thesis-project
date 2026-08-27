@@ -87,11 +87,10 @@
     </div>
 
     <div class="contenedor-controles">
-      <div id="controlesid" class="control">
+      <!-- <div id="controlesid" class="control">
         <button id="" class="button-control" type="button" onclick="toogleControles()">.</button>
-        <!-- <button id="" class="button-control" type="button" onclick="toogleControles()">.</button>
-        <button id="" class="button-control" type="button" onclick="toogleControles()">.</button> -->
-      </div>
+      </div> -->
+
       <div class="toggle-controles">
         <button id="botontogglecontrolesid" class="boton-toggle-controles" type="button"
           onclick="toogleModal()">.</button>
@@ -115,97 +114,29 @@
 
   <script type="module">
     // import * as THREE from "three";
-    import { exportCamera } from './scripts/index.js'
-    import { starsCatalogue } from './components/models/estrellas'
     // modal instructivo
     import { toogleModal } from './scripts/modal/index.js'
-
-    // módulo para rotar y zoom en la escena
-    import { increasePositionZ, decreasePositionZ, resetPosition } from './scripts/utils/zoom.js'
-
-    //
+    // modificar distancia
     import { agregarDistancia, restarDistancia } from './components/controls/decreaseVmag.js'
+    // mover cámara
+    import './components/controls/moveCamera.js'
 
     import { imprime } from './scripts/imprimir.js'
-
     imprime();
 
     // esto es necesario cuando es type="module"
     window.imprime = imprime;
-    window.increasePositionZ = increasePositionZ;
-    window.decreasePositionZ = decreasePositionZ;
-    window.resetPosition = resetPosition;
-    window.exportCamera = exportCamera;
-    window.starsCatalogue = starsCatalogue;
+    // modal instructivo
     window.toogleModal = toogleModal;
+    // modificar distancia
     window.agregarDistancia = agregarDistancia
     window.restarDistancia = restarDistancia
 
     // Métodos de acciones para elementos de la interfaz
 
-    let toogle = true;
-    toogleControles();
-    function toogleControles() {
-      const controlesid = document.querySelector("#controlesid")
-      const botontogglecontrolesid = document.querySelector("#botontogglecontrolesid")
-      if (toogle) {
-        // controlesid.style.visibility = "hidden";
-        controlesid.style.display = "none";
-        // botontogglecontrolesid.textContent = "^";
-        toogle = false
-      } else {
-        // controlesid.style.visibility = "visible";
-        controlesid.style.display = "flex";
-        // botontogglecontrolesid.textContent = "⌄";
-        toogle = true;
-      }
-    }
-    window.toogleControles = toogleControles;
-
-    function btnIncrementaPosZ() {
-      increasePositionZ(exportCamera())
-    }
-    window.btnIncrementaPosZ = btnIncrementaPosZ;
-
-    function btnDecrementaPosZ() {
-      decreasePositionZ(exportCamera())
-    }
-    window.btnDecrementaPosZ = btnDecrementaPosZ;
-
-    const tarjetainfoid = document.querySelector("#tarjetainfoid");
-
     // Eventos del teclado
     document.addEventListener('keydown', function (event) {
-      if (event.key === 'w') {
-        console.log('W key pressed');
-        increasePositionZ(exportCamera())
-      }
-      if (event.key === 's') {
-        console.log('S key pressed');
-        decreasePositionZ(exportCamera())
-      }
-      if (event.key === 'Enter') {
-        console.log('Enter key pressed');
-        resetPosition(exportCamera())
-      }
-
-      if (event.key === "a") {
-        console.log("A key pressed");
-        exportCamera().position.x -= 5;
-      }
-      if (event.key === "d") {
-        console.log("D key pressed");
-        exportCamera().position.x += 5;
-
-      }
-      if (event.key === "q") {
-        console.log("Q key pressed");
-        exportCamera().position.y -= 5;
-      }
-      if (event.key === "e") {
-        console.log("E key pressed");
-        exportCamera().position.y += 5;
-      }
+      // Interacción
       if (event.key === "Escape") {
         console.log("Escape key pressed");
         // cierra tarjeta informativa
@@ -221,37 +152,7 @@
       }
     });
 
-    // HUD
-    // const svg = document.getElementById('hudsvgid');
-    // svg.setAttribute("height", "200");
-    // svg.setAttribute("width", "400");
-    // var rect = document.createElementNS('http://www.w3.org/2000/svg', 'rect');
-    // rect.setAttribute('id', 'rectid');
-    // rect.setAttribute('width', '200');
-    // rect.setAttribute('height', '100');
-    // rect.setAttribute('x', '100');
-    // rect.setAttribute('y', '50');
-    // rect.setAttribute('rx', '20');
-    // rect.setAttribute('ry', '20');
-    // rect.setAttribute('fill', 'blue');
-    // svg.append(rect)
-    // var group = document.createElementNS('http://www.w3.org/2000/svg', 'g');
-    // group.setAttribute('id', 'grupoid');
-    // svg.append(group)
-    // var line = document.createElementNS('http://www.w3.org/2000/svg', 'line');
-    // line.setAttribute('id', 'lineaid');
-    // line.setAttribute('x1', '175');
-    // line.setAttribute('y1', '100');
-    // line.setAttribute('x2', '225');
-    // line.setAttribute('y2', '100');
-    // group.append(line);
-    // var lineVertical = document.createElementNS('http://www.w3.org/2000/svg', 'line');
-    // lineVertical.setAttribute('id', 'lineaverticalid');
-    // lineVertical.setAttribute('x1', '200');
-    // lineVertical.setAttribute('y1', '75');
-    // lineVertical.setAttribute('x2', '200');
-    // lineVertical.setAttribute('y2', '125');
-    // group.append(lineVertical);
+
   </script>
 </body>
 
