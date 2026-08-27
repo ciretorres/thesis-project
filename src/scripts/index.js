@@ -5,7 +5,7 @@ import { Color, Group } from "three";
 import camara from "../components/camara";
 import addControles from "../components/controls";
 import "../components/controls/decreaseVmag.js";
-import addEscena from "../components/escena";
+import escena from "../components/escena";
 import addLuces from "../components/lights";
 import addRenderer from "../components/renderer";
 import addStats from "../components/stats";
@@ -62,10 +62,9 @@ async function init() {
   function main() {
     // setup
     // SCENE
-    scene = addEscena();
+    scene = escena;
 
     // CAMERA
-    // camera = addCamara();
     camera = camara;
 
     // STATS

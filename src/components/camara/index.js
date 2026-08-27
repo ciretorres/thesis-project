@@ -1,6 +1,6 @@
 import addCamara from "./crear-camara";
 
 // agrega una cámara de tipo perspectiva
-export const camara = addCamara();
+const camara = addCamara();
 
 export default camara;
