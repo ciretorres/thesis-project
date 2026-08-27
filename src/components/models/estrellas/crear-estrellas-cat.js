@@ -2,6 +2,11 @@ import { Group, Object3D, Sprite, SpriteMaterial } from "three";
 
 import normalizar from "../../../scripts/utils/normalizar.js";
 
+/**
+ * Crea nuevos campos en el objeto 3D y les asigna el valor de los datos
+ * @param {Object} starSprite: objeto para la estrella
+ * @param {Object} star: con los datos de la estrella
+ */
 const addPropsCatalog = (starSprite, star) => {
   starSprite["HIP"] = star.HIP;
   starSprite["RAhms"] = star.RAhms;

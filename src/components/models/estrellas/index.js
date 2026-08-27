@@ -1,138 +1,12 @@
-import {
-  Color,
-  Group,
-  Mesh,
-  MeshBasicMaterial,
-  Object3D,
-  SphereGeometry,
-  Sprite,
-  SpriteMaterial,
-  Vector3,
-} from "three";
-
-/**
- * Método para crear a Polaris
- * @param {Number} numStars
- * @returns {Object3D} stars
- */
-const createPolarisStar = (numStars = 1) => {
-  const stars = new Object3D();
-  // sprite
-  const starMaterial = new SpriteMaterial({ color: 0xffffff });
-  const starSprite = new Sprite(starMaterial);
-
-  // color
-  starSprite.material.color.set("orange");
-
-  // info
-  starSprite.HIP = 11767;
-  starSprite.RAhms = "02 31 47.08";
-  starSprite.DEdms = "+89 15 50.9";
-  starSprite["Vmag"] = 1.97;
-  starSprite["ABSmag"] = -3.637391;
-  starSprite["Pc"] = 132.275132;
-  starSprite["Ly"] = 431.428307;
-  // console.log(starSprite);
-
-  // Polaris
-  starSprite.position.set(
-    1.3396481090837498,
-    1.0446215486735597,
-    132.2642231564061,
-  );
-  // starSprite.scale.set(0.1, 0.1, 0.1); // Tamaño pequeño
-  starSprite.scale.set(1, 1, 1);
-
-  stars.add(starSprite);
-  return stars;
-};
-
-/**
- * Creates a geometry
- * @property {radius}:
- * @property {widthSegments}:
- * @property {heightSegments}:
- * @property {phiStart}:
- * @property {thetaStart}:
- * @property {thetaLength}:
- * @see https://threejs.org/docs/#api/en/geometries/SphereGeometry
- */
-const createSphereGeometry = (
-  radius = 0.5,
-  widthSegments = 12,
-  heightSegments = 12,
-  phiStart = Math.PI * 2,
-  thetaStart = 0,
-  thetaLength = Math.PI,
-) => {
-  const props = {
-    radius: radius,
-    widthSegments: widthSegments,
-    heightSegments: heightSegments,
-    phiStart: phiStart,
-    thetaStart: thetaStart,
-    thetaLength: thetaLength,
-  };
-
-  // TODO: hacer que cambien los valores y se actualice la geometría
-  // const folder = gui.addFolder("THREE.SphereGeometry");
-  // folder.open();
-  // // folder.close();
-  // folder.add(props, "radius", 1, 30).step(1);
-  // folder.add(props, "widthSegments", 3, 64).step(1);
-  // folder.add(props, "heightSegments", 2, 32);
-  // folder.add( props, 'phiStart', 0, twoPi ).onChange( generateGeometry );
-  // folder.add( props, 'phiLength', 0, twoPi ).onChange( generateGeometry );
-  // folder.add( props, 'thetaStart', 0, twoPi ).onChange( generateGeometry );
-  // folder.add( props, 'thetaLength', 0, twoPi ).onChange( generateGeometry );
-
-  let geometry = new SphereGeometry(
-    props.radius,
-    props.widthSegments,
-    props.heightSegments,
-  );
-  return geometry;
-};
-
-/**
- * Creates a material that describe the appereance of objects
- * @see https://threejs.org/docs/index.html#api/en/constants/Materials
- * @see https://threejs.org/manual/#en/materials
- */
-const createSphereMaterial = () => {
-  // const wireframe = false;
-  // let colorEsfera = new Color("#7833aa");
-  // let colorEsfera = new Color("#8844aa");
-  // let colorEsfera = new Color("#aa8844");
-  // let colorEsfera = new Color("#FFFFFF");
-  let colorEsfera = new Color("#ffffe0");
-  let hexadecimal = colorEsfera.getHex();
-
-  // const material = new THREE.MeshPhongMaterial({ color });
-  const material = new MeshBasicMaterial({
-    color: colorEsfera,
-    wireframe: true,
-  });
-  return material;
-};
-
-/**
- * Create una sola estrella mediante SphereGeometry (Mesh)
- * @param {Vector3} position : posición esférica en la escena
- * @returns {Mesh} sphere
- */
-const createMeshedStar = (position = new Vector3(-1, 1, 10)) => {
-  // const starGeometry = new PlaneGeometry(0.1, 0.1);
-  const material = createSphereMaterial();
-  const geometry = createSphereGeometry();
-
-  const sphere = new Mesh(geometry, material);
-  sphere.position.set(position.x, position.y, position.z);
-
-  return sphere;
-};
+import { Group, Vector3 } from "three";
 
 import createStarsCatalogue from "./crear-estrellas-cat";
+
+import {
+  createInstancedMeshedStars,
+  createInstancedMeshedStarsRandom,
+  createMeshedStar,
+} from "./crear-estrellas-mesh";
 
 let starsCatalogue,
   starsSprites = new Group();
@@ -152,15 +26,17 @@ const createStars = ({ data = [] }) => {
   starsCatalogue = createStarsCatalogue(data);
   group.add(starsCatalogue);
 
-  const star = createMeshedStar();
-  group.add(star);
-
   // usando SphereGeometry (Mesh)
-  // const stars = createInstancedMeshedStars();
-  // group.add(stars);
-
-  // const starsMeshed = createMeshedStars();
-  // starsMeshed.forEach((star) => group.add(star));
+  const meshedStar = createMeshedStar(new Vector3(-1, 1, 10));
+  group.add(meshedStar);
+  // const meshedStarsRandom = createMeshedStarsRandom();
+  // group.add(meshedStarsRandom);
+  // const meshedStars = createMeshedStars(data);
+  // group.add(meshedStars);
+  const instanceMeshedStarsRandom = createInstancedMeshedStarsRandom();
+  group.add(instanceMeshedStarsRandom);
+  const instanceMeshedStars = createInstancedMeshedStars(data);
+  // group.add(instanceMeshedStars);
 
   return group;
 };
