@@ -18,7 +18,6 @@ import addCSS2DRenderer from "../components/renderer/css2drenderer.js";
 import resize from "./events/resize.js";
 import { selectStar } from "./events/select.js";
 import updateCullingVisibility from "./utils/culling.js";
-
 import cameraFollowGrid from "./utils/follow.js";
 
 // fetch
@@ -49,15 +48,13 @@ async function init() {
     // STATS
     stats = addStats("#mainid");
     // setup
+
     // SCENE
     scene = escena;
-
     // CAMERA
     camera = camara;
-
     // RENDERER
     renderer = addRenderer(animate, "#mainid", "#canvasid");
-
     // CSS2DRENDERER (necesario para las etiquetas CSS2DObject)
     labelCSS2DRenderer = addCSS2DRenderer("#mainid");
 
@@ -73,7 +70,6 @@ async function init() {
     addAxesHelper(scene);
 
     //--
-
     // IMPLEMENTACIÓN
 
     // Instancias o Sprites de estrellas

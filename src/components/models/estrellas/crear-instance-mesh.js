@@ -1,51 +1,11 @@
 import {
   Color,
-  Group,
-  Mesh,
+  InstancedMesh,
+  Matrix4,
   MeshBasicMaterial,
-  Object3D,
   SphereGeometry,
-  Sprite,
-  SpriteMaterial,
   Vector3,
 } from "three";
-
-/**
- * Método para crear a Polaris
- * @param {Number} numStars
- * @returns {Object3D} stars
- */
-const createPolarisStar = (numStars = 1) => {
-  const stars = new Object3D();
-  // sprite
-  const starMaterial = new SpriteMaterial({ color: 0xffffff });
-  const starSprite = new Sprite(starMaterial);
-
-  // color
-  starSprite.material.color.set("orange");
-
-  // info
-  starSprite.HIP = 11767;
-  starSprite.RAhms = "02 31 47.08";
-  starSprite.DEdms = "+89 15 50.9";
-  starSprite["Vmag"] = 1.97;
-  starSprite["ABSmag"] = -3.637391;
-  starSprite["Pc"] = 132.275132;
-  starSprite["Ly"] = 431.428307;
-  // console.log(starSprite);
-
-  // Polaris
-  starSprite.position.set(
-    1.3396481090837498,
-    1.0446215486735597,
-    132.2642231564061,
-  );
-  // starSprite.scale.set(0.1, 0.1, 0.1); // Tamaño pequeño
-  starSprite.scale.set(1, 1, 1);
-
-  stars.add(starSprite);
-  return stars;
-};
 
 /**
  * Creates a geometry
@@ -58,7 +18,7 @@ const createPolarisStar = (numStars = 1) => {
  * @see https://threejs.org/docs/#api/en/geometries/SphereGeometry
  */
 const createSphereGeometry = (
-  radius = 0.5,
+  radius = 0.05,
   widthSegments = 12,
   heightSegments = 12,
   phiStart = Math.PI * 2,
@@ -117,52 +77,30 @@ const createSphereMaterial = () => {
 };
 
 /**
- * Create una sola estrella mediante SphereGeometry (Mesh)
+ * Crea una o varias instancias de estrellas mediante SphereGeometry (InstancedMesh)
+ * @param {Number} numStars : cantidad de estrellas
  * @param {Vector3} position : posición esférica en la escena
- * @returns {Mesh} sphere
+ * @returns {InstancedMesh} stars : con las instancias del mesh de estrellas
  */
-const createMeshedStar = (position = new Vector3(-1, 1, 10)) => {
-  // const starGeometry = new PlaneGeometry(0.1, 0.1);
-  const material = createSphereMaterial();
-  const geometry = createSphereGeometry();
+const createInstancedMeshedStars = (
+  numStars = 500,
+  position = new Vector3(),
+) => {
+  const starGeometry = createSphereGeometry();
+  const starMaterial = createSphereMaterial();
 
-  const sphere = new Mesh(geometry, material);
-  sphere.position.set(position.x, position.y, position.z);
+  const stars = new InstancedMesh(starGeometry, starMaterial, numStars);
+  const matrix = new Matrix4();
 
-  return sphere;
+  for (let i = 0; i < numStars; i++) {
+    // Genera una posición aleatoria dentro de un rango deseado
+    const x = Math.ceil(Math.random() * 200 - 100);
+    const y = Math.ceil(Math.random() * 200 - 100);
+    const z = Math.ceil(Math.random() * 200 - 100);
+
+    matrix.makeTranslation(x, y, z);
+    stars.setMatrixAt(i, matrix);
+  }
+
+  return stars;
 };
-
-import createStarsCatalogue from "./crear-estrellas-cat";
-
-let starsCatalogue,
-  starsSprites = new Group();
-/**
- * Crea las estrellas
- * @param {Array} data: datos con estrellas
- * @returns {Group} group
- */
-const createStars = ({ data = [] }) => {
-  const group = new Group();
-
-  // usando sprites
-  // starsSprites = createSpritedStars(500);
-  // group.add(starsSprites)
-
-  // catalogo con sprites
-  starsCatalogue = createStarsCatalogue(data);
-  group.add(starsCatalogue);
-
-  const star = createMeshedStar();
-  group.add(star);
-
-  // usando SphereGeometry (Mesh)
-  // const stars = createInstancedMeshedStars();
-  // group.add(stars);
-
-  // const starsMeshed = createMeshedStars();
-  // starsMeshed.forEach((star) => group.add(star));
-
-  return group;
-};
-
-export { createStars, starsCatalogue };
