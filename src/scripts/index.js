@@ -8,7 +8,6 @@ import "../components/controls/decreaseVmag.js";
 import escena from "../components/escena";
 import addLuces from "../components/lights";
 import addRenderer from "../components/renderer";
-import addStats from "../components/stats";
 
 // Mesh / Sprite
 import { createStars } from "../components/models/estrellas";
@@ -18,11 +17,17 @@ import createSphericalGrid from "../components/models/grid";
 import addCSS2DRenderer from "../components/renderer/css2drenderer.js";
 import resize from "./events/resize.js";
 import { selectStar } from "./events/select.js";
-import addHelper from "./helpers/index.js";
 import updateCullingVisibility from "./utils/culling.js";
-import fetchData from "./utils/fetch.js";
+
 import cameraFollowGrid from "./utils/follow.js";
-import rotarXY from "./utils/rotarXY.js";
+
+// fetch
+import fetchData from "./utils/fetch.js";
+
+// axesHelper
+import addAxesHelper from "./helpers/index.js";
+// estadísticas
+import addStats from "../components/stats";
 
 // variables globales
 let camera, lastCameraPosition;
@@ -30,29 +35,10 @@ let renderer, labelCSS2DRenderer;
 let controls, orbit, scene, stats;
 let data;
 
-// const fibonacci = () => {
-//   let fibo = [];
-//   let a = 1;
-//   let b = 1;
-//   let c = a + b;
-//   fibo.push(a, b, c);
-//   for (let index = 0; index < 20; index++) {
-//     a = b;
-//     b = c;
-//     c = a + b;
-//     fibo.push(c);
-//   }
-//   console.log(fibo.slice(-2));
-// };
-
 init();
 
 // función de inicio
 async function init() {
-  // selector html tags
-  const px = document.querySelector("#idx");
-  const py = document.querySelector("#idy");
-  const pz = document.querySelector("#idz");
   // consultando datos
   data = await fetchData();
 
@@ -60,15 +46,14 @@ async function init() {
 
   // función principal
   function main() {
+    // STATS
+    stats = addStats("#mainid");
     // setup
     // SCENE
     scene = escena;
 
     // CAMERA
     camera = camara;
-
-    // STATS
-    stats = addStats("#mainid");
 
     // RENDERER
     renderer = addRenderer(animate, "#mainid", "#canvasid");
@@ -85,7 +70,7 @@ async function init() {
     addLuces(scene);
 
     // HELPER
-    addHelper(scene);
+    addAxesHelper(scene);
 
     //--
 
@@ -94,15 +79,10 @@ async function init() {
     // Instancias o Sprites de estrellas
     const group = new Group();
     const starField = createStars({ data: data });
-    // const starField = createStars({ numStars: 1 });
-    // const starField = createStars({ numStars: 182 });
-    // const starField = createStars({ numStars: 22982 });
-    // const starField = createStars({ numStars: 107380 });
-    // const starField = createStars({ numStars: 500 });
     group.add(starField);
 
     // Grid, Reticula Ecuatorial
-    const group2 = new Group();
+    const groupReticula = new Group();
     const grid = createSphericalGrid({
       radio: 1,
       color: new Color("#ff0000"),
@@ -113,15 +93,17 @@ async function init() {
       z: camera.position.z,
     };
     grid.position.set(0, 0, camera.position.z);
-    group2.add(grid);
+    groupReticula.add(grid);
 
     // Mesh y grupos para integrar a scene
-    const group3 = new Group();
-    group3.add(group);
-    group3.add(group2);
-    scene.add(group3);
+    const groupScene = new Group();
 
-    // RAYCASTER
+    groupScene.add(group);
+    groupScene.add(groupReticula);
+
+    scene.add(groupScene);
+
+    // RAYCASTER para selección de estrella o sprite
     selectStar(camera, group); // HOVER / CLICK
 
     function render() {
@@ -149,12 +131,7 @@ async function init() {
     function animate(time) {
       // console.log((time *= 0.001));
       // time *= 0.001; // convert time to seconds
-
-      // group.rotation.x += 0.005;
-      // group.rotation.y += 0.005;
-      // rotarXY(group3);
-      // rotarXY(group);
-      rotarXY();
+      // rotarXY(groupScene);
 
       // cullingStarsVisibility
       const cullingStars = updateCullingVisibility(camera, group);
@@ -168,9 +145,12 @@ async function init() {
       render();
 
       // manda la posición de la cámara al html
-      px.innerText = `x: ${camera.position.x.toFixed(2)}`;
-      py.innerText = `y: ${camera.position.y.toFixed(2)}`;
-      pz.innerText = `z: ${camera.position.z.toFixed(2)}`;
+      document.querySelector("#idx").innerText =
+        `x: ${camera.position.x.toFixed(2)}`;
+      document.querySelector("#idy").innerText =
+        `y: ${camera.position.y.toFixed(2)}`;
+      document.querySelector("#idz").innerText =
+        `z: ${camera.position.z.toFixed(2)}`;
 
       stats.update();
     }

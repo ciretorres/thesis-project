@@ -8,6 +8,9 @@ import { Object3D } from "three";
 const rotarXY = (object = new Object3D(), value = 0.001) => {
   object.rotation.x += value;
   object.rotation.y += value;
+
+  // group.rotation.x += 0.005;
+  // group.rotation.y += 0.005;
   // console.log(object.rotation.x, object.rotation.y);
   //
   // cubes.forEach((cube, ndx) => {
