@@ -5,7 +5,7 @@ import { Object3D, Sprite, SpriteMaterial } from "three";
  * @param {Number} numStars : cantidad de estrellas
  * @returns {Object3D} stars : con los sprites de estrellas
  */
-const createSpritedStars = (numStars = 500) => {
+const createSpritedStarsRandom = (numStars = 500) => {
   const stars = new Object3D();
 
   // crea y calcula la posición de los sprites
@@ -16,7 +16,7 @@ const createSpritedStars = (numStars = 500) => {
     const starMaterial = new SpriteMaterial({ color: 0xffffff });
     const starSprite = new Sprite(starMaterial);
 
-    // Genera una posición aleatoria dentro de un rango deseado;
+    // Genera una posición aleatoria dentro de un rango deseado
     // const x = Math.ceil(Math.random() * 200 - 100);
     // const y = Math.ceil(Math.random() * 200 - 100);
     // const z = Math.ceil(Math.random() * 200 - 100);
@@ -36,4 +36,4 @@ const createSpritedStars = (numStars = 500) => {
   return stars;
 };
 
-export default createSpritedStars;
+export default createSpritedStarsRandom;

@@ -1,12 +1,14 @@
-import { Group, Vector3 } from "three";
+import { Group } from "three";
 
-import createStarsCatalogue from "./crear-estrellas-cat";
+import createStarsCatalogue from "./crear-estrellas-catalogo";
 
-import {
-  createInstancedMeshedStars,
-  createInstancedMeshedStarsRandom,
-  createMeshedStar,
-} from "./crear-estrellas-mesh";
+// import {
+//   createInstancedMeshedStars,
+//   createInstancedMeshedStarsRandom,
+//   createMeshedStar,
+// } from "./crear-estrellas-mesh";
+
+// import createSpritedStarsRandom from "./crear-estrellas-sprite";
 
 let starsCatalogue,
   starsSprites = new Group();
@@ -18,24 +20,24 @@ let starsCatalogue,
 const createStars = ({ data = [] }) => {
   const group = new Group();
 
-  // usando sprites
-  // starsSprites = createSpritedStars(500);
-  // group.add(starsSprites)
-
-  // catalogo con sprites
+  // crea el catalogo de estrellas con sprites
   starsCatalogue = createStarsCatalogue(data);
   group.add(starsCatalogue);
 
+  // usando sprites
+  // starsSprites = createSpritedStarsRandom();
+  // group.add(starsSprites);
+
   // usando SphereGeometry (Mesh)
-  const meshedStar = createMeshedStar(new Vector3(-1, 1, 10));
-  group.add(meshedStar);
+  // const meshedStar = createMeshedStar(new Vector3(-1, 1, 10));
+  // group.add(meshedStar);
   // const meshedStarsRandom = createMeshedStarsRandom();
   // group.add(meshedStarsRandom);
   // const meshedStars = createMeshedStars(data);
   // group.add(meshedStars);
-  const instanceMeshedStarsRandom = createInstancedMeshedStarsRandom();
-  group.add(instanceMeshedStarsRandom);
-  const instanceMeshedStars = createInstancedMeshedStars(data);
+  // const instanceMeshedStarsRandom = createInstancedMeshedStarsRandom();
+  // group.add(instanceMeshedStarsRandom);
+  // const instanceMeshedStars = createInstancedMeshedStars(data);
   // group.add(instanceMeshedStars);
 
   return group;

@@ -113,7 +113,7 @@ const createMeshedStarsRandom = (numStars = 500) => {
   for (let index = 0; index < numStars; index++) {
     const star = new Mesh(geometry, material);
 
-    // prueba con valores aleatorios
+    // Genera una posición aleatoria dentro de un rango deseado
     const x =
       Math.ceil(Math.random() * 99) * (Math.round(Math.random()) ? 1 : -1);
     const y =
