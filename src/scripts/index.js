@@ -1,5 +1,5 @@
 // import * as THREE from "three";
-import { Color, Group } from "three";
+import { Group } from "three";
 
 // componentes
 import camara from "../components/camara";
@@ -79,10 +79,8 @@ async function init() {
 
     // Grid, Reticula Ecuatorial
     const groupReticula = new Group();
-    const grid = createSphericalGrid({
-      radio: 1,
-      color: new Color("#ff0000"),
-    });
+    const grid = createSphericalGrid({ radio: 1 });
+    // variable para que el grid siga a la cámara
     lastCameraPosition = {
       x: camera.position.x,
       y: camera.position.y,
