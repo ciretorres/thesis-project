@@ -18,84 +18,6 @@
 
 <body class="body">
   <main id="mainid">
-    <div id="dialogid" class="modal-instructivo">
-      <h2>¡Bienvenido!</h2>
-      <p>Ahora puedes jugar a encontrar la luz y distancia de las estrellas. ¡Es fácil!</p>
-      <ul>
-        <li><b>Selecciona</b> o elige una estrella</li>
-        <li><b>Encuentra</b> su luminosidad en la Magnitud Aparente y Magnitud Absoluta</li>
-        <li><b>Relaciona</b> su Brillo modificando su Distancia</li>
-      </ul>
-      <p>¡Mira cómo cambian al mismo tiempo según le agregues o quites cantidad!</p>
-    </div>
-
-    <div id="tarjetainfoid" class="tarjeta-info">
-      <button class="btn-cerrar" type="button" autofocus>X</button>
-
-      <table>
-        <caption id="titleid" class="titulo">
-          <h2>Nombre de la estrella</h2>
-        </caption>
-        <thead>
-          <tr>
-            <th>HIP</th>
-            <th class="text-stroke">Magnitud Aparente</th>
-            <th>Magnitud Absoluta</th>
-            <th class="text-stroke">Distancia del Sol</th>
-            <th>-</th>
-            <th>Ascención Recta</th>
-            <th>Declinación</th>
-          </tr>
-        </thead>
-
-        <tbody>
-          <tr>
-            <td id="hipid">0</td>
-          </tr>
-          <tr>
-            <td id="vmagid" class="text-stroke">0.0</td>
-          </tr>
-          <tr>
-            <td id="absmagid">0.0</td>
-          </tr>
-          <tr>
-            <td class="text-stroke"><span id="distanciaid">0.00</span> pársecs</td>
-          </tr>
-          <tr>
-            <td class="text-stroke"><span id="lyid">0.00</span> años luz</td>
-          </tr>
-          <tr>
-            <td id="rahmsid">00h 00m 00.00s</td>
-          </tr>
-          <tr>
-            <td id="dedmsid">+00° 00' 00.0"</td>
-          </tr>
-        </tbody>
-
-        <tfoot>
-          <tr>
-            <td><span id="idx">0.00</span>, <span id="idy">0.00</span>, <span id="idz">0.00</span></td>
-          </tr>
-        </tfoot>
-      </table>
-
-      <div class="botones-modifica-distancia">
-        <button class="agregar-distancia" type="button" onclick="restarDistancia()">-</button>
-        <button class="restar-distancia" type="button" onclick="agregarDistancia()">+</button>
-      </div>
-
-    </div>
-
-    <div class="contenedor-controles">
-      <!-- <div id="controlesid" class="control">
-        <button id="" class="button-control" type="button" onclick="toogleControles()">.</button>
-      </div> -->
-
-      <div class="toggle-controles">
-        <button id="botontogglecontrolesid" class="boton-toggle-controles" type="button"
-          onclick="toogleModal()">.</button>
-      </div>
-    </div>
 
     <span id="spanid">+</span>
 
@@ -114,23 +36,10 @@
 
   <script type="module">
     // import * as THREE from "three";
-    // modal instructivo
-    import { toogleModal } from './scripts/modal/index.js'
-    // modificar distancia
-    import { agregarDistancia, restarDistancia } from './components/controls/decreaseVmag.js'
-    // mover cámara
-    import './components/controls/moveCamera.js'
-
-    import { imprime } from './scripts/imprimir.js'
+    import { imprime } from './scripts/utils/imprimir.js'
     imprime();
-
     // esto es necesario cuando es type="module"
     window.imprime = imprime;
-    // modal instructivo
-    window.toogleModal = toogleModal;
-    // modificar distancia
-    window.agregarDistancia = agregarDistancia
-    window.restarDistancia = restarDistancia
 
     // Métodos de acciones para elementos de la interfaz
 

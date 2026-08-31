@@ -1,5 +1,98 @@
 import { Raycaster, Vector2 } from "three";
 
+import {
+  agregarDistancia,
+  restarDistancia,
+} from "../../components/controls/decreaseVmag";
+
+const mainid = document.querySelector("#mainid");
+
+// crea la tarjeta informativa
+const tarjetaInfo = document.createElement("div");
+tarjetaInfo.id = "tarjetainfoid";
+tarjetaInfo.className = "tarjeta-info";
+tarjetaInfo.innerHTML = `
+  <button class="btn-cerrar" type="button" autofocus>X</button>
+
+  <table>
+    <caption id="titleid" class="titulo">
+      <h2>Nombre de la estrella</h2>
+    </caption>
+
+    <thead>
+      <tr>
+        <th>HIP</th>
+        <th class="text-stroke">Magnitud Aparente</th>
+        <th>Magnitud Absoluta</th>
+        <th class="text-stroke">Distancia del Sol</th>
+        <th>-</th>
+        <th>Ascensión Recta</th>
+        <th>Declinación</th>
+      </tr>
+    </thead>
+
+    <tbody>
+      <tr>
+        <td id="hipid">0</td>
+      </tr>
+      <tr>
+        <td id="vmagid" class="text-stroke">0.0</td>
+      </tr>
+      <tr>
+        <td id="absmagid">0.0</td>
+      </tr>
+      <tr>
+        <td class="text-stroke">
+          <span id="distanciaid">0.00</span> pársecs
+        </td>
+      </tr>
+      <tr>
+        <td class="text-stroke">
+          <span id="lyid">0.00</span> años luz
+        </td>
+      </tr>
+      <tr>
+        <td id="rahmsid">00h 00m 00.00s</td>
+      </tr>
+      <tr>
+        <td id="dedmsid">+00° 00' 00.0"</td>
+      </tr>
+    </tbody>
+
+    <tfoot>
+      <tr>
+        <td>
+          <span id="idx">0.00</span>,
+          <span id="idy">0.00</span>,
+          <span id="idz">0.00</span>
+        </td>
+      </tr>
+    </tfoot>
+  </table>
+
+  <div class="botones-modifica-distancia">
+    <button class="restar-distancia" type="button">-</button>
+    <button class="agregar-distancia" type="button">+</button>
+  </div>
+`;
+
+mainid.append(tarjetaInfo);
+
+const botonAgregar = tarjetaInfo.querySelector(".agregar-distancia");
+botonAgregar.addEventListener("click", () => {
+  agregarDistancia();
+});
+
+const botonCerrar = tarjetaInfo.querySelector(".btn-cerrar");
+const botonRestar = tarjetaInfo.querySelector(".restar-distancia");
+botonRestar.addEventListener("click", () => {
+  restarDistancia();
+});
+
+botonCerrar.addEventListener("click", () => {
+  tarjetaInfo.style.display = "none";
+});
+
 const titleid = document.querySelector("#titleid h2");
 const phipid = document.querySelector("#hipid");
 const pvmagid = document.querySelector("#vmagid");
@@ -8,9 +101,6 @@ const pdistanciaid = document.querySelector("#distanciaid");
 const plyid = document.querySelector("#lyid");
 const prahmsid = document.querySelector("#rahmsid");
 const pdedmsid = document.querySelector("#dedmsid");
-
-const closeButton = document.querySelector("#tarjetainfoid button");
-const tarjetainfoid = document.querySelector("#tarjetainfoid");
 
 // objeto seleccionado
 let selectedObject = null;
@@ -224,7 +314,7 @@ const selectStar = (camera, group) => {
       // Si se hace click en un objeto ya seleccionado, lo deseleccionamos
       if (clickedObject === selectedObject) {
         resetColor(clickedObject);
-        tarjetainfoid.style.display = "none";
+        tarjetaInfo.style.display = "none";
         selectedObject = null;
       } else {
         // Resetear el color del objeto previamente seleccionado
@@ -271,20 +361,20 @@ const selectStar = (camera, group) => {
         pdedmsid.innerText = `${DEgrados}° ${DEminutos}' ${DEsegundos}"`;
 
         // mostrar la tarjeta informativa
-        tarjetainfoid.style.display = "block";
+        tarjetaInfo.style.display = "block";
       }
     } else {
       // Click fuera de cualquier objeto, deseleccionar
       if (selectedObject) {
         // si la tarjeta no fue clickeada
-        if (!tarjetainfoid.contains(event.target)) {
+        if (!tarjetaInfo.contains(event.target)) {
           resetColor(selectedObject);
           // quita la tarjeta informativa
-          tarjetainfoid.style.display = "none";
+          tarjetaInfo.style.display = "none";
           selectedObject = null;
         } else {
           // si dió click en el botón de cerrar
-          if (closeButton.contains(event.target)) {
+          if (botonCerrar.contains(event.target)) {
             resetColor(selectedObject);
             selectedObject = null;
           }
@@ -300,10 +390,6 @@ const selectStar = (camera, group) => {
     document.removeEventListener("click", onMouseClick);
   };
 };
-
-closeButton.addEventListener("click", () => {
-  tarjetainfoid.style.display = "none";
-});
 
 // export default selectStar;
 export { selectedObject, selectStar };
