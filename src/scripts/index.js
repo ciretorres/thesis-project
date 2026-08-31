@@ -4,7 +4,6 @@ import { Group } from "three";
 // componentes
 import camara from "../components/camara";
 import addControles from "../components/controls";
-import "../components/controls/decreaseVmag.js";
 import escena from "../components/escena";
 import addLuces from "../components/lights";
 import addRenderer from "../components/renderer";
@@ -16,9 +15,11 @@ import createSphericalGrid from "../components/models/grid";
 // utils
 import addCSS2DRenderer from "../components/renderer/css2drenderer.js";
 import resize from "./events/resize.js";
-import { selectStar } from "./events/select.js";
 import updateCullingVisibility from "./utils/culling.js";
 import cameraFollowGrid from "./utils/follow.js";
+
+// event
+import { selectStar } from "./events/select.js";
 
 // fetch
 import fetchData from "./utils/fetch.js";
