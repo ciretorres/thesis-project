@@ -20,6 +20,12 @@
   h2 {
     margin: 0px;
   }
+
+  .dialog-botones {
+    display: flex;
+    justify-content: flex-end;
+    gap: 16px;
+  }
 }
 
 @media screen and (min-width: 500px) {

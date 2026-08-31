@@ -18,8 +18,13 @@ const addStats = (id) => {
   // statsid.setAttribute("style", "position:block");
   statsid.setAttribute(
     "style",
-    "position: absolute; top: 0px; right: 0px; cursor: pointer; opacity: 0.9; z-index: 10000;",
+    "z-index: 10000;",
   );
+  statsid.style.position = "absolute";
+  statsid.style.bottom = "0px";
+  statsid.style.right = "0px";
+  statsid.style.cursor = "pointer";
+  statsid.style.opacity = "0.9";
 
   return estadisticas;
 };

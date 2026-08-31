@@ -337,9 +337,9 @@ const selectStar = (camera, group) => {
 
         titleid.innerText = dict_hip[selectedObject.HIP]
           ? dict_hip[selectedObject.HIP]
-          : "Estrella No encontrada";
+          : "Estrella";
         phipid.innerText = selectedObject.HIP;
-        pvmagid.innerText = selectedObject.Vmag;
+        pvmagid.innerText = selectedObject.Vmag.toFixed(2);
         pabsmagid.innerText = selectedObject.ABSmag.toFixed(2);
         pdistanciaid.innerText = selectedObject.Pc.toFixed(2);
         plyid.innerText = (selectedObject.Pc * 3.261598).toFixed(2);
