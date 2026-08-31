@@ -11,7 +11,8 @@ export default {
   // plugins: [vue()],
   root: "src/",
   publicDir: "../static/",
-  base: "./",
+  // base: "./",
+  base: "/thesis-project/",
   resolve: {
     alias: {
       // "@": "/src",
