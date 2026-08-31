@@ -1,6 +1,6 @@
 async function fetchData() {
   let data = [];
-  const url = "../notebooks/data_clean/vizier_I_239_hip_main_10pc.json";
+  const url = "../../notebooks/data_clean/vizier_I_239_hip_main_10pc.json";
 
   try {
     const response = await fetch(url);
