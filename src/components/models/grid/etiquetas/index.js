@@ -1,8 +1,8 @@
 import { Group } from "three";
 
-import { addLabelCSS2DObject } from "../etiquetas.js";
+import { addLabelCSS2DObject } from "./crear-etiquetas.js";
 
-import { formulaRaDecToCartesian } from "../../../scripts/utils/convert.js";
+import { formulaRaDecToCartesian } from "../../../../scripts/utils/convert.js";
 
 let labelsCSS2DGroup = new Group();
 

@@ -77,78 +77,17 @@ const createRaLines = (radius = 1, step = 15, color = new Color("#4488ff")) => {
   // formulaSphereToEcuatorial
 
   const group = new Group();
-  const angulosRectos = [0, 90, 180, 270, 360];
+  const angulosPolares = [0, 90, 180, 270, 360];
 
   // Líneas de longitud (ascensión recta)
   for (let ra = 0; ra <= 360; ra += step) {
+    const declinacion = angulosPolares.includes(ra) ? 90 : 80;
     const points = [];
 
-    // Solo los angulos rectos llegan hasta los ejes polares
-    if (angulosRectos.includes(ra)) {
-      for (let dec = -90; dec <= 90; dec++) {
-        // Meridianos
-        const sphericalCoords = formulaRaDecToCartesian(radius, ra, dec);
-        points.push(sphericalCoords);
-
-        // Colocar etiquetas
-        if (
-          ra !== 0 &&
-          [-90, -80, -70, -50, -30, -10, 0, 10, 30, 50, 70, 80, 90].includes(
-            dec,
-          )
-        ) {
-          let text = "";
-          const raHours = ra / 15;
-          // labelsSpriteGroup.add(
-          //   createSpriteLabel("ra", sphericalCoords, raHours, horas),
-          // );
-          //
-          if ([6, 12, 18, 24].includes(raHours)) {
-            if (dec === 90 && raHours !== 12) {
-              // nada
-            } else {
-              if (dec < 0) {
-                // nada
-                if (dec !== -90) {
-                  text = `${dec}° | ${raHours}h`;
-                }
-              } else {
-                text = `+${dec}° | ${raHours}h`;
-              }
-            }
-          }
-          // labelsCSS2DGroup.add(addLabelCSS2DObject(text, sphericalCoords));
-        }
-      }
-    } else {
-      // esto soluciona que las líneas no lleguen hasta -90° o 90
-      for (let dec = -80; dec <= 80; dec++) {
-        // Meridianos
-        const sphericalCoords = formulaRaDecToCartesian(radius, ra, dec);
-        points.push(sphericalCoords);
-
-        // Colocar etiquetas
-        if (
-          [-80, -70, -50, -30, -10, 0, 10, 30, 50, 70, 80].includes(dec) &&
-          [30, 60, 120, 150, 210, 240, 300, 330].includes(ra)
-        ) {
-          let text = "";
-          const raHours = ra / 15;
-          // labelsSpriteGroup.add(
-          //   createSpriteLabel("ra", sphericalCoords, raHours, horas),
-          // );
-          //
-          if (dec < 0) {
-            // nada
-            if (dec !== -90) {
-              text = `${dec}° | ${raHours}h`;
-            }
-          } else {
-            text = `+${dec}° | ${raHours}h`;
-          }
-          // labelsCSS2DGroup.add(addLabelCSS2DObject(text, sphericalCoords));
-        }
-      }
+    for (let dec = -declinacion; dec <= declinacion; dec++) {
+      // Meridianos
+      const sphericalCoords = formulaRaDecToCartesian(radius, ra, dec);
+      points.push(sphericalCoords);
     }
 
     const geometry = new BufferGeometry().setFromPoints(points);

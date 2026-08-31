@@ -2,7 +2,7 @@ import { Color, Group } from "three";
 
 import { createEcuatorialGrid } from "./crear-grid-ecuatorial.js";
 // crea etiquetas con la info sobre RA y Dec
-import labelsCSS2DGroup from "./crear-etiquetas";
+import labelsCSS2DGroup from "./etiquetas";
 
 // variables para etiquetas
 let labels = new Group();
