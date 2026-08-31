@@ -1,11 +1,13 @@
 import { Color, Group } from "three";
 
-import labelsCSS2DGroup from "./crear-etiquetas";
 import { createEcuatorialGrid } from "./crear-grid-ecuatorial.js";
+// crea etiquetas con la info sobre RA y Dec
+import labelsCSS2DGroup from "./crear-etiquetas";
 
-let labelsSpriteGroup = new Group();
-let labelsCSS2D = new Group();
+// variables para etiquetas
+let labels = new Group();
 
+// variables para grid
 let gridRadius = 1;
 let gridMaterialColor = new Color("#4488ff");
 
@@ -16,7 +18,6 @@ let gridMaterialColor = new Color("#4488ff");
  */
 const createGrid = (type = "ecuatorial") => {
   let group = new Group();
-
   switch (type) {
     case "ecuatorial":
       // cada cuantos pasos en ascención recta se va a dibujar la lineas
@@ -34,66 +35,35 @@ const createGrid = (type = "ecuatorial") => {
       });
 
       break;
-
     default:
       // otros tipos de grid
       break;
   }
-
   return group;
 };
 
-// const piTest = () => {
-//   let conteoDec = 1;
-//   for (let dec = -Math.PI; dec <= Math.PI; dec += Math.PI / 5) {
-//     console.log("-");
-//     let conteoRA = 1;
-//     for (let ra = 0; ra < 2 * Math.PI; ra += Math.PI / 180) {
-//       console.log(
-//         "dec",
-//         conteoDec,
-//         dec,
-//         "ra",
-//         conteoRA,
-//         ra,
-//         "=",
-//         "{",
-//         "x:",
-//         formulaRaDecToCartesian(10, ra, dec).x,
-//         "y:",
-//         formulaRaDecToCartesian(10, ra, dec).y,
-//         "z:",
-//         formulaRaDecToCartesian(10, ra, dec).z,
-//         "}",
-//       );
-//       conteoRA++;
-//       // const sphericalCoords = formulaRaDecToCartesian(1, ra * 58, dec * 29);
-//     }
-//     conteoDec++;
-//   }
-//   // console.log(Math.PI * 2);
-// };
-
 /**
- * Método para crear la retícula esférica como grid
- * @param {Number} radius : radio de la esfera
+ * Crear la retícula 3D esférica como grid y las etiquetas
+ * con los grados y ángulos de las líneas
+ * @param {Number} radio : radio de la esfera
  * @param {Color} color : color para las líneas de grid
- * @returns {Group} group
+ * @returns {Group} group: con los objetos 3d
  */
 const createSphericalGrid = ({ radio = 1, color = new Color("#ff0000") }) => {
   const group = new Group();
 
+  // Grid
   gridRadius = radio;
   gridMaterialColor = color;
 
-  // Grid
   const sphericalGrid = createGrid();
   group.add(sphericalGrid);
 
   // Etiquetas
+
   // CSS2D
-  labelsCSS2D = labelsCSS2DGroup;
-  group.add(labelsCSS2D);
+  labels = labelsCSS2DGroup;
+  group.add(labels);
 
   // Sprite
   // group.add(labelsSpriteGroup);
