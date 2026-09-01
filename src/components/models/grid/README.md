@@ -1,5 +1,10 @@
 # grid
 
+
+## Planteamiento y documentación del proyecto
+
+Los modelos `mistral-small3.2:24b`, `granite4.1:30b` y `qwen3.6:27b` me ayudaron con ejemplos en código desde Ollama para el desarrollo y cálculo de una retícula geométrica en 3d mediante líneas de punto en el espacio esférico o superficie curva. Así como la consulta con a `GPT-5.6 Luna` desde duck.ai
+
 ## Conversión y convención de sistemas de coordenadas
 
 Las coordenadas ecuatoriales son un sistema de referencia astronómico. En la astronomía estándar (ICRS/J2000) o en los sistemas ecuatoriales los ángulos de dirección de las coordenadas son:
