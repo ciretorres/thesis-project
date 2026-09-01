@@ -139,19 +139,16 @@ Se ajustan las líneas de RA (0°, 90°, 180°, 270°, 360°) que están en áng
 <img src="../../../static/capturas/Screen Shot 2026-06-14 at 16.53.52.webp" width="800">
 
 ```js
-const angulosRectos = [0, 90, 180, 270, 360];
+const angulosPolares = [0, 90, 180, 270, 360];
 
-if (angulosRectos.includes(i)) {
-  for (let j = -90; j <= 90; j++) {
+// Líneas de longitud (ascensión recta)
+for (let ra = 0; ra <= 360; ra += step) {
+  const declinacion = angulosPolares.includes(ra) ? 90 : 80;
+  const points = [];
+
+  for (let dec = -declinacion; dec <= declinacion; dec++) {
+    // Meridianos
     const sphericalCoords = formulaRaDecToCartesian(radius, ra, dec);
-
-    points.push(sphericalCoords);
-  }
-} else {
-  // esto temporal que las líneas no lleguen hasta -90° o 90
-  for (let j = -70; j <= 70; j++) {
-    const sphericalCoords = formulaRaDecToCartesian(radius, ra, dec);
-
     points.push(sphericalCoords);
   }
 }
