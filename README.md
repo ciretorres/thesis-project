@@ -136,3 +136,13 @@ Debido a que se buscaba una mejor manera de hacerlo en un ambiente más abierto 
 Torres-Velasco, E. O., Laureano-Cruces, A. L., Santillán-González, A. (2021). _Visualización a través del razonamiento cualitativo: un fenómeno de astrofísica_ (Tesis de Maestría). Universidad Autónoma Metropolitana, México. [http://kali.azc.uam.mx/clc/02_publicaciones/tesis_dirigidas/Tesis_Final_ETV.pdf](http://kali.azc.uam.mx/clc/02_publicaciones/tesis_dirigidas/Tesis_Final_ETV.pdf)
 
 [Ir al inicio](#thesis-project)
+
+## Licencia
+
+Thesis Project se distribuye bajo la licencia
+[GNU General Public License, versión 3 o posterior](https://www.gnu.org/licenses/gpl-3.0.html).
+
+El código puede utilizarse, estudiarse, modificarse y redistribuirse,
+siempre que las versiones distribuidas cumplan las condiciones de la GPLv3.
+
+SPDX-License-Identifier: GPL-3.0-or-later
