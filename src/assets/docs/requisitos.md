@@ -1,4 +1,3 @@
-
 # Requerimientos
 
 - [Requerimientos](#requerimientos)
@@ -96,7 +95,6 @@ thesis-project/
 └── README.md
 ```
 
-
 ## Consejos
 
 - Comienza con un planetario básico y añade funcionalidades gradualmente.
@@ -107,13 +105,11 @@ thesis-project/
 
 [Ir arriba](#requerimientos)
 
-
 ## Contacto
 
 - Eric Torres (erictorres.velasco@gmail.com)
 
 ---
-
 
 ## Fuentes de información
 

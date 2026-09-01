@@ -34,7 +34,8 @@ dialog.className = "modal-instructivo";
 // crea el contenedor de texto
 const dialogTexto = document.createElement("div");
 dialogTexto.className = "modal-texto";
-const tileDFN = "El módulo de distancia es un fenómeno astronómico que relaciona la luminosidad de una estrella con su distancia. Este fenómeno está asociado a una ecuación que describe la diferencia de magnitudes para el brillo de un objeto celeste con su distancia | m - M = 5 log d - 5 | Esta ecuación se programa en tiempo real para expresar la causalidad en la acción e interacción de la persona usuaria que incide en el cambio de magnitudes y las magnitudes mismas."
+const tileDFN =
+  "El módulo de distancia es un fenómeno astronómico que relaciona la luminosidad de una estrella con su distancia. Este fenómeno está asociado a una ecuación que describe la diferencia de magnitudes para el brillo de un objeto celeste con su distancia | m - M = 5 log d - 5 | Esta ecuación se programa en tiempo real para expresar la causalidad en la acción e interacción de la persona usuaria que incide en el cambio de magnitudes y las magnitudes mismas.";
 dialogTexto.innerHTML = `
   <h2>¡Hola!</h2>
   <p>Esta <i>interfaz-interactiva</i> lúdica visualiza de manera pedagógica el <dfn title="${tileDFN}"><b>módulo de distancia</b></dfn>.</p>
@@ -49,29 +50,29 @@ dialogTexto.innerHTML = `
     que están más lejos y brillan más, pero que su luz disminuye conforme aumenta su distancia.
   </p>  
 `;
-dialog.append(dialogTexto)
+dialog.append(dialogTexto);
 
 // crea el contenedor de botones
 const dialogBotones = document.createElement("div");
-dialogBotones.className = "dialog-botones"
+dialogBotones.className = "dialog-botones";
 
 // crea el botón de anterior
 const buttonPrevious = document.createElement("button");
-buttonPrevious.type = "button"
-buttonPrevious.innerText = "<"
-dialogBotones.append(buttonPrevious)
+buttonPrevious.type = "button";
+buttonPrevious.innerText = "<";
+dialogBotones.append(buttonPrevious);
 buttonPrevious.hidden = true;
 // crea el botón de siguiente
 const buttonNext = document.createElement("button");
-buttonNext.type = "button"
-buttonNext.innerText = ">"
-dialogBotones.append(buttonNext)
+buttonNext.type = "button";
+buttonNext.innerText = ">";
+dialogBotones.append(buttonNext);
 // agrega contenedor al modal
-dialog.append(dialogBotones)
+dialog.append(dialogBotones);
 
-let contador = 1
-buttonNext.addEventListener('click', () => {
-  if(contador === 1) {
+let contador = 1;
+buttonNext.addEventListener("click", () => {
+  if (contador === 1) {
     dialogTexto.innerHTML = `
       <h2>¡Comienza!</h2>
       <ul><li>
@@ -92,7 +93,7 @@ buttonNext.addEventListener('click', () => {
     `;
     buttonPrevious.hidden = false;
     contador = 2;
-  } else if(contador === 2) {
+  } else if (contador === 2) {
     dialogTexto.innerHTML = `
       <h2>Créditos</h2>
       <ul>
@@ -124,12 +125,11 @@ buttonNext.addEventListener('click', () => {
     `;
     buttonNext.hidden = true;
     contador = 3;
-  }  
-  
-})
+  }
+});
 
 const dialogPrevious = () => {
-  if(contador === 3) {
+  if (contador === 3) {
     dialogTexto.innerHTML = `
       <h2>¡Comienza!</h2>
       <ul><li>
@@ -150,7 +150,7 @@ const dialogPrevious = () => {
     `;
     buttonNext.hidden = false;
     contador = 2;
-  } else if(contador === 2) {
+  } else if (contador === 2) {
     dialogTexto.innerHTML = `
       <h2>¡Hola!</h2>
       <p>Esta <i>interfaz-interactiva</i> lúdica visualiza de manera pedagógica el <dfn title="${tileDFN}"><b>módulo de distancia</b></dfn>.</p>
@@ -167,13 +167,12 @@ const dialogPrevious = () => {
     `;
     contador = 1;
     buttonPrevious.hidden = true;
-  }  
-}
+  }
+};
 
-buttonPrevious.addEventListener('click', () => {
+buttonPrevious.addEventListener("click", () => {
   dialogPrevious();
-})
-
+});
 
 mainid.append(dialog);
 

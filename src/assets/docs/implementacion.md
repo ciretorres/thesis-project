@@ -15,7 +15,6 @@
 
 ## Modelos
 
-
 ### Estrellas ⭐️
 
 `Get Star Field` Instancias o Sprites de estrellas.
@@ -208,4 +207,3 @@ const addLabelCSS2DObject = (type, pos, text, radius) => {
 ```
 
 [Ir arriba](#implementación)
-

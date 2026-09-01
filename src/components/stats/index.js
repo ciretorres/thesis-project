@@ -16,10 +16,7 @@ const addStats = (id) => {
   // estilo css
   const statsid = document.querySelector("#statsid");
   // statsid.setAttribute("style", "position:block");
-  statsid.setAttribute(
-    "style",
-    "z-index: 10000;",
-  );
+  statsid.setAttribute("style", "z-index: 10000;");
   statsid.style.position = "absolute";
   statsid.style.bottom = "0px";
   statsid.style.right = "0px";
