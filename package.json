@@ -6,6 +6,15 @@
   "publishConfig": {
     "access": "public"
   },
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview"
+  },
+  "devDependencies": {
+    "vite": "^8.2.2"
+  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/ciretorres/thesis-project.git"
