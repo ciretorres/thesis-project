@@ -1,0 +1,108 @@
+.tarjeta-info {
+  display: none;
+  position: absolute;
+  background-color: rgba(34, 0, 0, 0.8);
+  /* background-color: red; */
+  color: white;
+  top: 9px;
+  left: 18px;
+  right: 18px;
+
+  max-width: calc(-18px + 100vw);
+  /* margin: 6px; */
+  padding: 9px;
+  z-index: 99999;
+
+  .btn-cerrar {
+    position: absolute;
+    right: 9px;
+  }
+
+  table {
+    .titulo {
+      text-align: left;
+    }
+    .text-stroke {
+      /* color: lightskyblue; */
+      /* color: lightgreen; */
+      /* color: lightpink; */
+      color: red;
+      /* -webkit-text-stroke: 0.5px lightskyblue;
+      -webkit-text-fill-color: white; */
+
+      /* offset-x | offset-y | blur-radius | color */
+      /* text-shadow: 1px 1px 2px lightskyblue; */
+
+      /* color | offset-x | offset-y | blur-radius */
+      /* text-shadow: lightskyblue 1px 1px 0.5px; */
+
+      /* offset-x | offset-y | color */
+      /* text-shadow: 5px 5px lightskyblue; */
+
+      /* color | offset-x | offset-y */
+      /* text-shadow: lightskyblue 2px 5px; */
+
+      /* offset-x | offset-y
+      /* Se usan los valores predeterminados para color y blur-radius */
+      /* text-shadow: 5px 10px; */
+      /* text-shadow:
+        -1px 0 lightskyblue,
+        0 1px lightskyblue,
+        1px 0 lightskyblue,
+        0 -1px lightskyblue; */
+    }
+
+    thead {
+      float: left;
+      /* background-color: red; */
+    }
+
+    thead th {
+      display: block;
+      text-align: left;
+    }
+
+    th,
+    td {
+      /* padding: 9px 9px; */
+      padding-right: 18px;
+      padding-top: 10px;
+      padding-bottom: 9px;
+    }
+
+    td {
+      /* padding: 9px 9px; */
+      /* padding-right: 18px; */
+      padding-top: 8.2px;
+      /* padding-bottom: 9px; */
+    }
+
+    tbody {
+      float: right;
+    }
+  }
+
+  .botones-modifica-distancia {
+    position: absolute;
+    margin-top: 18px;
+    right: 0;
+
+    button {
+      width: 50px;
+      height: 50px;
+      /* font-size: 16px; */
+      /* color: white; */
+      border-radius: 50%;
+      /* background-color: transparent; */
+      /* background-color: red; */
+      /* border: none; */
+      cursor: pointer;
+    }
+  }
+}
+
+@media screen and (min-width: 500px) {
+  .tarjeta-info {
+    width: 380px;
+  }
+}

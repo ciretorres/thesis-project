@@ -5,12 +5,64 @@
   <meta charset="UTF-8" />
   <link rel="icon" type="image/svg+xml" href="/favicon.ico" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
   <title>thesis-project</title>
+  <meta name="keywords" content="three, three.js, vite, javascript, 3d, canvas, svg, html5" />
+  <meta name="description" content="Interfaz-interactiva para la visualización de un fenómeno astronómico" />
+
+  <meta name="robots" content="noindex, nofollow" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+
+  <style></style>
 </head>
 
 <body>
-  <div id="app"></div>
+  <div id="app">
+    <main id="mainid">
+
+      <span id="spanid">+</span>
+
+      <!-- <svg id="hudsvgid" xmlns="http://www.w3.org/2000/svg"></svg> -->
+      <canvas id="canvasid"></canvas>
+
+    </main>
+  </div>
+
   <script type="module" src="/src/main.js"></script>
+
+  <script type="text/javascript">
+    function greetFromHtml() { alert("Hello"); }
+  </script>
+
+  <script type="module">
+    // import * as THREE from "three";
+    // import { imprime } from './scripts/utils/imprimir.js'
+    // imprime();
+    // esto es necesario cuando es type="module"
+    // window.imprime = imprime;
+
+    // Métodos de acciones para elementos de la interfaz
+
+    // Eventos del teclado
+    document.addEventListener('keydown', function (event) {
+      // Interacción
+      if (event.key === "Escape") {
+        console.log("Escape key pressed");
+        // cierra tarjeta informativa
+        if (document.querySelector("#tarjetainfoid").style.display === "block") {
+          document.querySelector("#tarjetainfoid")
+            .style.display = "none";
+        }
+        // cierra modal informativo
+        if (document.querySelector("#dialogid").style.display === "block") {
+          document.querySelector("#dialogid")
+            .style.display = "none";
+        }
+      }
+    });
+
+
+  </script>
 </body>
 
 </html>
