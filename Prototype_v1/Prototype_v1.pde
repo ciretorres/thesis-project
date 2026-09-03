@@ -6,7 +6,7 @@ import java.io.IOException;
  Title: Interactive-Interface
  Author: Eric Torres, @ciretorres 
  Description: Prototype
- Version: v1.0.0
+ Version: v1.0.1
  Update: 03/2021
 */
 PeasyCam camera;
@@ -164,6 +164,7 @@ void draw() {
   lights();  
   
   pushMatrix();  
+  
   stars.render();  
   
   popMatrix();  

@@ -32,7 +32,12 @@
 
 ## Referencias
 
-Torres-Velasco, E. O., Laureano-Cruces, A. L., Santillán-González, A. (2021). _Visualización a través del razonamiento cualitativo: un fenómeno de astrofísica_ (Tesis de Maestría). Universidad Autónoma Metropolitana, México. Recuperada de: http://kali.azc.uam.mx/clc/02_publicaciones/tesis_dirigidas/Tesis_Final_ETV.pdf
+Torres-Velasco, E. O., Laureano-Cruces, A. L., Santillán-González, A. (2021). *Visualización a través del razonamiento cualitativo: un fenómeno de astrofísica* (Tesis de Maestría). Universidad Autónoma Metropolitana, México. Recuperada de: http://kali.azc.uam.mx/clc/02_publicaciones/tesis_dirigidas/Tesis_Final_ETV.pdf
+
+El análisis de datos se puede consultar y contribuir desde: [thesis-project/Prototype_v1/data/HipparcosMainCatalogue.ipynb](https://github.com/ciretorres/thesis-project/blob/main/Prototype_v1/data/HipparcosMainCatalogue.ipynb)
+## Notas
+
+La interfaz-interactiva funciona para plataformas Windows, Mac y Linux. Incluso se puede instalar en dispositivo Android utilizando el modo debug en el ambiente de Processing :metal:
 
 El análisis de datos se puede consultar y contribuir desde: [thesis-project/Prototype_v1/data/HipparcosMainCatalogue.ipynb](./data/HipparcosMainCatalogue.ipynb)
 
