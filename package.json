@@ -1,6 +1,6 @@
 {
   "name": "thesis-project",
-  "version": "1.0.2",
+  "version": "1.0.0-alpha.0",
   "author": "ciretorres",
   "description": "Interfaz-interactiva para la visualización de un fenómeno astronómico",
   "publishConfig": {
