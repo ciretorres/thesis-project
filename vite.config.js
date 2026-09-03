@@ -25,10 +25,10 @@ export default {
     host: true,
     // open: !isCodeSandbox, // Open if it's not a CodeSandbox
   },
-  build: {
-    outDir: "../dist",
-    emptyOutDir: true,
-    sourcemap: true,
-    // target: ["es2022", "chrome97", "edge97", "firefox96", "safari15"],
-  },
+  // build: {
+  //   outDir: "../dist",
+  //   emptyOutDir: true,
+  //   sourcemap: true,
+  //   // target: ["es2022", "chrome97", "edge97", "firefox96", "safari15"],
+  // },
 };
