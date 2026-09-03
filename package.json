@@ -1,0 +1,15 @@
+{
+  "name": "thesis-project",
+  "version": "1.0.0",
+  "description": "Interfaz-interactiva para la visualización de un fenómeno astronómico",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ciretorres/thesis-project.git"
+  },
+  "author": "ciretorres",
+  "license": "GPL-3.0-or-later",
+  "bugs": {
+    "url": "https://github.com/ciretorres/thesis-project/issues"
+  },
+  "homepage": "https://github.com/ciretorres/thesis-project#readme"
+}
