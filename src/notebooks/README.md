@@ -57,7 +57,7 @@ Al investigar resulta que en el catálogo existen varios registros en donde en v
 
 Aquí la captura con el ejemplo de la fila 1902:
 
-<img src="../../static/capturas/Screen Shot 2026-07-20 at 23.22.50.webp" width="800">
+<img src="../../public/capturas/Screen Shot 2026-07-20 at 23.22.50.webp" width="800">
 
 Por este motivo, se tomó la decisión de usar el archivo con extensión tsv.
 
