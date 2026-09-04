@@ -3,7 +3,7 @@ import { Raycaster, Vector2 } from "three";
 import {
   agregarDistancia,
   restarDistancia,
-} from "../../components/controls/decreaseVmag";
+} from "../../components/controls/changeVmag";
 
 const mainid = document.querySelector("#mainid");
 

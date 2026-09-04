@@ -25,6 +25,7 @@ import createSphericalGrid from "../components/models/grid";
 
 // events
 import resize from "./events/resize.js";
+import { selectStar } from "./events/select.js";
 
 // utils
 import cameraFollowGrid from "./utils/follow.js";
@@ -98,6 +99,9 @@ async function init() {
 
     scene.add(groupScene);
 
+    // RAYCASTER para selección de estrella o sprite
+    selectStar(camera, group); // HOVER / CLICK
+
     // render
     function render() {
       // window.requestAnimationFrame(animate);
@@ -135,12 +139,13 @@ async function init() {
       render();
 
       // // manda la posición de la cámara al html
-      // document.querySelector("#idx").innerText =
-      //   `x: ${camera.position.x.toFixed(2)}`;
-      // document.querySelector("#idy").innerText =
-      //   `y: ${camera.position.y.toFixed(2)}`;
-      // document.querySelector("#idz").innerText =
-      //   `z: ${camera.position.z.toFixed(2)}`;
+      document.querySelector("#idx").innerText =
+        `x: ${camera.position.x.toFixed(2)}`;
+      document.querySelector("#idy").innerText =
+        `y: ${camera.position.y.toFixed(2)}`;
+      document.querySelector("#idz").innerText =
+        `z: ${camera.position.z.toFixed(2)}`;
+
       stats.update();
     }
     // animate();

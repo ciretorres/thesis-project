@@ -1,6 +1,9 @@
 // estilos
 import "./style.css";
 
+// modificar distancia y brillo
+import "./components/controls/changeVmag.js";
+
 // javascript
 import "./scripts/index.js";
 
