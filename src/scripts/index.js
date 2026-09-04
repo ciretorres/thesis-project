@@ -21,9 +21,13 @@ import addLuces from "../components/lights";
 
 // Mesh / Sprite
 import { createStars } from "../components/models/estrellas";
+import createSphericalGrid from "../components/models/grid";
 
 // events
 import resize from "./events/resize.js";
+
+// utils
+import cameraFollowGrid from "./utils/follow.js";
 
 console.log("hola desde /scripts/index.js");
 
@@ -75,11 +79,22 @@ async function init() {
     const group = new Group();
     const starField = createStars({ data: data });
     group.add(starField);
+    // Grid, Reticula Ecuatorial
+    const groupReticula = new Group();
+    const grid = createSphericalGrid({ radio: 1 });
+    // variable para que el grid siga a la cámara
+    lastCameraPosition = {
+      x: camera.position.x,
+      y: camera.position.y,
+      z: camera.position.z,
+    };
+    grid.position.set(0, 0, camera.position.z);
+    groupReticula.add(grid);
 
     // Mesh y grupos para integrar a scene
     const groupScene = new Group();
-
     groupScene.add(group);
+    groupScene.add(groupReticula);
 
     scene.add(groupScene);
 
@@ -93,7 +108,7 @@ async function init() {
       // console.log(culling.length);
 
       // Actualizar la posición del grid para que siga a la cámara
-      // lastCameraPosition = cameraFollowGrid(lastCameraPosition, camera, grid);
+      lastCameraPosition = cameraFollowGrid(lastCameraPosition, camera, grid);
 
       // renderiza la escena con la cámara
       renderer.render(scene, camera);
