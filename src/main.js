@@ -1,6 +1,9 @@
 // estilos
 import "./style.css";
 
+// javascript
+import "./scripts/index.js";
+
 // import './style.css'
 // import heroImg from './assets/hero.png'
 // import javascriptLogo from './assets/javascript.svg'

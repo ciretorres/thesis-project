@@ -12,7 +12,7 @@ export default {
   // root: "src/",
   root: "./",
   // publicDir: "../static/",
-  publicDir: "../public/",
+  publicDir: "./public/",
   // base: "./",
   base: "/thesis-project/",
   resolve: {
