@@ -7,6 +7,9 @@ import "./components/controls/changeVmag.js";
 // javascript
 import "./scripts/index.js";
 
+// modal instructivo
+import "./scripts/modal/index.js";
+
 // import './style.css'
 // import heroImg from './assets/hero.png'
 // import javascriptLogo from './assets/javascript.svg'
