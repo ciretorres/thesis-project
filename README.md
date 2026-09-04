@@ -11,7 +11,10 @@ refactorización javascript
 
 Es una interfaz-interactiva lúdica que visualiza el fenómeno en astronomía del módulo de distancia.
 
-Utiliza [three.js](https://threejs.org/) y [vite](https://vite.dev/) para presentarlo en el navegador [aquí](https://ciretorres.github.io/thesis-project/).
+Utiliza [three.js](https://threejs.org/) y [vite](https://vite.dev/) para presentarlo en el navegador
+<a href="https://ciretorres.github.io/thesis-project/" target="_blank" rel="noopener noreferrer">
+aquí
+</a>.
 
 ```json
 {
