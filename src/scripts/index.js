@@ -26,7 +26,10 @@ import createSphericalGrid from "../components/models/grid";
 
 // events
 import resize from "./events/resize.js";
+// seleccionar estrella con click
 import { selectStar } from "./events/select.js";
+// mover cámara con teclado
+import moverCamaraConTeclado from "./events/move.js";
 
 // utils
 import cameraFollowGrid from "./utils/follow.js";
@@ -102,6 +105,8 @@ async function init() {
 
     // RAYCASTER para selección de estrella o sprite
     selectStar(camera, group); // HOVER / CLICK
+
+    moverCamaraConTeclado(camera);
 
     // render
     function render() {
