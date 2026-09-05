@@ -1,9 +1,11 @@
 async function fetchData() {
   let data = [];
   // const url = "../notebooks/data_clean/vizier_I_239_hip_main_10pc.json";
-  const url = `${import.meta.env.BASE_URL}data/vizier_I_239_hip_main_10pc.json`;
+  // const url = `${import.meta.env.BASE_URL}data/vizier_I_239_hip_main_10pc.json`;
   // const url = `${import.meta.env.BASE_URL}notebooks/data_clean/vizier_I_239_hip_main_10pc.json`;
   // const url = `${import.meta.env.BASE_URL}public/notebooks/data_clean/vizier_I_239_hip_main_10pc.json`;
+  const url =
+    "https://ciretorres.github.io/thesis-project/data/vizier_I_239_hip_main_10pc.json";
 
   // console.log(url);
   // const response = await fetch(url);
@@ -24,6 +26,7 @@ async function fetchData() {
 
     // parsea el cuerpo de la respuesta como JSON
     const json = await response.json();
+    console.log("datos cargados");
 
     // asigna data
     data = json.data;
