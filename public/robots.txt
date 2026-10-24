@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://ciretorres.github.io/thesis-project/sitemap.xml

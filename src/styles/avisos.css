@@ -1,0 +1,19 @@
+.aviso {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 30;
+  padding: 10px 14px;
+  background: rgba(var(--error-rgb), 0.92);
+  color: var(--blanco);
+  font:
+    14px/1.4 system-ui,
+    sans-serif;
+  text-align: center;
+}
+
+.aviso-enlace {
+  color: var(--blanco);
+  text-decoration: underline;
+}

@@ -1,0 +1,109 @@
+/* ── Sistema de color ──────────────────────────────────
+   ÚNICA fuente de verdad del color del planetario: rampa (--paso-*) por
+   perfil → tokens semánticos fijos → consumidores (CSS/JS jamás escriben
+   hex crudo; la escena 3D lee los tokens vía src/escena/paleta.js). */
+
+/* Rampa del perfil activo — fase A: valores actuales exactos. */
+:root,
+[data-perfil="azul"] {
+  --paso-50: #e8f2ff; /* texto principal */
+  --paso-100: #cfe8ff; /* texto tooltip */
+  --paso-200: #9fc4e8; /* texto secundario */
+  --paso-300: #7fb8ff; /* acento y foco */
+  --paso-400: #5bb6e8; /* etiquetas 3D */
+  --paso-500: #2a6cae; /* botón hover */
+  --paso-600: #2f6f9f; /* retícula 3D */
+  --paso-700: #1d4f80; /* botón */
+  --paso-800: #224466; /* eje del grid */
+  --paso-900: #112233; /* líneas del grid */
+  --paso-950: #0b1420; /* fondo de superficies */
+}
+
+/* Tokens semánticos — no cambian entre perfiles (solo su --paso-* de origen). */
+:root {
+  /* Superficies */
+  --fondo: var(--paso-950); /* paneles, tarjetas, píldoras, input, listas */
+  --fondo-translucido: rgba(
+    10,
+    20,
+    40,
+    0.92
+  ); /* tooltip (divergencia histórica, fase B) */
+
+  /* Tinta */
+  --texto: var(--paso-50); /* texto principal */
+  --texto-claro: var(--paso-100); /* texto del tooltip */
+  --texto-secundario: var(
+    --paso-200
+  ); /* placeholder, lupa, filas secundarias */
+
+  /* Acento */
+  --acento: var(--paso-300); /* acento sólido, focos, accent-color */
+  --acento-rgb:
+    120, 180, 255; /* tripletas de alfa (divergencia histórica, fase B) */
+
+  /* Acciones */
+  --boton: var(--paso-700); /* fondo de botones */
+  --boton-rgb: 29, 79, 128; /* alfa del hover de la lista (= paso-700 exacto) */
+  --boton-hover: var(--paso-500); /* hover/activo de botones */
+
+  /* Escena 3D */
+  --etiqueta-3d: var(--paso-400); /* etiquetas CSS2D */
+  --etiqueta-3d-opacidad: 0.7; /* suelo AA 4.5:1 sobre #000 (≈4.8:1) */
+  --reticula: var(--paso-600); /* línea punteada de la esfera celeste */
+  --resaltado: #ff2b2b; /* punto de hover/selección en 3D */
+
+  /* Aviso accesible */
+  --error-rgb: 120, 0, 0; /* banner de aviso accesible */
+
+  /* Neutros fijos (no themables en ningún perfil) */
+  --negro: #000000; /* fondo raíz y cielo 3D */
+  --negro-rgb: 0, 0, 0; /* overlays (alfa sobre el negro) */
+  --blanco: #ffffff; /* texto invertido sobre superficies saturadas */
+  --gris: #333333; /* borde del badge de stats */
+
+  /* Muestras del selector de perfiles (fijas, no themables) */
+  --muestra-azul: #7fb8ff;
+  --muestra-rojo: #ff8c7f;
+  --muestra-morado: #ca7fff;
+}
+
+/* ── Perfil rojo (H=6) — Gana a :root por especificidad (0,2,0). ── */
+:root[data-perfil="rojo"] {
+  --paso-50: #ffeae8; /* texto principal */
+  --paso-100: #ffd4cf; /* texto tooltip */
+  --paso-200: #e8a69f; /* texto secundario */
+  --paso-300: #ff8c7f; /* acento y foco */
+  --paso-400: #e8695b; /* etiquetas 3D */
+  --paso-500: #ae372a; /* botón hover */
+  --paso-600: #9f3a2f; /* retícula 3D */
+  --paso-700: #80271d; /* botón */
+  --paso-800: #662922; /* eje del grid */
+  --paso-900: #331411; /* líneas del grid */
+  --paso-950: #200d0b; /* fondo de superficies */
+
+  --fondo-translucido: rgba(32, 13, 11, 0.92); /* = --paso-950 del perfil */
+  --acento-rgb: 255, 140, 127; /* = --paso-300 (sin divergencia) */
+  --boton-rgb: 128, 39, 29; /* = --paso-700 */
+  --etiqueta-3d-opacidad: 0.82; /* suelo AA (≈4.6:1) */
+}
+
+/* ── Perfil morado (H=275) — --paso-600 ajustada a L46 (retícula ≥3:1). ── */
+:root[data-perfil="morado"] {
+  --paso-50: #f5e8ff; /* texto principal */
+  --paso-100: #ebcfff; /* texto tooltip */
+  --paso-200: #ca9fe8; /* texto secundario */
+  --paso-300: #ca7fff; /* acento y foco */
+  --paso-400: #ad5be8; /* etiquetas 3D */
+  --paso-500: #772aae; /* botón hover */
+  --paso-600: #812ebd; /* retícula 3D (L46: retícula ≥3:1 vs cielo) */
+  --paso-700: #571d80; /* botón */
+  --paso-800: #4a2266; /* eje del grid */
+  --paso-900: #251133; /* líneas del grid */
+  --paso-950: #170b20; /* fondo de superficies */
+
+  --fondo-translucido: rgba(23, 11, 32, 0.92); /* = --paso-950 del perfil */
+  --acento-rgb: 202, 127, 255; /* = --paso-300 (sin divergencia) */
+  --boton-rgb: 87, 29, 128; /* = --paso-700 */
+  --etiqueta-3d-opacidad: 0.9; /* suelo AA, justo en 4.5:1 */
+}

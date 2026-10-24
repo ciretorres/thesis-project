@@ -1,0 +1,25 @@
+/* * {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+} */
+body {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html,
+body,
+#app {
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  background: var(--negro);
+}
+
+/* Foco visible del canvas (tab): coherente con el outline del resto de UI. */
+canvas:focus-visible {
+  outline: 2px solid var(--acento);
+  outline-offset: 2px;
+}

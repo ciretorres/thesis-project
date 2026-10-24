@@ -2,15 +2,44 @@
   "name": "thesis-project",
   "version": "1.0.2",
   "author": "ciretorres",
-  "description": "Interfaz-interactiva para la visualización de un fenómeno astronómico",
+  "description": "Interfaz-interactiva para la visualización de un fenómeno astronómico.",
+  "license": "GPL-3.0-or-later",
   "publishConfig": {
     "access": "public"
   },
+  "type": "module",
+  "files": [
+    "LICENSE",
+    "package.json",
+    "README.md",
+    "src"
+  ],
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview",
+    "clean": "rm -rf node_modules && rm -f package-lock.json && npm cache clean -f && npm cache verify",
+    "reinstall": "rm -rf node_modules && rm -f package-lock.json && npm cache clean -f && npm cache verify && npm i"
+  },
+  "devDependencies": {
+    "vite": "^8.3.4"
+  },
+  "dependencies": {
+    "three": "^0.186.1"
+  },
+  "keywords": [
+    "three",
+    "three.js",
+    "vite",
+    "javascript",
+    "3d",
+    "canvas",
+    "html5"
+  ],
   "repository": {
     "type": "git",
     "url": "git+https://github.com/ciretorres/thesis-project.git"
   },
-  "license": "GPL-3.0-or-later",
   "bugs": {
     "url": "https://github.com/ciretorres/thesis-project/issues"
   },
