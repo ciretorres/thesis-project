@@ -16,6 +16,8 @@ import { crearAxesHelper } from "./reticula/ejes.js";
 import { crearAyuda } from "./ui/ayuda.js";
 import { crearPanelesStats } from "./ui/stats.js";
 
+import { crearEsferaCeleste } from "./reticula/esferaCeleste.js";
+
 const app = document.querySelector("#app");
 
 // variables globales
@@ -42,6 +44,9 @@ async function iniciar() {
 
   // AXES HELPER
   escena.add(crearAxesHelper());
+
+  // GRID, RETICULA ECUATORIAL
+  escena.add(crearEsferaCeleste());
 
   // Crea el tour de ayuda, con contenido estático y sin datos.
   // El botón «?» registra su propio listener.
