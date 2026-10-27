@@ -4,11 +4,13 @@
 
 ### ✨ Features
 
+- feat: cargando y agregando campo de estrellas desde json [`826dc18`](https://github.com/ciretorres/thesis-project/commit/826dc18)
 - feat: añadir etiquetas CSS2D de ascensión recta y declinación a la retícula [`66f48e4`](https://github.com/ciretorres/thesis-project/commit/66f48e4)
 - feat: agregando retícula con grid ecuatorial [`5635255`](https://github.com/ciretorres/thesis-project/commit/5635255)
 
 ### 📦 Other Changes
 
+- chore: agregando enlace see al renderer css2d [`0d14038`](https://github.com/ciretorres/thesis-project/commit/0d14038)
 - chore: cambiar el perfil de color por defecto a rojo [`e7b9f51`](https://github.com/ciretorres/thesis-project/commit/e7b9f51)
 
 ## [2.0.0-alpha.0](https://github.com/ciretorres/thesis-project/releases/tag/v2.0.0-alpha.0) (2026-10-23)
