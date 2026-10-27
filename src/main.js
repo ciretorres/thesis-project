@@ -8,6 +8,7 @@ import { crearEscena } from "./escena/escena.js";
 import { agregarLuces } from "./escena/luces.js";
 import {
   ajustarEnRedimensionamiento,
+  crearEtiquetasRenderer,
   inicializarRenderer,
 } from "./escena/renderer.js";
 
@@ -17,13 +18,14 @@ import { crearAyuda } from "./ui/ayuda.js";
 import { crearPanelesStats } from "./ui/stats.js";
 
 import { crearEsferaCeleste } from "./reticula/esferaCeleste.js";
+import { crearEtiquetas } from "./reticula/etiquetas.js";
 
 const app = document.querySelector("#app");
 
 // variables globales
 let camara, lastCameraPosition;
-let renderer, labelCSS2DRenderer;
-let controles, orbit, escena, stats, ayuda;
+let renderer, css2dRenderer;
+let controles, escena, panelesStats, ayuda;
 let data;
 
 // función de inicio
@@ -39,6 +41,11 @@ async function iniciar() {
   // CONTROLS
   controles = crearControles(camara, renderer.domElement);
 
+  // RENDERER CSS2D
+  // Crea el renderizador HTML para las etiquetas de la retícula celeste.
+  css2dRenderer = crearEtiquetasRenderer(app);
+  css2dRenderer.setSize(window.innerWidth, window.innerHeight);
+
   // LIGHTS
   agregarLuces(escena);
 
@@ -47,6 +54,11 @@ async function iniciar() {
 
   // GRID, RETICULA ECUATORIAL
   escena.add(crearEsferaCeleste());
+
+  // ETIQUETAS
+  // Añade las etiquetas de ascensión recta, declinación y puntos cardinales.
+  const etiquetas = crearEtiquetas();
+  escena.add(...etiquetas.objetos);
 
   // Crea el tour de ayuda, con contenido estático y sin datos.
   // El botón «?» registra su propio listener.
@@ -57,12 +69,12 @@ async function iniciar() {
   ayuda = crearAyuda();
 
   // STATS
-  const panelesStats = crearPanelesStats();
+  panelesStats = crearPanelesStats();
 
   // RESIZE
   window.addEventListener("resize", () => {
-    // ajustarEnRedimensionamiento solo cubre WebGL; el CSS2D necesita su propio setSize.
-    // css2dRenderer.setSize(window.innerWidth, window.innerHeight);
+    // Ajusta ambos renderizadores al cambiar el tamaño de la ventana.
+    css2dRenderer.setSize(window.innerWidth, window.innerHeight);
     ajustarEnRedimensionamiento(renderer, camara);
   });
 
@@ -82,6 +94,7 @@ async function iniciar() {
   const timer = new THREE.Timer();
   timer.connect(document);
 
+  // Actualiza controles, etiquetas, escena y estadísticas en cada fotograma.
   renderer.setAnimationLoop(() => {
     // Actualiza el temporizador antes de leer el delta. Así, el valor del
     // frame queda fijado aunque `getDelta()` se consulte varias veces.
@@ -91,10 +104,10 @@ async function iniciar() {
     // Actualiza las etiquetas antes de renderizar: CSS2DRenderer proyecta
     // sus posiciones durante `render()`. Si se actualizan después, se verían
     // con las posiciones del frame anterior.
-    // etiquetas.actualizar(camara, window.innerWidth, window.innerHeight);
+    etiquetas.actualizar(camara, window.innerWidth, window.innerHeight);
 
     renderer.render(escena, camara);
-    // css2dRenderer.render(escena, camara);
+    css2dRenderer.render(escena, camara);
 
     panelesStats.forEach((panel) => panel.update());
   });

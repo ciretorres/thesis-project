@@ -1,4 +1,6 @@
 import * as THREE from "three";
+import { CSS2DRenderer } from "three/addons/renderers/CSS2DRenderer.js";
+
 import { mostrarAviso } from "../ui/avisos.js";
 // import { color3d } from "./paleta.js";
 import { comprobarSoporteWebGL } from "./webgl.js";
@@ -76,4 +78,33 @@ export function ajustarEnRedimensionamiento(renderer, camara) {
   camara.updateProjectionMatrix();
 
   renderer.setSize(window.innerWidth, window.innerHeight);
+}
+
+/**
+ * Crea un CSS2DRenderer y lo monta dentro del contenedor indicado.
+ *
+ * El renderer no captura eventos del puntero, para no interferir con las
+ * interacciones del canvas. También se desactiva la ordenación de objetos
+ * para que las etiquetas no se superpongan a otros elementos de interfaz.
+ *
+ * @param {HTMLElement} contenedor - Elemento DOM donde se montará el renderer.
+ * @returns {CSS2DRenderer} Renderer CSS2D creado.
+ */
+export function crearEtiquetasRenderer(contenedor) {
+  if (!(contenedor instanceof HTMLElement)) {
+    throw new TypeError("El contenedor debe ser un elemento HTMLElement.");
+  }
+
+  const css2dRenderer = new CSS2DRenderer();
+
+  css2dRenderer.domElement.style.position = "absolute";
+  css2dRenderer.domElement.style.top = "0";
+  css2dRenderer.domElement.style.left = "0";
+  css2dRenderer.domElement.style.pointerEvents = "none";
+
+  contenedor.appendChild(css2dRenderer.domElement);
+  // Desactivado para que ninguna etiqueta pinte por encima de stats/inspector/avisos.
+  css2dRenderer.sortObjects = false;
+
+  return css2dRenderer;
 }

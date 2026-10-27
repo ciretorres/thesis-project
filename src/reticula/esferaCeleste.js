@@ -1,46 +1,11 @@
 import * as THREE from "three";
 // import { color3d, registrarAplicacion } from '../escena/paleta.js';
+import { aCoordenadasThree, aRad } from "./geometria.js";
 
-// Retícula celeste de coordenadas RA/Dec como esfera estática de fondo.
-// Radio 500: con maxDistance 300 la cámara nunca la cruza y con
-// camera.far = 2000 no se recorta.
-const RADIO = 500;
-// const RADIO = 1;
 const MERIDIANOS = 24; // AR fija, cada 15° (1 hora de AR)
 const PASO_MERIDIANO = 5; // Separación de los segmentos en Declinación en grados
 const PASO_PARALELO = 5; // Separación de los segmentos en Ascensión Recta en grados
-// const OPACIDAD_RETICULA = 0.65;
-const OPACIDAD_RETICULA = 1;
-
-/**
- * Convierte un ángulo expresado en grados a radianes.
- *
- * @param {number} grados - Ángulo que se quiere convertir.
- * @returns {number} El ángulo equivalente en radianes.
- */
-const aRad = (grados) => {
-  const radianes = (grados * Math.PI) / 180;
-  return radianes;
-};
-
-/**
- * Convierte coordenadas astronómicas RA/Dec a coordenadas cartesianas de Three.js
- * y las escala al radio de la esfera celeste.
- *
- * (cos δ · cos α, cos δ · sen α, sen δ) → three (X, Z, −Y):
- * three = (cos δ · cos α, sen δ, −cos δ · sen α).
- *
- * @param {number} alfa - Ascensión recta en radianes.
- * @param {number} delta - Declinación en radianes.
- * @returns {[number, number, number]} Coordenadas [X, Y, Z] en Three.js.
- */
-function aCoordenadasThree(alfa, delta) {
-  const x = RADIO * Math.cos(delta) * Math.cos(alfa);
-  const y = RADIO * Math.sin(delta);
-  const z = -RADIO * Math.cos(delta) * Math.sin(alfa); // signo negativo para conveniencia astronómina en Y-up
-
-  return [x, y, z];
-}
+const OPACIDAD_RETICULA = 0.65;
 
 /**
  * Genera los segmentos de los meridianos de ascensión recta.
