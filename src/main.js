@@ -20,6 +20,9 @@ import { crearPanelesStats } from "./ui/stats.js";
 import { crearEsferaCeleste } from "./reticula/esferaCeleste.js";
 import { crearEtiquetas } from "./reticula/etiquetas.js";
 
+import { cargarEstrellas } from "./estrellas/datos.js";
+import { crearCampoEstrellas } from "./estrellas/estrellas.js";
+
 const app = document.querySelector("#app");
 
 // variables globales
@@ -68,6 +71,17 @@ async function iniciar() {
   // antes del `try`, y no dentro del callback del buscador.
   ayuda = crearAyuda();
 
+  try {
+    const datos = await cargarEstrellas();
+
+    const campoEstrellas = crearCampoEstrellas(datos);
+
+    escena.add(campoEstrellas);
+  } catch (error) {
+    // La escena sigue siendo navegable (retícula y ejes) sin estrellas.
+    mostrarAviso(`No se pudieron cargar las estrellas: ${error.message}`);
+  }
+
   // STATS
   panelesStats = crearPanelesStats();
 
@@ -107,6 +121,7 @@ async function iniciar() {
     etiquetas.actualizar(camara, window.innerWidth, window.innerHeight);
 
     renderer.render(escena, camara);
+    // CSS2DRENDERER (necesario para las etiquetas CSS2DObject)
     css2dRenderer.render(escena, camara);
 
     panelesStats.forEach((panel) => panel.update());
