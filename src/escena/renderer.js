@@ -89,6 +89,7 @@ export function ajustarEnRedimensionamiento(renderer, camara) {
  *
  * @param {HTMLElement} contenedor - Elemento DOM donde se montará el renderer.
  * @returns {CSS2DRenderer} Renderer CSS2D creado.
+ * @see https://threejs.org/docs/#CSS2DRenderer
  */
 export function crearEtiquetasRenderer(contenedor) {
   if (!(contenedor instanceof HTMLElement)) {
