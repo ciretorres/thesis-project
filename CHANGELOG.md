@@ -4,7 +4,12 @@
 
 ### ✨ Features
 
+- feat: añadir etiquetas CSS2D de ascensión recta y declinación a la retícula [`66f48e4`](https://github.com/ciretorres/thesis-project/commit/66f48e4)
 - feat: agregando retícula con grid ecuatorial [`5635255`](https://github.com/ciretorres/thesis-project/commit/5635255)
+
+### 📦 Other Changes
+
+- chore: cambiar el perfil de color por defecto a rojo [`e7b9f51`](https://github.com/ciretorres/thesis-project/commit/e7b9f51)
 
 ## [2.0.0-alpha.0](https://github.com/ciretorres/thesis-project/releases/tag/v2.0.0-alpha.0) (2026-10-23)
 
