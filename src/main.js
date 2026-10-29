@@ -14,6 +14,7 @@ import {
 
 import { crearAxesHelper } from "./reticula/ejes.js";
 
+import { mostrarAviso } from "./ui/avisos.js";
 import { crearAyuda } from "./ui/ayuda.js";
 import { crearPanelesStats } from "./ui/stats.js";
 
@@ -23,6 +24,8 @@ import { crearEtiquetas } from "./reticula/etiquetas.js";
 import { cargarEstrellas } from "./estrellas/datos.js";
 import { crearCampoEstrellas } from "./estrellas/estrellas.js";
 
+import { crearInteraccion } from "./interaccion/interaccion.js";
+
 const app = document.querySelector("#app");
 
 // variables globales
@@ -30,6 +33,8 @@ let camara, lastCameraPosition;
 let renderer, css2dRenderer;
 let controles, escena, panelesStats, ayuda;
 let data;
+
+let interaccion = null;
 
 // función de inicio
 async function iniciar() {
@@ -73,10 +78,24 @@ async function iniciar() {
 
   try {
     const datos = await cargarEstrellas();
-
+    // STARS
     const campoEstrellas = crearCampoEstrellas(datos);
-
     escena.add(campoEstrellas);
+
+    // INTERACTION
+    interaccion = crearInteraccion({
+      escena,
+      camara,
+      domElement: renderer.domElement,
+      campoEstrellas,
+      datos,
+      alSeleccionar: (estrella, indice) => {
+        console.log("estrella", estrella);
+        console.log("indice", indice);
+        interaccion?.mostrarMarcador(indice);
+        /**inspector.abrir(estrella, indice)*/
+      },
+    });
   } catch (error) {
     // La escena sigue siendo navegable (retícula y ejes) sin estrellas.
     mostrarAviso(`No se pudieron cargar las estrellas: ${error.message}`);
