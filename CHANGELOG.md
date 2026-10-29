@@ -4,6 +4,7 @@
 
 ### ✨ Features
 
+- feat: añade estilos para tooltip [`b78408b`](https://github.com/ciretorres/thesis-project/commit/b78408b)
 - feat: agrega interacción hover, tooltip, alSeleccionar estrella [`be7c216`](https://github.com/ciretorres/thesis-project/commit/be7c216)
 
 ## [2.0.0-alpha.1](https://github.com/ciretorres/thesis-project/releases/tag/v2.0.0-alpha.1) (2026-10-27)
