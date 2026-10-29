@@ -1,43 +1,17 @@
 import * as THREE from "three";
 // import { color3d, registrarAplicacion } from '../escena/paleta.js';
+import { crearMarcador } from "../escena/marcador.js";
 import { crearTooltip } from "../ui/tooltip.js";
 
-// Umbral de raycast sobre Points, en unidades de escena.
+// Umbral de intersección del raycaster sobre Points, en unidades de escena.
 const UMBRAL_RAYCAST = 1.5;
 
 // Desplazamiento máximo (px) entre pointerdown y pointerup para que se
-// considere click y no arrastre de la órbita.
+// considere un gesto como click y no arrastre de la órbita.
 const UMBRAL_CLIC = 5;
 
-// Desplazamiento del tooltip respecto al cursor.
+// Desplazamiento o distancia del tooltip respecto al cursor en píxeles.
 const OFFSET_TOOLTIP = 14;
-
-/**
- * Crea una textura de anillo hueco sobre un lienzo transparente.
- *
- * El color blanco de la textura permite que el material aplique su propio
- * color mediante `material.color`, por lo que puede cambiarse en vivo.
- *
- * @returns {THREE.CanvasTexture} Textura del anillo.
- */
-function crearTexturaAnillo() {
-  const TAMANO = 128;
-  const RADIO = 54; // px; con el grosor (±7) aún cabe en el lienzo.
-  const GROSOR = 14; // px
-
-  const lienzo = document.createElement("canvas");
-  lienzo.width = TAMANO;
-  lienzo.height = TAMANO;
-
-  const contexto = lienzo.getContext("2d");
-  contexto.strokeStyle = "#ffffff";
-  contexto.lineWidth = GROSOR;
-  contexto.beginPath();
-  contexto.arc(TAMANO / 2, TAMANO / 2, RADIO, 0, Math.PI * 2);
-  contexto.stroke();
-
-  return new THREE.CanvasTexture(lienzo);
-}
 
 /**
  * Crea la interacción de hover y selección para un campo de estrellas.
@@ -72,6 +46,9 @@ export function crearInteraccion({
   // Tooltip HTML que muestra el identificador HIP.
   const tooltip = crearTooltip();
 
+  // Marcador de selección
+  const marcador = crearMarcador({ escena, campoEstrellas });
+
   const raycaster = new THREE.Raycaster();
   raycaster.params.Points.threshold = UMBRAL_RAYCAST;
 
@@ -98,37 +75,6 @@ export function crearInteraccion({
   resaltado.frustumCulled = false;
   escena.add(resaltado);
 
-  // Anillo de tamaño fijo en pantalla alrededor de la estrella seleccionada.
-  const geometriaMarcador = new THREE.BufferGeometry();
-  geometriaMarcador.setAttribute(
-    "position",
-    new THREE.BufferAttribute(new Float32Array(3), 3),
-  );
-
-  const materialMarcador = new THREE.PointsMaterial({
-    // color: color3d("--acento"),
-    color: "#ff8c7f",
-    size: 28,
-    sizeAttenuation: false,
-    map: crearTexturaAnillo(),
-    transparent: true,
-    depthTest: false,
-    depthWrite: false,
-  });
-
-  // Actualiza el color del anillo cuando cambia la paleta.
-  // registrarAplicacion((valorDe) =>
-  //   materialMarcador.color.set(valorDe("--acento")),
-  // );
-
-  const marcador = new THREE.Points(geometriaMarcador, materialMarcador);
-  marcador.visible = false;
-  marcador.frustumCulled = false;
-  escena.add(marcador);
-
-  // Índice de la estrella seleccionada (inspector abierto); o −1 sin no hay selección.
-  let indiceSeleccion = -1;
-
   /**
    * Oculta el resaltado y el tooltip del hover.
    */
@@ -143,7 +89,7 @@ export function crearInteraccion({
    *
    * @param {number} clientX Coordenada horizontal del puntero.
    * @param {number} clientY Coordenada vertical del puntero.
-   * @returns {number} Índice de la estrella o -1 si no hay ninguna.
+   * @returns {number} Índice de la estrella o `-1` si no hay ninguna.
    */
   function indiceEn(clientX, clientY) {
     const rect = domElement.getBoundingClientRect();
@@ -165,9 +111,10 @@ export function crearInteraccion({
    * @param {PointerEvent} evento Evento de movimiento del puntero.
    */
   function alMover(evento) {
-    const tooltipStyleLeft = evento.clientX + OFFSET_TOOLTIP;
-    const tooltipStyleTop = evento.clientY + OFFSET_TOOLTIP;
-    tooltip.mover(tooltipStyleLeft, tooltipStyleTop);
+    tooltip.mover(
+      evento.clientX + OFFSET_TOOLTIP,
+      evento.clientY + OFFSET_TOOLTIP,
+    );
 
     const indice = indiceEn(evento.clientX, evento.clientY);
 
@@ -181,21 +128,22 @@ export function crearInteraccion({
     indiceActual = indice;
 
     const posiciones = campoEstrellas.geometry.getAttribute("position");
+    const posicionResaltado = resaltado.geometry.getAttribute("position");
 
-    resaltado.geometry.attributes.position.setXYZ(
+    posicionResaltado.setXYZ(
       0,
       posiciones.getX(indice),
       posiciones.getY(indice),
       posiciones.getZ(indice),
     );
-    resaltado.geometry.attributes.position.needsUpdate = true;
+    posicionResaltado.needsUpdate = true;
     resaltado.visible = true;
 
     tooltip.mostrar(`HIP ${datos[indice].hip}`);
   }
 
   /**
-   * Guarda la posición inicial de un posible clic.
+   * Registra la posición inicial de un posible clic.
    * Click vs arrastre: solo selecciona si entre pointerdown y pointerup
    * el puntero se movió menos de UMBRAL_CLIC px (si no, es la órbita).
    *
@@ -203,6 +151,7 @@ export function crearInteraccion({
    */
   function alBajar(evento) {
     if (evento.button !== 0) return;
+
     origenPuntero = { x: evento.clientX, y: evento.clientY };
   }
 
@@ -236,58 +185,39 @@ export function crearInteraccion({
    *
    * @param {number} i Índice de la estrella cuya posición cambió.
    */
-  function actualizarResaltado(i) {
+  function actualizarResaltado(indice) {
     const posiciones = campoEstrellas.geometry.getAttribute("position");
 
-    if (resaltado.visible && i === indiceActual) {
-      resaltado.geometry.attributes.position.setXYZ(
+    if (resaltado.visible && indice === indiceActual) {
+      const posicionResaltado = resaltado.geometry.getAttribute("position");
+
+      posicionResaltado.setXYZ(
         0,
-        posiciones.getX(i),
-        posiciones.getY(i),
-        posiciones.getZ(i),
+        posiciones.getX(indice),
+        posiciones.getY(indice),
+        posiciones.getZ(indice),
       );
-      resaltado.geometry.attributes.position.needsUpdate = true;
+      posicionResaltado.needsUpdate = true;
     }
 
-    if (marcador.visible && i === indiceSeleccion) {
-      marcador.geometry.attributes.position.setXYZ(
-        0,
-        posiciones.getX(i),
-        posiciones.getY(i),
-        posiciones.getZ(i),
-      );
-      marcador.geometry.attributes.position.needsUpdate = true;
-    }
+    // El marcador comprueba internamente si debe seguir este índice.
+    marcador.seguir(indice);
   }
 
   /**
-   * Muestra el anillo alrededor de la estrella indicada.
+   * Muestra el marcador sobre la estrella indicada.
    *
    * @param {number} indice Índice de la estrella que se quiere marcar.
    */
   function mostrarMarcador(indice) {
-    if (indice < 0 || !datos[indice]) return;
-
-    const posiciones = campoEstrellas.geometry.getAttribute("position");
-
-    marcador.geometry.attributes.position.setXYZ(
-      0,
-      posiciones.getX(indice),
-      posiciones.getY(indice),
-      posiciones.getZ(indice),
-    );
-    marcador.geometry.attributes.position.needsUpdate = true;
-
-    indiceSeleccion = indice;
-    marcador.visible = true;
+    marcador.mostrar(indice);
   }
 
   /**
-   * Oculta o retira el anillo y limpia el índice de selección.
+   * Oculta el marcador y limpia su selección.
    */
   function ocultarMarcador() {
-    marcador.visible = false;
-    indiceSeleccion = -1;
+    marcador.ocultar();
   }
 
   domElement.addEventListener("pointermove", alMover);
