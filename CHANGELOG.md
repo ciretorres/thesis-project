@@ -1,6 +1,12 @@
 # Changelog
 
-## [Unreleased](https://github.com/ciretorres/thesis-project/compare/v2.0.0-alpha.0...HEAD)
+## [Unreleased](https://github.com/ciretorres/thesis-project/compare/v2.0.0-alpha.1...HEAD)
+
+### ✨ Features
+
+- feat: agrega interacción hover, tooltip, alSeleccionar estrella [`be7c216`](https://github.com/ciretorres/thesis-project/commit/be7c216)
+
+## [2.0.0-alpha.1](https://github.com/ciretorres/thesis-project/releases/tag/v2.0.0-alpha.1) (2026-10-27)
 
 ### ✨ Features
 
