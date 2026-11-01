@@ -239,8 +239,8 @@ export function crearInspector(
   escala.className = "inspector-escala";
   escala.hidden = true;
 
-  // const controlesEscala = crearControlesFila();
-  // escala.appendChild(controlesEscala);
+  const controlesEscala = crearControlesFila();
+  escala.appendChild(controlesEscala);
   contenedor.append(escala);
   document.body.appendChild(contenedor);
 
@@ -285,7 +285,7 @@ export function crearInspector(
             if (!radio.checked) return;
 
             escalaActiva = control.tipo;
-            // refrescarAriaControles(controlesEscala);
+            refrescarAriaControles(controlesEscala);
           });
 
           const label = document.createElement("label");

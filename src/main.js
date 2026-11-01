@@ -25,6 +25,7 @@ import { crearEtiquetas } from "./reticula/etiquetas.js";
 
 import { cargarEstrellas } from "./estrellas/datos.js";
 import { crearCampoEstrellas } from "./estrellas/estrellas.js";
+import { crearSimulacion } from "./estrellas/simulacion.js";
 
 import { crearInteraccion } from "./interaccion/interaccion.js";
 
@@ -39,6 +40,8 @@ let data;
 let marcador = null;
 
 let interaccion = null;
+
+let simulacion = null;
 
 // función de inicio
 async function iniciar() {
@@ -74,7 +77,7 @@ async function iniciar() {
 
   const inspector = crearInspector(renderer.domElement, {
     alCambiar: (indice, cambio) => {
-      /**simulacion?.aplicar(indice, cambio)*/
+      simulacion?.aplicar(indice, cambio);
     },
     alCambiarEstadoAbierto: (abierto, indice) => {
       /**inactividad.marcarActividad();*/
@@ -109,6 +112,14 @@ async function iniciar() {
       datos,
       marcador,
       alSeleccionar: (estrella, indice) => inspector.abrir(estrella, indice),
+    });
+
+    // SIMULATION
+    simulacion = crearSimulacion({
+      campoEstrellas,
+      datos,
+      alRefrescar: (estrella) => inspector.refrescar(estrella),
+      alMoverResaltado: (indice) => interaccion.actualizarResaltado(indice),
     });
   } catch (error) {
     // La escena sigue siendo navegable (retícula y ejes) sin estrellas.
