@@ -2,6 +2,7 @@ import "./styles/index.css";
 
 import * as THREE from "three";
 
+// ESCENA
 import { crearCamara } from "./escena/camara.js";
 import { crearControles } from "./escena/controles.js";
 import { crearEscena } from "./escena/escena.js";
@@ -15,18 +16,27 @@ import {
 
 import { crearAxesHelper } from "./reticula/ejes.js";
 
+// UI
 import { mostrarAviso } from "./ui/avisos.js";
 import { crearAyuda } from "./ui/ayuda.js";
+import { crearBuscador } from "./ui/buscador.js";
 import { crearInspector } from "./ui/inspector.js";
 import { crearPanelesStats } from "./ui/stats.js";
 
+// RETICULA
 import { crearEsferaCeleste } from "./reticula/esferaCeleste.js";
 import { crearEtiquetas } from "./reticula/etiquetas.js";
 
+// ESTRELLAS
 import { cargarEstrellas } from "./estrellas/datos.js";
-import { crearCampoEstrellas } from "./estrellas/estrellas.js";
+import {
+  aCoordenadasThree,
+  crearCampoEstrellas,
+} from "./estrellas/estrellas.js";
 import { crearSimulacion } from "./estrellas/simulacion.js";
 
+// INTERACCION
+import { crearEnfoque } from "./interaccion/enfoque.js";
 import { crearInteraccion } from "./interaccion/interaccion.js";
 
 const app = document.querySelector("#app");
@@ -77,10 +87,13 @@ async function iniciar() {
 
   const inspector = crearInspector(renderer.domElement, {
     alCambiar: (indice, cambio) => {
+      // cuando los controles modifiquen las magnitudes
       simulacion?.aplicar(indice, cambio);
     },
     alCambiarEstadoAbierto: (abierto, indice) => {
       /**inactividad.marcarActividad();*/
+
+      // cuando se abra o cierra el inspector
       if (abierto) marcador?.mostrar(indice);
       else marcador?.ocultar();
     },
@@ -112,6 +125,32 @@ async function iniciar() {
       datos,
       marcador,
       alSeleccionar: (estrella, indice) => inspector.abrir(estrella, indice),
+    });
+
+    // FOCUS
+    // Crea el enfoque animado y el buscador cuando la cámara, los controles y
+    // los datos ya están disponibles.
+    const enfoque = crearEnfoque({ camara, controles });
+
+    // SEARCH
+    crearBuscador({
+      datos,
+      alSeleccionar: (indice) => {
+        const estrella = datos[indice];
+
+        // Convierte las coordenadas de la estrella a un vector de Three.js.
+        const direccion = new THREE.Vector3(
+          ...aCoordenadasThree(estrella.x, estrella.y, estrella.z, 1),
+        ).normalize();
+
+        // Centra la estrella con una rotación animada de la cámara.
+        enfoque.enfocar(direccion);
+
+        /**inactividad.marcarActividad();*/
+
+        // Abre la ficha de la estrella seleccionada (igual que un click).
+        inspector.abrir(estrella, indice);
+      },
     });
 
     // SIMULATION

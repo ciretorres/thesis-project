@@ -1,0 +1,167 @@
+.buscador {
+  position: relative;
+  width: min(440px, 90vw);
+  min-height: 44px;
+  border-radius: 999px;
+  /* Hereda none del contenedor; debe ser explícito para recibir puntero. */
+  pointer-events: auto;
+}
+
+.buscador-lupa {
+  position: absolute;
+  top: 50%;
+  left: 16px;
+  transform: translateY(-50%);
+  color: var(--texto-secundario);
+  pointer-events: none;
+  z-index: 1;
+}
+
+.buscador-input {
+  width: 100%;
+  min-height: 44px; /* táctil ≥ 44 px */
+  /* 44 px izq.: hueco de la lupa; 44 px der.: hueco del × limpiar. */
+  padding: 0 44px 0 44px;
+  background: var(--fondo);
+  color: var(--texto);
+  border: 1px solid rgba(var(--acento-rgb), 0.4);
+  border-radius: 999px;
+  font:
+    14px/1.5 system-ui,
+    sans-serif;
+}
+
+.buscador-input::placeholder {
+  color: var(--texto-secundario);
+}
+
+.buscador-input:focus-visible {
+  outline: 2px solid var(--acento);
+  outline-offset: 2px;
+}
+
+/* El × nativo del input type="search" se oculta: ya existe el botón
+   .buscador-limpiar (evita el doble × dentro de la píldora). */
+.buscador-input::-webkit-search-cancel-button {
+  -webkit-appearance: none;
+  display: none;
+}
+
+.buscador-limpiar {
+  position: absolute;
+  top: 50%;
+  right: 4px;
+  transform: translateY(-50%);
+  display: flex; /* centra la cruz dentro del área táctil */
+  align-items: center;
+  justify-content: center;
+  width: 44px; /* ancho táctil cómodo dentro de la píldora */
+  min-height: 44px; /* alto táctil ≥ 44 px */
+  padding: 0;
+  background: transparent;
+  border: none;
+  border-radius: 999px;
+  color: var(--texto-secundario); /* mismo tinte que la lupa (hereda el tema) */
+  cursor: pointer;
+  z-index: 1; /* por encima del input */
+}
+
+.buscador-limpiar:hover {
+  color: var(--acento);
+}
+
+.buscador-limpiar:focus-visible {
+  color: var(--acento);
+  outline: 2px solid var(--acento); /* foco visible del sistema (coherente) */
+  outline-offset: 2px;
+}
+
+/* El display:flex de la clase vencería al [hidden] del UA → regla explícita. */
+.buscador-limpiar[hidden] {
+  display: none;
+}
+
+/* Lista de coincidencias: debajo de la píldora, por encima de la tarjeta. */
+.buscador-lista {
+  position: absolute;
+  top: calc(100% + 4px);
+  right: 0;
+  left: 0;
+  z-index: 2; /* dentro del contexto del contenedor, pinta sobre la tarjeta */
+  margin: 0;
+  padding: 0;
+  max-height: min(50vh, 320px);
+  overflow-y: auto;
+  list-style: none;
+  background: var(--fondo);
+  color: var(--texto);
+  border: 1px solid rgba(var(--acento-rgb), 0.4);
+  border-radius: 8px;
+}
+
+.buscador-lista[hidden] {
+  display: none;
+}
+
+.buscador-lista li {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  min-height: 44px; /* fila táctil ≥ 44 px */
+  padding: 6px 12px;
+  font:
+    13px/1.4 ui-monospace,
+    SFMono-Regular,
+    Menlo,
+    monospace;
+  cursor: pointer;
+}
+
+.buscador-lista li .buscador-hip {
+  color: var(--texto-secundario);
+}
+
+.buscador-lista li:hover {
+  background: rgba(var(--boton-rgb), 0.55);
+}
+
+/* Fila activa (teclado): misma tinta del botón × del inspector. */
+.buscador-lista li.activa {
+  background: var(--boton);
+}
+
+/* Mensaje "Sin resultados": mismo panel y posición que la lista. */
+.buscador-vacio {
+  position: absolute;
+  top: calc(100% + 4px);
+  right: 0;
+  left: 0;
+  z-index: 2;
+  min-height: 44px;
+  margin: 0;
+  padding: 12px;
+  background: var(--fondo);
+  color: var(--texto-secundario);
+  border: 1px solid rgba(var(--acento-rgb), 0.4);
+  border-radius: 8px;
+  font:
+    13px/1.4 system-ui,
+    sans-serif;
+}
+
+.buscador-vacio[hidden] {
+  display: none;
+}
+
+/* Región viva (role="status") con el nº de coincidencias: invisible para la
+   vista pero legible para AT (patrón clip; nunca display:none ni
+   visibility:hidden, que la descartarían). */
+.buscador-anuncio {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
