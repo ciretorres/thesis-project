@@ -6,6 +6,7 @@ import { crearCamara } from "./escena/camara.js";
 import { crearControles } from "./escena/controles.js";
 import { crearEscena } from "./escena/escena.js";
 import { agregarLuces } from "./escena/luces.js";
+import { crearMarcador } from "./escena/marcador.js";
 import {
   ajustarEnRedimensionamiento,
   crearEtiquetasRenderer,
@@ -16,6 +17,7 @@ import { crearAxesHelper } from "./reticula/ejes.js";
 
 import { mostrarAviso } from "./ui/avisos.js";
 import { crearAyuda } from "./ui/ayuda.js";
+import { crearInspector } from "./ui/inspector.js";
 import { crearPanelesStats } from "./ui/stats.js";
 
 import { crearEsferaCeleste } from "./reticula/esferaCeleste.js";
@@ -33,6 +35,8 @@ let camara, lastCameraPosition;
 let renderer, css2dRenderer;
 let controles, escena, panelesStats, ayuda;
 let data;
+
+let marcador = null;
 
 let interaccion = null;
 
@@ -68,6 +72,17 @@ async function iniciar() {
   const etiquetas = crearEtiquetas();
   escena.add(...etiquetas.objetos);
 
+  const inspector = crearInspector(renderer.domElement, {
+    alCambiar: (indice, cambio) => {
+      /**simulacion?.aplicar(indice, cambio)*/
+    },
+    alCambiarEstadoAbierto: (abierto, indice) => {
+      /**inactividad.marcarActividad();*/
+      if (abierto) marcador?.mostrar(indice);
+      else marcador?.ocultar();
+    },
+  });
+
   // Crea el tour de ayuda, con contenido estático y sin datos.
   // El botón «?» registra su propio listener.
   //
@@ -82,6 +97,9 @@ async function iniciar() {
     const campoEstrellas = crearCampoEstrellas(datos);
     escena.add(campoEstrellas);
 
+    // TARGET
+    marcador = crearMarcador({ escena, campoEstrellas });
+
     // INTERACTION
     interaccion = crearInteraccion({
       escena,
@@ -89,12 +107,8 @@ async function iniciar() {
       domElement: renderer.domElement,
       campoEstrellas,
       datos,
-      alSeleccionar: (estrella, indice) => {
-        console.log("estrella", estrella);
-        console.log("indice", indice);
-        interaccion?.mostrarMarcador(indice);
-        /**inspector.abrir(estrella, indice)*/
-      },
+      marcador,
+      alSeleccionar: (estrella, indice) => inspector.abrir(estrella, indice),
     });
   } catch (error) {
     // La escena sigue siendo navegable (retícula y ejes) sin estrellas.

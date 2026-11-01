@@ -1,6 +1,5 @@
 import * as THREE from "three";
 // import { color3d, registrarAplicacion } from '../escena/paleta.js';
-import { crearMarcador } from "../escena/marcador.js";
 import { crearTooltip } from "../ui/tooltip.js";
 
 // Umbral de intersección del raycaster sobre Points, en unidades de escena.
@@ -26,13 +25,12 @@ const OFFSET_TOOLTIP = 14;
  * @param {HTMLElement} opciones.domElement Elemento que recibe los eventos.
  * @param {THREE.Points} opciones.campoEstrellas Nube de puntos de las estrellas.
  * @param {Array<Object>} opciones.datos Datos asociados a cada estrella.
+ * @param {{ seguir: (indice: number) => void }} opciones.marcador Marcador de selección que actualiza su posición según el índice.
  * @param {Function} opciones.alSeleccionar Función llamada al seleccionar una estrella.
  *   Recibe los datos de la estrella y su índice: `(estrella, indice)`.
  * @returns {{
  *   limpiarHover: Function,
  *   actualizarResaltado: Function,
- *   mostrarMarcador: Function,
- *   ocultarMarcador: Function
  * }} Métodos para controlar el hover y el marcador de selección.
  */
 export function crearInteraccion({
@@ -41,13 +39,11 @@ export function crearInteraccion({
   domElement,
   campoEstrellas,
   datos,
+  marcador,
   alSeleccionar,
 }) {
   // Tooltip HTML que muestra el identificador HIP.
   const tooltip = crearTooltip();
-
-  // Marcador de selección
-  const marcador = crearMarcador({ escena, campoEstrellas });
 
   const raycaster = new THREE.Raycaster();
   raycaster.params.Points.threshold = UMBRAL_RAYCAST;
@@ -204,22 +200,6 @@ export function crearInteraccion({
     marcador.seguir(indice);
   }
 
-  /**
-   * Muestra el marcador sobre la estrella indicada.
-   *
-   * @param {number} indice Índice de la estrella que se quiere marcar.
-   */
-  function mostrarMarcador(indice) {
-    marcador.mostrar(indice);
-  }
-
-  /**
-   * Oculta el marcador y limpia su selección.
-   */
-  function ocultarMarcador() {
-    marcador.ocultar();
-  }
-
   domElement.addEventListener("pointermove", alMover);
   domElement.addEventListener("pointerdown", alBajar);
   domElement.addEventListener("pointerup", alSoltar);
@@ -227,7 +207,5 @@ export function crearInteraccion({
   return {
     limpiarHover,
     actualizarResaltado,
-    mostrarMarcador,
-    ocultarMarcador,
   };
 }
