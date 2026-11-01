@@ -1,6 +1,7 @@
 // Inspector de propiedades de la estrella seleccionada.
 
 import { dict_hip_completo } from "../estrellas/nombres.js";
+import { crearCruz } from "./iconos.js";
 
 /**
  * Filas del inspector: etiqueta, función para obtener el valor y, opcionalmente,
@@ -116,7 +117,7 @@ export function crearInspector(
   const botonCerrar = document.createElement("button");
   botonCerrar.type = "button";
   botonCerrar.className = "inspector-cerrar";
-  botonCerrar.textContent = "×";
+  botonCerrar.append(crearCruz({ clase: "inspector-cruz", tamano: 18 }));
   botonCerrar.setAttribute("aria-label", "Cerrar");
 
   // Orden DOM: título → tabla → × (el × es absolute y no empuja nada).

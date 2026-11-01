@@ -3,6 +3,8 @@
 // sin datos, sin persistencia y sin dependencias nuevas (apertura solo
 // manual, sin "no volver a mostrar").
 
+import { crearCruz } from "./iconos.js";
+
 // ── Plantilla de contacto (edita estos tres valores a tu gusto) ───────────
 const NOMBRE_AUTOR = "Eric.";
 // const CORREO_AUTOR = "erictorres.velasco@gmail.com";
@@ -206,7 +208,7 @@ export function crearAyuda() {
   const botonCerrar = document.createElement("button");
   botonCerrar.type = "button";
   botonCerrar.className = "ayuda-cerrar";
-  botonCerrar.textContent = "×";
+  botonCerrar.append(crearCruz({ clase: "ayuda-cruz", tamano: 18 }));
   botonCerrar.setAttribute("aria-label", "Cerrar ayuda");
 
   const titulo = document.createElement("h2");
