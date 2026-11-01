@@ -1,0 +1,174 @@
+.inspector-contenedor {
+  position: fixed;
+  inset: 0;
+  z-index: 25;
+  display: flex;
+  align-items: flex-start;
+  justify-content: flex-start;
+  flex-direction: column;
+  gap: 8px;
+  padding: 12px;
+  background: transparent;
+  pointer-events: none;
+}
+
+@media (max-width: 640px) {
+  .inspector-contenedor {
+    align-items: center;
+  }
+}
+
+.inspector-tarjeta[hidden] {
+  display: none;
+}
+
+.inspector-tarjeta {
+  position: relative;
+  pointer-events: auto;
+  width: min(440px, 90vw);
+  max-width: min(440px, 90vw);
+  max-height: 76vh; /* deja sitio para la barra −/+ externa debajo (ronda 2) */
+  overflow: auto;
+  padding: 16px 18px;
+  background: var(--fondo);
+  color: var(--texto);
+  border: 1px solid rgba(var(--acento-rgb), 0.4);
+  border-radius: 8px;
+  font:
+    14px/1.5 system-ui,
+    sans-serif;
+}
+
+.inspector-tarjeta:focus {
+  outline: 2px solid var(--acento);
+  outline-offset: 2px;
+}
+
+.inspector-tarjeta h2 {
+  margin-bottom: 10px;
+  padding-right: 52px; /* deja espacio al botón × de 44 px */
+  font-size: 18px;
+}
+
+.inspector-tabla {
+  width: 100%;
+  margin-bottom: 12px;
+  border-collapse: collapse;
+}
+
+.inspector-tabla th,
+.inspector-tabla td {
+  padding: 4px 8px;
+  border-bottom: 1px solid rgba(var(--acento-rgb), 0.15);
+  text-align: left;
+  font-weight: normal;
+}
+
+.inspector-tabla .inspector-destacada th,
+.inspector-tabla .inspector-destacada td {
+  font-weight: bold;
+}
+
+.inspector-tabla th {
+  color: var(--texto-secundario);
+  white-space: nowrap;
+}
+
+.inspector-tabla .inspector-fila-simple th {
+  color: var(--texto);
+}
+
+.inspector-tabla th label {
+  cursor: pointer;
+}
+
+.inspector-tabla th input[type="radio"] {
+  width: 18px;
+  height: 18px;
+  margin-right: 6px;
+  vertical-align: middle;
+  accent-color: var(--acento); /* mismo acento que los focos del tema */
+  cursor: pointer;
+}
+
+.inspector-tabla td {
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  word-break: break-word;
+}
+
+.inspector-tabla tr,
+.inspector-tabla td {
+  transition: background 0.4s;
+}
+
+.inspector-destello {
+  background: rgba(var(--acento-rgb), 0.18);
+}
+
+.inspector-escala {
+  display: flex;
+  align-items: center;
+  width: min(440px, 90vw);
+  justify-content: flex-end; /* el par queda pegado a su borde derecho */
+  gap: 8px;
+  pointer-events: auto;
+}
+
+.inspector-escala[hidden] {
+  display: none; /* el display:flex de la clase vencería al [hidden] del UA */
+}
+
+.inspector-cerrar {
+  position: absolute;
+  top: 8px;
+  right: 10px;
+  min-width: 44px; /* área táctil ≥ 44×44 px */
+  min-height: 44px;
+  background: transparent;
+  color: var(--blanco);
+  border: none;
+  border-radius: 4px;
+  font:
+    18px/1.2 system-ui,
+    sans-serif;
+  cursor: pointer;
+}
+
+.inspector-cerrar:hover {
+  background: rgba(var(--acento-rgb), 0.18);
+}
+
+.inspector-cerrar:focus-visible {
+  outline: 2px solid var(--acento);
+  outline-offset: 2px;
+}
+
+/* Par de botones −/+ de la barra externa (ajustan la escala activa). */
+.inspector-controles {
+  display: inline-flex;
+  gap: 4px;
+  vertical-align: middle;
+}
+
+.inspector-control {
+  min-width: 44px; /* área táctil ≥ 44×44 px (único consumidor: la barra externa) */
+  min-height: 44px;
+  padding: 0;
+  background: var(--boton);
+  color: var(--blanco);
+  border: none;
+  border-radius: 50%;
+  font:
+    13px/1.3 system-ui,
+    sans-serif;
+  cursor: pointer;
+}
+
+.inspector-control:hover {
+  background: var(--boton-hover);
+}
+
+.inspector-control:focus-visible {
+  outline: 2px solid var(--acento);
+  outline-offset: 2px;
+}
