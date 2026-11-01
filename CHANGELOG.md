@@ -4,8 +4,14 @@
 
 ### ✨ Features
 
+- feat: agregando inspector al seleccionar una estrella en interacción [`571f769`](https://github.com/ciretorres/thesis-project/commit/571f769)
 - feat: añade estilos para tooltip [`b78408b`](https://github.com/ciretorres/thesis-project/commit/b78408b)
 - feat: agrega interacción hover, tooltip, alSeleccionar estrella [`be7c216`](https://github.com/ciretorres/thesis-project/commit/be7c216)
+
+### 📦 Other Changes
+
+- refactor: inyectando marcador desde main a interacción [`dcbc0d3`](https://github.com/ciretorres/thesis-project/commit/dcbc0d3)
+- refactor: interacción para el marcador [`4c28869`](https://github.com/ciretorres/thesis-project/commit/4c28869)
 
 ## [2.0.0-alpha.1](https://github.com/ciretorres/thesis-project/releases/tag/v2.0.0-alpha.1) (2026-10-27)
 
