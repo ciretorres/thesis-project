@@ -93,8 +93,10 @@ export function crearInteraccion({
     puntero.x = ((clientX - rect.left) / rect.width) * 2 - 1;
     puntero.y = -((clientY - rect.top) / rect.height) * 2 + 1;
 
+    // Actualiza el raycaster
     raycaster.setFromCamera(puntero, camara);
 
+    // Intersecta con los objetos en la escena
     const intersecciones = raycaster.intersectObject(campoEstrellas, false);
     const indice = intersecciones.length > 0 ? intersecciones[0].index : -1;
 
