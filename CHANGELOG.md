@@ -1,15 +1,28 @@
 # Changelog
 
-## [Unreleased](https://github.com/ciretorres/thesis-project/compare/v2.0.0-alpha.1...HEAD)
+## [Unreleased](https://github.com/ciretorres/thesis-project/compare/v2.0.0-alpha.2...HEAD)
 
 ### ✨ Features
 
+- feat: añade función para seleccionar perfiles de color y design md [`82ca5c1`](https://github.com/ciretorres/thesis-project/commit/82ca5c1)
+
+## [2.0.0-alpha.2](https://github.com/ciretorres/thesis-project/releases/tag/v2.0.0-alpha.2) (2026-11-01)
+
+### ✨ Features
+
+- feat: añade buscador y enfoque de estrella [`abe4ad6`](https://github.com/ciretorres/thesis-project/commit/abe4ad6)
+- feat: agregando simulación para modificar magnitudes del módulo distancia [`a49b144`](https://github.com/ciretorres/thesis-project/commit/a49b144)
 - feat: agregando inspector al seleccionar una estrella en interacción [`571f769`](https://github.com/ciretorres/thesis-project/commit/571f769)
 - feat: añade estilos para tooltip [`b78408b`](https://github.com/ciretorres/thesis-project/commit/b78408b)
 - feat: agrega interacción hover, tooltip, alSeleccionar estrella [`be7c216`](https://github.com/ciretorres/thesis-project/commit/be7c216)
 
+### 🐛 Bug Fixes
+
+- fix: border-box global y refactor de iconos [`c3387e0`](https://github.com/ciretorres/thesis-project/commit/c3387e0)
+
 ### 📦 Other Changes
 
+- chore: añadiendo comentarios en interaccion [`379c2f3`](https://github.com/ciretorres/thesis-project/commit/379c2f3)
 - refactor: inyectando marcador desde main a interacción [`dcbc0d3`](https://github.com/ciretorres/thesis-project/commit/dcbc0d3)
 - refactor: interacción para el marcador [`4c28869`](https://github.com/ciretorres/thesis-project/commit/4c28869)
 
