@@ -57,7 +57,7 @@ Al investigar resulta que en el catálogo existen varios registros en donde en v
 
 Aquí la captura con el ejemplo de la fila 1902:
 
-<img src="../../public/capturas/Screen Shot 2026-07-20 at 23.22.50.webp" width="800">
+<img src="../docs/capturas/Screen Shot 2026-07-20 at 23.22.50.webp" width="800">
 
 Por este motivo, se tomó la decisión de usar el archivo con extensión tsv.
 
@@ -97,7 +97,7 @@ Esta columna del catálogo representa el brillo de las estrellas que vemos a sim
 
 Se eligió y utilizó la información contenida en las variables **HIP, Rahms, Dedms, Vmag, Plx, RAICRS y DEICRS**, puesto que son relevantes en el proyecto para:
 
-- Calcular la magnitud absoluta (ABSmag) con la información en las columnas de **Vmag** y **Plx**. El paralaje se convitió de mili arcos de segundo a arcos de segundo.
+- Calcular la magnitud absoluta (ABSmag) con la información en las columnas de **Vmag** y **Plx**. El paralaje se convirtió de mili arcos de segundo a arcos de segundo.
 
 ```
 M = m + 5 + 5 log π
@@ -195,13 +195,13 @@ Por lo que se decide filtrar el dataframe a estrellas menores a 1000 pársecs. E
 
 La estrella polaris se encuentra a 132 pársecs aproximadamente de distancia. Es importante para nosotros presentarla al menos en la interfaz interactiva.
 
---
+---
 
-Aquí podría concluir la primera etapa o versión del análisis. Lo siguiente podría ser mejorar o dejar más simple y un poco minimalsita el notebook principal o hacerlo en subnotebooks.
+Aquí podría concluir la primera etapa o versión del análisis. Lo siguiente podría ser mejorar o dejar más simple y un poco minimalista el notebook principal o hacerlo en subnotebooks.
 
 Para que del mismo modo convivan otros notebooks para informar sobre las preguntas y métodos que encontramos en el camino de realizar este análisis completo.
 
-Y posteriormente añadirlo a un módulo de backend con node, mongodb, django o postgress para exponer o servirlo mediante una api la información del catálogo analizada (csv, json, mysql) en un servidor local con una imagen docker.
+Y posteriormente añadirlo a un módulo de backend con una base de datos y servirla mediante una api la información del catálogo analizada (csv, json, mysql) en un servidor local con una imagen docker.
 
 ### Estadística y visualización
 
@@ -213,7 +213,7 @@ Y posteriormente añadirlo a un módulo de backend con node, mongodb, django o p
 
 [https://cdsarc.cds.unistra.fr/ftp/I/239/ReadMe](https://cdsarc.cds.unistra.fr/ftp/I/239/ReadMe)
 
---
+---
 
 [https://sci.esa.int/web/hipparcos/](https://sci.esa.int/web/hipparcos/)
 
@@ -229,7 +229,7 @@ Y posteriormente añadirlo a un módulo de backend con node, mongodb, django o p
 
 [https://sci.esa.int/web/hipparcos/-/53171-ariane-4-v33-on-launch-pad-with-hipparcos](https://sci.esa.int/web/hipparcos/-/53171-ariane-4-v33-on-launch-pad-with-hipparcos)
 
---
+---
 
 [ESASky](https://sky.esa.int/esasky/?target=128.8222097404772%2028.4734023755302&hips=DSS2+color&fov=0.09999999999998795&projection=SIN&cooframe=J2000&sci=true&lang=es)
 
@@ -243,11 +243,11 @@ Y posteriormente añadirlo a un módulo de backend con node, mongodb, django o p
 
 [https://stellarium-web.org/](https://stellarium-web.org/)
 
---
+---
 
 [https://github.com/Data-Centric-AI-Community/fg-data-profiling](https://github.com/Data-Centric-AI-Community/fg-data-profiling)
 
---
+---
 
 [https://www.kaggle.com/datasets/konivat/hipparcos-star-catalog/code](https://www.kaggle.com/datasets/konivat/hipparcos-star-catalog/code)
 
@@ -304,7 +304,7 @@ D3js
 
 [https://www.kaggle.com/code/therohk/hipparcos-stars-spherical-skymap/report](https://www.kaggle.com/code/therohk/hipparcos-stars-spherical-skymap/report)
 
---
+---
 
 [http://casu.ast.cam.ac.uk/casuadc](http://casu.ast.cam.ac.uk/casuadc)
 
