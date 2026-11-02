@@ -16,8 +16,6 @@ import {
   inicializarRenderer,
 } from "./escena/renderer.js";
 
-import { crearAxesHelper } from "./reticula/ejes.js";
-
 // UI
 import { mostrarAviso } from "./ui/avisos.js";
 import { crearAyuda } from "./ui/ayuda.js";
@@ -27,6 +25,7 @@ import { crearPerfiles } from "./ui/perfiles.js";
 import { crearPanelesStats } from "./ui/stats.js";
 
 // RETICULA
+import { crearAxesHelper } from "./reticula/ejes.js";
 import { crearEsferaCeleste } from "./reticula/esferaCeleste.js";
 import { crearEtiquetas } from "./reticula/etiquetas.js";
 
@@ -44,34 +43,22 @@ import { crearInteraccion } from "./interaccion/interaccion.js";
 
 const app = document.querySelector("#app");
 
-// variables globales
-let camara, lastCameraPosition;
-let renderer, css2dRenderer;
-let controles, escena, panelesStats, ayuda;
-let data;
-
-let marcador = null;
-
-let interaccion = null;
-
-let simulacion = null;
-
 // función de inicio
 async function iniciar() {
   // RENDERER
-  renderer = inicializarRenderer(app);
+  const renderer = inicializarRenderer(app);
   if (!renderer) return;
 
   // SCENE
-  escena = crearEscena();
+  const escena = crearEscena();
   // CAMERA
-  camara = crearCamara(window.innerWidth / window.innerHeight);
+  const camara = crearCamara(window.innerWidth / window.innerHeight);
   // CONTROLS
-  controles = crearControles(camara, renderer.domElement);
+  const controles = crearControles(camara, renderer.domElement);
 
   // RENDERER CSS2D
   // Crea el renderizador HTML para las etiquetas de la retícula celeste.
-  css2dRenderer = crearEtiquetasRenderer(app);
+  const css2dRenderer = crearEtiquetasRenderer(app);
   css2dRenderer.setSize(window.innerWidth, window.innerHeight);
 
   // LIGHTS
@@ -88,14 +75,15 @@ async function iniciar() {
   const etiquetas = crearEtiquetas();
   escena.add(...etiquetas.objetos);
 
+  let marcador = null;
+  let simulacion = null;
+
   const inspector = crearInspector(renderer.domElement, {
     alCambiar: (indice, cambio) => {
       // cuando los controles modifiquen las magnitudes
       simulacion?.aplicar(indice, cambio);
     },
     alCambiarEstadoAbierto: (abierto, indice) => {
-      /**inactividad.marcarActividad();*/
-
       // cuando se abra o cierra el inspector
       if (abierto) marcador?.mostrar(indice);
       else marcador?.ocultar();
@@ -108,7 +96,13 @@ async function iniciar() {
   // La API de ayuda sí se consume: `estaAbierto()` se usa en la consulta
   // de bloqueo del ciclo de inactividad. Por eso se crea aquí,
   // antes del `try`, y no dentro del callback del buscador.
-  ayuda = crearAyuda();
+  crearAyuda();
+
+  // STATS
+  const panelesStats = crearPanelesStats();
+
+  // Selector de perfiles de color
+  crearPerfiles({ alCambiarPerfil: () => aplicarPaleta() });
 
   try {
     const datos = await cargarEstrellas();
@@ -120,7 +114,7 @@ async function iniciar() {
     marcador = crearMarcador({ escena, campoEstrellas });
 
     // INTERACTION
-    interaccion = crearInteraccion({
+    const interaccion = crearInteraccion({
       escena,
       camara,
       domElement: renderer.domElement,
@@ -167,12 +161,6 @@ async function iniciar() {
     // La escena sigue siendo navegable (retícula y ejes) sin estrellas.
     mostrarAviso(`No se pudieron cargar las estrellas: ${error.message}`);
   }
-
-  // STATS
-  panelesStats = crearPanelesStats();
-
-  // Selector de perfiles de color
-  crearPerfiles({ alCambiarPerfil: () => aplicarPaleta() });
 
   // RESIZE
   window.addEventListener("resize", () => {
