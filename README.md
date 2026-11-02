@@ -17,6 +17,18 @@ aquí
 
 - Eric Torres (erictorres.velasco@gmail.com)
 
+## Índice
+
+- [Instalar y ejecutar la intefaz-interactiva en local](#instalación)
+- [Implementación](./docs/implementacion.md)
+  - Escena, Cámara, Renderer, Controles, Luces.
+  - [Estrellas](./docs/implementacion.md)
+  - [Retícula](./docs/implementacion.md#reticula) (Declinación, Ascensión Recta, [Etiquetas](./docs/implementacion.md#etiquetas))
+- [Análisis de datos astronómicos en notebooks](./notebooks/README.md)
+- [Three.js](#threejs)
+- [Mantemiento versión anterior](#por-qué-se-dejó-de-mantener-el-proyecto-anterior-de-processing)
+- [Referencias](#referencias)
+
 ## Instalación
 
 1. Clona el repositorio con el siguiente comando en la terminal.

@@ -68,6 +68,7 @@ export function crearCampoEstrellas(datos) {
       i * 3,
     );
 
+    // asigna color dependiendo el Vmag
     const color = colorPorVmag(estrella.vmag);
     colores.set([color.r, color.g, color.b], i * 3);
   });
