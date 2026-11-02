@@ -1,7 +1,5 @@
 # thesis-project
 
-refactorización
-
 ![](https://img.shields.io/badge/status-in%20progress-yellow)
 ![](https://img.shields.io/badge/npm%20v2.0.0-alpha.0-orange)
 ![](https://img.shields.io/badge/three-v0.186.1-blue)
@@ -12,6 +10,8 @@ JavaScript plano + [three.js](https://threejs.org/) + [Vite](https://vite.dev/),
 <a href="https://ciretorres.github.io/thesis-project/" target="_blank" rel="noopener noreferrer">
 aquí
 </a>.
+
+<img src="./docs/capturas/Screen Shot 2026-11-02 at 16.12.04.webp" width="800">
 
 ## Contacto
 
