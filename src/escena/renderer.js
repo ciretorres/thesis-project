@@ -2,7 +2,7 @@ import * as THREE from "three";
 import { CSS2DRenderer } from "three/addons/renderers/CSS2DRenderer.js";
 
 import { mostrarAviso } from "../ui/avisos.js";
-// import { color3d } from "./paleta.js";
+import { suscribirColor } from "./paleta.js";
 import { comprobarSoporteWebGL } from "./webgl.js";
 
 /**
@@ -51,8 +51,9 @@ export function crearRenderer(contenedor) {
 
   renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
   renderer.setSize(window.innerWidth, window.innerHeight);
-  // renderer.setClearColor(color3d("--negro"));
-  renderer.setClearColor("#000000");
+  // renderer.setClearColor("#000000");
+  // Registro único del clear-color aquí, en quien posee el renderer (spec 025).
+  suscribirColor((valor) => renderer.setClearColor(valor), "--negro");
 
   renderer.domElement.setAttribute(
     "aria-label",

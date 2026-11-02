@@ -1,4 +1,5 @@
 import "./styles/index.css";
+import "./styles/perfiles.css";
 
 import * as THREE from "three";
 
@@ -8,6 +9,7 @@ import { crearControles } from "./escena/controles.js";
 import { crearEscena } from "./escena/escena.js";
 import { agregarLuces } from "./escena/luces.js";
 import { crearMarcador } from "./escena/marcador.js";
+import { aplicarPaleta } from "./escena/paleta.js";
 import {
   ajustarEnRedimensionamiento,
   crearEtiquetasRenderer,
@@ -21,6 +23,7 @@ import { mostrarAviso } from "./ui/avisos.js";
 import { crearAyuda } from "./ui/ayuda.js";
 import { crearBuscador } from "./ui/buscador.js";
 import { crearInspector } from "./ui/inspector.js";
+import { crearPerfiles } from "./ui/perfiles.js";
 import { crearPanelesStats } from "./ui/stats.js";
 
 // RETICULA
@@ -167,6 +170,9 @@ async function iniciar() {
 
   // STATS
   panelesStats = crearPanelesStats();
+
+  // Selector de perfiles de color
+  crearPerfiles({ alCambiarPerfil: () => aplicarPaleta() });
 
   // RESIZE
   window.addEventListener("resize", () => {

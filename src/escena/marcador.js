@@ -1,5 +1,5 @@
 import * as THREE from "three";
-// import { color3d, registrarAplicacion } from './paleta.js';
+import { suscribirColor } from "./paleta.js";
 
 /**
  * Crea una textura transparente con forma de anillo.
@@ -54,7 +54,7 @@ export function crearMarcador({ escena, campoEstrellas }) {
 
   const materialMarcador = new THREE.PointsMaterial({
     // color: color3d("--acento"),
-    color: "#ff8c7f",
+    // color: "#ff8c7f",
     size: 28,
     sizeAttenuation: false,
     map: crearTexturaAnillo(),
@@ -64,9 +64,7 @@ export function crearMarcador({ escena, campoEstrellas }) {
   });
 
   // Actualiza el color del anillo cuando cambia la paleta.
-  // registrarAplicacion((valorDe) =>
-  //   materialMarcador.color.set(valorDe("--acento")),
-  // );
+  suscribirColor((valor) => materialMarcador.color.set(valor), "--acento");
 
   const marcador = new THREE.Points(geometriaMarcador, materialMarcador);
   marcador.visible = false;

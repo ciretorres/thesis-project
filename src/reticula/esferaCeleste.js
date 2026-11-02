@@ -1,5 +1,5 @@
 import * as THREE from "three";
-// import { color3d, registrarAplicacion } from '../escena/paleta.js';
+import { suscribirColor } from "../escena/paleta.js";
 import { aCoordenadasThree, aRad } from "./geometria.js";
 
 const MERIDIANOS = 24; // AR fija, cada 15° (1 hora de AR)
@@ -96,8 +96,8 @@ export function crearEsferaCeleste() {
   // Usa guiones o mtaerial punteado (dashSize 1.5 u, hueco 4.5 u) para dar a la retícula un aspecto discontinuo.
   // El color se recolorea en vivo vía registrarAplicacion (sin tocar opacity)
   const material = new THREE.LineDashedMaterial({
-    // color: color3d('--reticula'),
-    color: "#9f3a2f",
+    // color: color3d("--reticula"),
+    // color: "#9f3a2f",
     transparent: true,
     opacity: OPACIDAD_RETICULA,
     depthWrite: false,
@@ -105,9 +105,9 @@ export function crearEsferaCeleste() {
     gapSize: 4.5,
   });
 
-  // La actualización dinámica del color puede registrarse aquí, si se usa
-  // el sistema de paleta de la aplicación.
-  // registrarAplicacion((valorDe) => material.color.set(valorDe('--reticula')));
+  // El color se aplica por callback: valor inicial síncrono y
+  // recoloreado en vivo al cambiar de perfil.
+  suscribirColor((valor) => material.color.set(valor), "--reticula");
 
   const lineas = new THREE.LineSegments(geometria, material);
 

@@ -1,5 +1,5 @@
 import * as THREE from "three";
-// import { color3d, registrarAplicacion } from '../escena/paleta.js';
+import { suscribirColor } from "../escena/paleta.js";
 import { crearTooltip } from "../ui/tooltip.js";
 
 // Umbral de intersección del raycaster sobre Points, en unidades de escena.
@@ -61,10 +61,14 @@ export function crearInteraccion({
 
   const materialResaltado = new THREE.PointsMaterial({
     // color: color3d("--resaltado"),
-    color: "#ff2b2b",
+    // color: "#ff2b2b",
     size: 2,
     sizeAttenuation: true,
   });
+
+  // El color se aplica por callback: el token es fijo entre
+  // perfiles hoy, pero el patrón queda uniforme con el resto de la escena.
+  suscribirColor((valor) => materialResaltado.color.set(valor), "--resaltado");
 
   const resaltado = new THREE.Points(geometriaResaltado, materialResaltado);
   resaltado.visible = false;
