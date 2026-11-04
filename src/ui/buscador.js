@@ -202,7 +202,7 @@ export function crearBuscador({ datos, alSeleccionar } = {}) {
     const resultado = resultados[posicion];
     if (!resultado) return;
 
-    input.value = ""; // limpia para la siguiente búsqueda (spec 019)
+    input.value = ""; // limpia para la siguiente búsqueda
     limpiar.hidden = true; // × oculto con el campo vacío
     cerrarPanel();
     input.blur();

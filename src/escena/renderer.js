@@ -52,7 +52,7 @@ export function crearRenderer(contenedor) {
   renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
   renderer.setSize(window.innerWidth, window.innerHeight);
   // renderer.setClearColor("#000000");
-  // Registro único del clear-color aquí, en quien posee el renderer (spec 025).
+  // Registro único del clear-color aquí, en quien posee el renderer.
   suscribirColor((valor) => renderer.setClearColor(valor), "--negro");
 
   renderer.domElement.setAttribute(

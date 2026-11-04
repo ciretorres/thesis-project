@@ -96,7 +96,7 @@
   outline-offset: 2px;
 }
 
-/* Hover: filete de acento (sin transiciones: no-alcance de la spec). */
+/* Hover: filete de acento. */
 .perfiles-radio:hover .perfiles-radio-muestra {
   box-shadow: 0 0 0 1px var(--acento);
 }
