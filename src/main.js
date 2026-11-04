@@ -22,10 +22,10 @@ import { crearAyuda } from "./ui/ayuda.js";
 import { crearBuscador } from "./ui/buscador.js";
 import { crearInspector } from "./ui/inspector.js";
 import { crearPerfiles } from "./ui/perfiles.js";
-import { crearPanelesStats } from "./ui/stats.js";
+// import { crearPanelesStats } from "./ui/stats.js";
 
 // RETICULA
-import { crearAxesHelper } from "./reticula/ejes.js";
+// import { crearAxesHelper } from "./reticula/ejes.js";
 import { crearEsferaCeleste } from "./reticula/esferaCeleste.js";
 import { crearEtiquetas } from "./reticula/etiquetas.js";
 
@@ -65,7 +65,7 @@ async function iniciar() {
   agregarLuces(escena);
 
   // AXES HELPER
-  escena.add(crearAxesHelper());
+  // escena.add(crearAxesHelper());
 
   // GRID, RETICULA ECUATORIAL
   escena.add(crearEsferaCeleste());
@@ -99,7 +99,7 @@ async function iniciar() {
   crearAyuda();
 
   // STATS
-  const panelesStats = crearPanelesStats();
+  // const panelesStats = crearPanelesStats();
 
   // Selector de perfiles de color
   crearPerfiles({ alCambiarPerfil: () => aplicarPaleta() });
@@ -201,7 +201,7 @@ async function iniciar() {
     // CSS2DRENDERER (necesario para las etiquetas CSS2DObject)
     css2dRenderer.render(escena, camara);
 
-    panelesStats.forEach((panel) => panel.update());
+    // panelesStats.forEach((panel) => panel.update());
   });
 }
 
