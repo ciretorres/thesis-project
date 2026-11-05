@@ -9,19 +9,42 @@ import { suscribirColor } from "./paleta.js";
  *
  * @returns {THREE.CanvasTexture} Textura del anillo.
  */
-function crearTexturaAnillo() {
+function crearTexturaReticula() {
   const TAMANO = 128;
-  const RADIO = 54; // px; con el grosor (±7) aún cabe en el lienzo.
-  const GROSOR = 14; // px
+  const RADIO = 40; // centro del trazo del aro (cubre r = 37…43)
+  const GROSOR = 6; // trazo del aro en píxeles
+  const LONGITUD_MARCA = 18; // longitud radial de cada marca
+  const ANCHO_MARCA = 6; // ancho tangencial (= GROSOR del aro)
+  const SOLAPE = 1; // la marca arranca 1 u dentro del radio del aro
 
   const lienzo = document.createElement("canvas");
   lienzo.width = TAMANO;
   lienzo.height = TAMANO;
   const contexto = lienzo.getContext("2d");
+  const centro = TAMANO / 2; // 64
+  const inicio = RADIO - SOLAPE; // 39: arranque de la marca
+  const fin = inicio + LONGITUD_MARCA; // 57: extremo exterior
+
   contexto.strokeStyle = "#ffffff";
+  contexto.lineCap = "butt"; // extremos rectos, aspecto HUD
+
+  // Aro fino.
   contexto.lineWidth = GROSOR;
   contexto.beginPath();
-  contexto.arc(TAMANO / 2, TAMANO / 2, RADIO, 0, Math.PI * 2);
+  contexto.arc(centro, centro, RADIO, 0, Math.PI * 2);
+  contexto.stroke();
+
+  // 4 marcas cardinales pegadas al aro (arriba, derecha, abajo, izquierda).
+  contexto.lineWidth = ANCHO_MARCA;
+  contexto.beginPath();
+  contexto.moveTo(centro, centro - inicio); // arriba:    (64, 25)
+  contexto.lineTo(centro, centro - fin); //              → (64, 7)
+  contexto.moveTo(centro + inicio, centro); // derecha:  (103, 64)
+  contexto.lineTo(centro + fin, centro); //              → (121, 64)
+  contexto.moveTo(centro, centro + inicio); // abajo:    (64, 103)
+  contexto.lineTo(centro, centro + fin); //              → (64, 121)
+  contexto.moveTo(centro - inicio, centro); // izquierda: (25, 64)
+  contexto.lineTo(centro - fin, centro); //              → (7, 64)
   contexto.stroke();
 
   return new THREE.CanvasTexture(lienzo);
@@ -53,11 +76,9 @@ export function crearMarcador({ escena, campoEstrellas }) {
   );
 
   const materialMarcador = new THREE.PointsMaterial({
-    // color: color3d("--acento"),
-    // color: "#ff8c7f",
-    size: 28,
+    size: 40,
     sizeAttenuation: false,
-    map: crearTexturaAnillo(),
+    map: crearTexturaReticula(),
     transparent: true,
     depthTest: false,
     depthWrite: false,
