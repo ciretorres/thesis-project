@@ -11,7 +11,7 @@ JavaScript plano + [three.js](https://threejs.org/) + [Vite](https://vite.dev/),
 aquí
 </a>.
 
-<img src="./docs/capturas/Screen Shot 2026-11-02 at 16.12.04.webp" width="800">
+<img src="./docs/capturas/Screen Shot 2026-11-09 at 12.26.22.webp" width="800">
 
 ## Contacto
 
