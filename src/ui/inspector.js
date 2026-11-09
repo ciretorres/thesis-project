@@ -1,6 +1,7 @@
 // Inspector de propiedades de la estrella seleccionada.
 
 import { dict_hip_completo } from "../estrellas/nombres.js";
+import { crearHoja } from "./hoja.js";
 import { crearCruz } from "./iconos.js";
 
 /**
@@ -75,24 +76,31 @@ function formatearDec(dedms) {
 }
 
 /**
- * Crea un inspector para mostrar y modificar propiedades de una estrella.
+ * Crea el inspector de propiedades de una estrella.
  *
- * @param {HTMLCanvasElement} canvas Canvas al que se devuelve el foco al cerrar.
- * @param {object} [opciones] Funciones de notificación del inspector.
- * @param {(indice: number, cambio: {tipo: string, delta: number}) => void}
- * [opciones.alCambiar] Se llama cuando cambia la escala activa.
- * @param {(abierto: boolean, indice: number) => void}
- * [opciones.alCambiarEstadoAbierto] Se llama al abrir o cerrar el inspector.
+ * @param {HTMLElement} canvas Elemento al que se devuelve el foco al cerrar.
+ * @param {Object} [opciones] Callbacks para comunicar cambios y gestos.
+ * @param {(indice: number, cambio: {tipo: string, delta: number}) => void} [opciones.alCambiar]
+ * Recibe los cambios aplicados a la escala de la estrella seleccionada.
+ * @param {(abierto: boolean, indice: number) => void} [opciones.alCambiarEstadoAbierto]
+ * Recibe los cambios de apertura y cierre del inspector.
+ * @param {(datos: {ndcY: number, distanciaEstrella: number|null}) => void} [opciones.alRecentrar]
+ * Se llama al expandir o colapsar la hoja en móvil.
+ * @param {() => void} [opciones.alIniciarGestoHoja] Se llama al iniciar un gesto de arrastre.
  * @returns {{
  *   abrir: (estrella: object, indice: number) => void,
  *   cerrar: () => void,
+ *   cerrarSiHoja: () => void,
  *   refrescar: (estrella: object) => void,
- *   estaAbierto: () => boolean
- * }} Métodos para controlar el inspector.
+ *   estaAbierto: () => boolean,
+ *   ndcY: (altoVisible?: number) => number,
+ *   estaExpandida: () => boolean,
+ *   estadoHoja: () => string|null
+ * }} API pública del inspector.
  */
 export function crearInspector(
   canvas,
-  { alCambiar, alCambiarEstadoAbierto } = {},
+  { alCambiar, alCambiarEstadoAbierto, alRecentrar, alIniciarGestoHoja } = {},
 ) {
   const contenedor = document.createElement("div");
   contenedor.className = "inspector-contenedor";
@@ -114,14 +122,35 @@ export function crearInspector(
   const cuerpo = document.createElement("tbody");
   tabla.appendChild(cuerpo);
 
+  const cabecera = document.createElement("div");
+  cabecera.className = "inspector-cabecera";
+
+  const cuerpoHoja = document.createElement("div");
+  cuerpoHoja.id = "inspector-cuerpo";
+  cuerpoHoja.className = "inspector-cuerpo";
+  cuerpoHoja.appendChild(tabla);
+
+  // Tirador de la hoja móvil: oculto en escritorio por CSS (display: none).
+  const tirador = document.createElement("button");
+  tirador.type = "button";
+  tirador.className = "inspector-tirador";
+  tirador.setAttribute(
+    "aria-label",
+    "Mostrar u ocultar la ficha de la estrella",
+  );
+  tirador.setAttribute("aria-controls", "inspector-cuerpo");
+  tirador.setAttribute("aria-expanded", "false");
+
   const botonCerrar = document.createElement("button");
   botonCerrar.type = "button";
   botonCerrar.className = "inspector-cerrar";
   botonCerrar.append(crearCruz({ clase: "inspector-cruz", tamano: 18 }));
   botonCerrar.setAttribute("aria-label", "Cerrar");
 
-  // Orden DOM: título → tabla → × (el × es absolute y no empuja nada).
-  tarjeta.append(titulo, tabla, botonCerrar);
+  // Orden DOM: cabecera (tirador + título) → cuerpo (tabla) → × (el × es
+  // absolute en escritorio y no empuja nada; en móvil pasa a la cabecera).
+  cabecera.append(tirador, titulo);
+  tarjeta.append(cabecera, cuerpoHoja, botonCerrar);
   contenedor.appendChild(tarjeta);
 
   // Permite devolver el foco al canvas al cerrar el inspector.
@@ -132,6 +161,7 @@ export function crearInspector(
   let escalaActiva = "distancia"; // Escala activa del par −/+ externo y del teclado.
   let timerDestello = null; // Destello (~400 ms) de la fila de la escala activa al emitir un cambio.
   let elementosDestello = []; // Todos los elementos iluminados por el destello actual.
+  let estrellaActual = null; // Referencia a los datos de la estrella seleccionada.
 
   /** Notifica al consumidor (simulación) un cambio de escala, si hay una estrella seleccionada. */
   function emitirCambio(cambio) {
@@ -245,6 +275,84 @@ export function crearInspector(
   contenedor.append(escala);
   document.body.appendChild(contenedor);
 
+  const mq = window.matchMedia("(max-width: 640px)");
+  const esMovil = () => mq.matches;
+
+  const hoja = crearHoja({
+    tarjeta,
+    cabecera,
+    cuerpo: cuerpoHoja,
+    tirador,
+    alCambiar: ({ motivo, altoVisible: alto }) => {
+      // Solo los commits (expandir/colapsar) recentran; apertura, medición y cierre no mueven la cámara.
+      if (motivo === "commit") {
+        alRecentrar?.({
+          ndcY: calcularNdcY(alto),
+          distanciaEstrella: estrellaActual?.distancia ?? null,
+        });
+      }
+    },
+    alIniciarGesto: () => alIniciarGestoHoja?.(),
+  });
+
+  /**
+   * Calcula la posición vertical NDC para centrar la estrella en el espacio
+   * disponible cuando la hoja está abierta en móvil.
+   * @param {number} alto Altura visible de la hoja, en píxeles.
+   * @returns {number} Posición vertical limitada al intervalo [-1, 1].
+   */
+  function calcularNdcY(alto) {
+    if (!esMovil() || !abierto) return 0;
+    const altoVentana = window.innerHeight || 1;
+    const buscador = document.querySelector(".buscador");
+    const altoSuperior = buscador ? buscador.getBoundingClientRect().bottom : 0;
+    const valor = (alto - altoSuperior) / altoVentana;
+    return Math.max(-1, Math.min(1, valor));
+  }
+
+  /**
+   * Reubica los controles según el breakpoint y activa o desactiva la hoja móvil.
+   * Conserva el foco cuando los nodos cambian de ubicación.
+   */
+  function aplicarModo() {
+    if (esMovil()) {
+      const focoEnCerrar = document.activeElement === botonCerrar;
+
+      // En móvil, el botón de cierre y los controles se colocan en la cabecera.
+      cabecera.append(escala, botonCerrar);
+      hoja.activar();
+
+      if (abierto) {
+        hoja.abrir({ conservar: false });
+        if (focoEnCerrar || document.activeElement === tarjeta) {
+          tirador.focus();
+        }
+      }
+    } else {
+      const focoEnCabecera = cabecera.contains(document.activeElement);
+
+      hoja.desactivar();
+      contenedor.append(escala);
+      tarjeta.append(botonCerrar);
+      delete tarjeta.dataset.hoja;
+
+      // Restaura el contenido en el árbol de accesibilidad.
+      cuerpoHoja.hidden = false;
+
+      if (focoEnCabecera || document.activeElement === tarjeta) {
+        tarjeta.focus();
+      }
+    }
+  }
+
+  mq.addEventListener("change", aplicarModo);
+  aplicarModo();
+
+  // En móvil, el resize vuelve a medir la hoja sin recentrar la cámara.
+  window.addEventListener("resize", () => {
+    if (esMovil()) hoja.reprocesar();
+  });
+
   /**
    * Renderiza el título y las filas con los datos de una estrella.
    *
@@ -317,25 +425,49 @@ export function crearInspector(
    */
   function abrir(estrella, i) {
     indice = i;
+    estrellaActual = estrella;
+
     renderizar(estrella);
+    // La tarjeta debe estar visible para que la hoja pueda medirla.
     tarjeta.hidden = false;
     escala.hidden = false;
+
+    const abiertoAnterior = abierto;
     abierto = true;
-    tarjeta.focus();
+
+    if (esMovil()) {
+      hoja.abrir({ conservar: abiertoAnterior });
+      tirador.focus();
+    } else {
+      tarjeta.focus();
+    }
 
     emitirEstadoAbierto(true, indice);
   }
 
-  /** Cierra el inspector y devuelve el foco al canvas. */
+  /**
+   * Cierra el inspector solo si está en modo móvil.
+   * Se usa, por ejemplo, al tocar una zona vacía del cielo.
+   */
+  function cerrarSiHoja() {
+    if (esMovil()) cerrar();
+  }
+
+  /** Cierra el inspector, limpia la selección y devuelve el foco al canvas. */
+
   function cerrar() {
     if (!abierto) return;
 
     abierto = false;
     indice = -1;
+
+    // La hoja limpia sus estilos antes de ocultar la tarjeta.
+    if (esMovil()) hoja.cerrar();
     tarjeta.hidden = true;
     escala.hidden = true;
-    canvas.focus();
+    estrellaActual = null;
 
+    canvas.focus();
     // La guarda `if (!abierto) return` de arriba evita dobles emisiones;
     // Escape pasa por cerrar() → queda cubierto.
     emitirEstadoAbierto(false, -1);
@@ -355,6 +487,10 @@ export function crearInspector(
 
   document.addEventListener("keydown", (evento) => {
     if (evento.key === "Escape" && abierto) {
+      if (esMovil() && hoja.estaExpandida()) {
+        hoja.colapsar({ enfocar: true });
+        return;
+      }
       cerrar();
       return;
     }
@@ -370,5 +506,14 @@ export function crearInspector(
     emitirEscala(signo);
   });
 
-  return { abrir, cerrar, refrescar, estaAbierto: () => abierto };
+  return {
+    abrir,
+    cerrar,
+    cerrarSiHoja,
+    refrescar,
+    estaAbierto: () => abierto,
+    ndcY: (altoVisible = hoja.altoVisible()) => calcularNdcY(altoVisible),
+    estaExpandida: () => hoja.estaExpandida(),
+    estadoHoja: () => (hoja.activa() ? hoja.estado() : null),
+  };
 }

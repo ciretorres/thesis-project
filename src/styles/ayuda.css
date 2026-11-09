@@ -6,7 +6,7 @@
    sobre la ventana. Su tamaño proporciona un área táctil de 44 × 44 px. */
 .ayuda-disparador {
   position: fixed;
-  bottom: 16px;
+  bottom: calc(16px + var(--hoja-alto-visible, 0px));
   left: 16px;
   display: flex; /* centra el «?» dentro del círculo */
   align-items: center;

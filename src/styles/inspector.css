@@ -22,6 +22,17 @@
   display: none;
 }
 
+.inspector-cabecera,
+.inspector-cuerpo {
+  display: contents;
+}
+
+/* El tirador solo existe visualmente en móvil (display: none lo saca del
+   foco y del árbol de accesibilidad en escritorio). */
+.inspector-tirador {
+  display: none;
+}
+
 .inspector-tarjeta {
   position: relative;
   pointer-events: auto;
@@ -171,4 +182,129 @@
 .inspector-control:focus-visible {
   outline: 2px solid var(--acento);
   outline-offset: 2px;
+}
+
+/* ── hoja inferior en móvil ────────────────────────────────────
+   La tarjeta pasa a hoja fija de ancho completo anclada abajo; el alto
+   visible lo escribe src/ui/hoja.js en px y publica `--hoja-alto-visible`
+   en documentElement para los flotantes. En escritorio no cambia nada. */
+@media (max-width: 640px) {
+  .inspector-tarjeta {
+    position: fixed;
+    inset: auto 0 0 0;
+    width: 100%;
+    max-width: none;
+    max-height: 72vh; /* fallback sin dvh */
+    max-height: 72dvh;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    padding: 0 0 env(safe-area-inset-bottom, 0px);
+    border: none;
+    border-radius: 16px 16px 0 0;
+    box-shadow: 0 -8px 24px rgba(var(--negro-rgb), 0.55);
+    /* Solo la sombra anima (nunca el height, que escribe JS por frame). */
+    transition: box-shadow 180ms ease;
+  }
+
+  .inspector-tarjeta[data-arrastrando] {
+    box-shadow: 0 -16px 40px rgba(var(--negro-rgb), 0.72);
+  }
+
+  .inspector-tarjeta[data-arrastrando] .inspector-tirador::before {
+    width: 48px;
+    background: var(--texto);
+  }
+
+  .inspector-cabecera {
+    display: grid;
+    grid-template-areas:
+      "tirador tirador"
+      "titulo escala";
+    grid-template-columns: minmax(0, 1fr) auto;
+    gap: 0 6px;
+    padding: 8px 12px 6px;
+    touch-action: none;
+    user-select: none;
+    cursor: grab;
+    flex: 0 0 auto;
+  }
+
+  .inspector-tirador {
+    display: flex;
+    grid-area: tirador;
+    justify-self: center;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    width: 44px;
+    height: 28px;
+    padding: 0;
+    background: transparent;
+    border: none;
+    border-radius: 999px;
+    cursor: pointer;
+  }
+
+  /* Área táctil de 44×44 sin ocupar layout (caja visual de 28 px de alto). */
+  .inspector-tirador::after {
+    content: "";
+    position: absolute;
+    inset: -8px 0;
+  }
+
+  .inspector-tirador::before {
+    content: "";
+    display: block;
+    width: 40px;
+    height: 4px;
+    border-radius: 999px;
+    background: var(--texto-secundario);
+  }
+
+  .inspector-tirador:focus-visible {
+    outline: 2px solid var(--acento);
+    outline-offset: 2px;
+  }
+
+  .inspector-cabecera h2 {
+    grid-area: titulo;
+    margin: 0;
+    padding-right: 0;
+    font-size: 15px;
+    line-height: 1.3;
+    overflow-wrap: anywhere; /* el título puede envolver */
+  }
+
+  .inspector-escala {
+    grid-area: escala;
+    width: auto; /* sobreescribe min(440px, 90vw) */
+    justify-content: flex-end;
+  }
+
+  .inspector-cerrar {
+    display: none;
+  }
+
+  /* Cuerpo con scroll interno; el touch-action:none no se aplica aquí. */
+  .inspector-cuerpo {
+    display: block;
+    flex: 1 1 auto;
+    min-height: 0;
+    overflow-y: auto;
+    padding: 0 18px 16px;
+  }
+
+  /* El display:block de arriba vencería al [hidden] del UA. */
+  .inspector-cuerpo[hidden] {
+    display: none;
+  }
+}
+
+/* Sin animación de sombra con movimiento reducido (solo móvil: en escritorio
+   la tarjeta no tiene transición alguna). */
+@media (max-width: 640px) and (prefers-reduced-motion: reduce) {
+  .inspector-tarjeta {
+    transition: none;
+  }
 }

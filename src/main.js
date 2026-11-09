@@ -34,6 +34,7 @@ import { cargarEstrellas } from "./estrellas/datos.js";
 import {
   aCoordenadasThree,
   crearCampoEstrellas,
+  ESCALA,
 } from "./estrellas/estrellas.js";
 import { crearSimulacion } from "./estrellas/simulacion.js";
 
@@ -55,6 +56,9 @@ async function iniciar() {
   const camara = crearCamara(window.innerWidth / window.innerHeight);
   // CONTROLS
   const controles = crearControles(camara, renderer.domElement);
+  // FOCUS
+  // Crea el enfoque animado y el buscador cuando la cámara, los controles.
+  const enfoque = crearEnfoque({ camara, controles });
 
   // RENDERER CSS2D
   // Crea el renderizador HTML para las etiquetas de la retícula celeste.
@@ -85,9 +89,22 @@ async function iniciar() {
     },
     alCambiarEstadoAbierto: (abierto, indice) => {
       // cuando se abra o cierra el inspector
-      if (abierto) marcador?.mostrar(indice);
-      else marcador?.ocultar();
+      if (abierto) {
+        marcador?.mostrar(indice);
+      } else {
+        marcador?.ocultar();
+        enfoque.limpiar();
+      }
     },
+    alRecentrar: ({ ndcY, distanciaEstrella }) => {
+      enfoque.recentrar(ndcY, {
+        duracion: 300,
+        distancia:
+          distanciaEstrella == null ? undefined : distanciaEstrella * ESCALA,
+      });
+    },
+    // Un gesto nuevo sobre la hoja cancela el recentrado en curso.
+    alIniciarGestoHoja: () => enfoque.cancelar(),
   });
 
   // Crea el tour de ayuda, con contenido estático y sin datos.
@@ -121,13 +138,12 @@ async function iniciar() {
       campoEstrellas,
       datos,
       marcador,
-      alSeleccionar: (estrella, indice) => inspector.abrir(estrella, indice),
+      alSeleccionar: (estrella, indice) => {
+        enfoque.limpiar();
+        inspector.abrir(estrella, indice);
+      },
+      alHacerClicEnVacio: () => inspector.cerrarSiHoja(),
     });
-
-    // FOCUS
-    // Crea el enfoque animado y el buscador cuando la cámara, los controles y
-    // los datos ya están disponibles.
-    const enfoque = crearEnfoque({ camara, controles });
 
     // SEARCH
     crearBuscador({
@@ -140,13 +156,16 @@ async function iniciar() {
           ...aCoordenadasThree(estrella.x, estrella.y, estrella.z, 1),
         ).normalize();
 
-        // Centra la estrella con una rotación animada de la cámara.
-        enfoque.enfocar(direccion);
-
         /**inactividad.marcarActividad();*/
 
         // Abre la ficha de la estrella seleccionada (igual que un click).
         inspector.abrir(estrella, indice);
+
+        // Centra la estrella con una rotación animada de la cámara.
+        enfoque.enfocar(direccion, {
+          ndcY: inspector.ndcY(),
+          distancia: estrella.distancia * ESCALA,
+        });
       },
     });
 
