@@ -1,10 +1,38 @@
 # Changelog
 
-## [Unreleased](https://github.com/ciretorres/thesis-project/compare/v2.0.0-alpha.2...HEAD)
+## [Unreleased](https://github.com/ciretorres/thesis-project/compare/v2.0.0-alpha.3...HEAD)
+
+## [2.0.0-alpha.3](https://github.com/ciretorres/thesis-project/releases/tag/v2.0.0-alpha.3) (2026-11-09)
 
 ### ✨ Features
 
+- feat: subiendo video demo de 15 segundos [`1fed5a5`](https://github.com/ciretorres/thesis-project/commit/1fed5a5)
+- feat: ajustando inspector en móvil [`6f756b1`](https://github.com/ciretorres/thesis-project/commit/6f756b1)
+- feat: agregando imagen para meta og en index html [`2450ba0`](https://github.com/ciretorres/thesis-project/commit/2450ba0)
+- feat: subiendo video a media [`156166c`](https://github.com/ciretorres/thesis-project/commit/156166c)
+- feat: subiendo presentación media [`6cf8c69`](https://github.com/ciretorres/thesis-project/commit/6cf8c69)
+- feat: subiendo tsv de vizier a data raw [`3a73745`](https://github.com/ciretorres/thesis-project/commit/3a73745)
+- feat: subiendo csv de vizier a data raw [`53eeadd`](https://github.com/ciretorres/thesis-project/commit/53eeadd)
+- feat: subiendo hip main dat a  data raw [`0357c36`](https://github.com/ciretorres/thesis-project/commit/0357c36)
+- feat: subiendo tsv con limpiezaNanPlx a data clean [`ff2f906`](https://github.com/ciretorres/thesis-project/commit/ff2f906)
+- feat: subiendo data clean [`e7b5a6e`](https://github.com/ciretorres/thesis-project/commit/e7b5a6e)
+- feat: subiendo hip profile short [`0a63d36`](https://github.com/ciretorres/thesis-project/commit/0a63d36)
+- feat: subiendo notebooks [`8c79882`](https://github.com/ciretorres/thesis-project/commit/8c79882)
 - feat: añade función para seleccionar perfiles de color y design md [`82ca5c1`](https://github.com/ciretorres/thesis-project/commit/82ca5c1)
+
+### 🐛 Bug Fixes
+
+- fix: capturas en readme y public [`c123d8f`](https://github.com/ciretorres/thesis-project/commit/c123d8f)
+
+### 📦 Other Changes
+
+- refactor: nuevo estilo para marcador [`e6dc137`](https://github.com/ciretorres/thesis-project/commit/e6dc137)
+- docs: removiendo cosas de specs [`fee7436`](https://github.com/ciretorres/thesis-project/commit/fee7436)
+- chore: ocultando axesHelper y panelStats [`11966db`](https://github.com/ciretorres/thesis-project/commit/11966db)
+- docs: actualizando documentación con capturas y enlaces [`86e0bbd`](https://github.com/ciretorres/thesis-project/commit/86e0bbd)
+- docs: actualizando readme con captura [`456834d`](https://github.com/ciretorres/thesis-project/commit/456834d)
+- chore: revisión del readme en notebooks y captura [`7ba7b29`](https://github.com/ciretorres/thesis-project/commit/7ba7b29)
+- chore: revisión de main y vite config [`232d12c`](https://github.com/ciretorres/thesis-project/commit/232d12c)
 
 ## [2.0.0-alpha.2](https://github.com/ciretorres/thesis-project/releases/tag/v2.0.0-alpha.2) (2026-11-01)
 
