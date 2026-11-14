@@ -3,7 +3,7 @@ name: Deploy refactor to GitHub Pages
 on:
   push:
     branches:
-      - refactor
+      - develop
   workflow_dispatch:
 
 permissions:
