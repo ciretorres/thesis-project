@@ -1,9 +1,12 @@
 # thesis-project
 
-![](https://img.shields.io/badge/status-in%20progress-yellow)
-![](https://img.shields.io/badge/npm%20v2.0.0-alpha.0-orange)
-![](https://img.shields.io/badge/three-v0.186.1-blue)
-![](https://img.shields.io/badge/vite-v8.3.4-green)
+![](https://img.shields.io/badge/npm-v2.0.0-orange)
+![Three.js](https://img.shields.io/badge/Three.js-0.186.1-black?logo=threedotjs)
+![Vite](https://img.shields.io/badge/Vite-8.3.4-646CFF?logo=vite)
+![License: GPL-3.0-or-later](https://img.shields.io/badge/License-GPL--3.0--or--later-blue)
+[![Deploy to GitHub Pages](https://github.com/ciretorres/thesis-project/actions/workflows/deploy.yml/badge.svg)](https://github.com/ciretorres/thesis-project/actions/workflows/deploy.yml)
+
+[Instalación](#instalación) · [Implementación](./docs/implementacion.md) · [Análisis de datos](./notebooks/README.md) · [Three.js](#threejs) · [Proyecto anterior](#por-qué-se-dejó-de-mantener-el-proyecto-anterior-de-processing) · [Referencias](#referencias)
 
 Interfaz 3D interactiva lúdica que visualiza el fenómeno astronómico del módulo de distancia.
 JavaScript plano + [three.js](https://threejs.org/) + [Vite](https://vite.dev/), desplegada en GitHub Pages para presentarlo en el navegador
@@ -16,18 +19,6 @@ aquí
 ## Contacto
 
 - Eric Torres (erictorres.velasco@gmail.com)
-
-## Índice
-
-- [Instalar y ejecutar la intefaz-interactiva en local](#instalación)
-- [Implementación](./docs/implementacion.md)
-  - Escena, Cámara, Renderer, Controles, Luces.
-  - [Estrellas](./docs/implementacion.md)
-  - [Retícula](./docs/implementacion.md#reticula) (Declinación, Ascensión Recta, [Etiquetas](./docs/implementacion.md#etiquetas))
-- [Análisis de datos astronómicos en notebooks](./notebooks/README.md)
-- [Three.js](#threejs)
-- [Mantemiento versión anterior](#por-qué-se-dejó-de-mantener-el-proyecto-anterior-de-processing)
-- [Referencias](#referencias)
 
 ## Instalación
 
