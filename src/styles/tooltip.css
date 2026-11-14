@@ -1,0 +1,20 @@
+/* Tooltip que muestra información de la estrella situada bajo el cursor.
+   El elemento lo crea el módulo de interacción. */
+.tooltip-estrella {
+  position: fixed;
+  z-index: 20;
+  padding: 4px 8px;
+  background: var(--fondo-translucido);
+  color: var(--texto-claro);
+  border: 1px solid rgba(var(--acento-rgb), 0.5);
+  border-radius: 4px;
+  font:
+    12px/1.4 system-ui,
+    sans-serif;
+  white-space: nowrap;
+  pointer-events: none;
+}
+
+.tooltip-estrella[hidden] {
+  display: none;
+}

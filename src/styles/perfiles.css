@@ -1,0 +1,107 @@
+/* ── Selector de perfiles de color. ── */
+
+/* Contenedor fijo: el panel expandido aparece encima del disparador. */
+.perfiles-contenedor {
+  position: fixed;
+  left: 12px;
+  bottom: calc(72px + var(--hoja-alto-visible, 0px));
+  z-index: 26;
+}
+
+/* Disparador: círculo con el color del perfil activo (sin JS: solo CSS). */
+.perfiles-disparador {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px; /* área táctil ≥ 44×44 px */
+  height: 44px;
+  padding: 0;
+  background: var(--muestra-azul); /* perfil por defecto */
+  border: 1px solid rgba(var(--acento-rgb), 0.4);
+  border-radius: 50%;
+  cursor: pointer;
+}
+
+:root[data-perfil="azul"] .perfiles-disparador {
+  background: var(--muestra-azul);
+}
+
+:root[data-perfil="rojo"] .perfiles-disparador {
+  background: var(--muestra-rojo);
+}
+
+:root[data-perfil="morado"] .perfiles-disparador {
+  background: var(--muestra-morado);
+}
+
+.perfiles-disparador:focus-visible {
+  outline: 2px solid var(--acento);
+  outline-offset: 2px;
+}
+
+/* Panel expandido: fila de 3 círculos sobre el disparador. */
+.perfiles-panel {
+  position: absolute;
+  bottom: calc(100% + 8px);
+  left: 0;
+  display: flex;
+  gap: 8px;
+  padding: 8px;
+  background: var(--fondo);
+  border: 1px solid rgba(var(--acento-rgb), 0.4);
+  border-radius: 8px;
+}
+
+/* El display:flex de la clase vencería al atributo oculto del UA → regla
+   explícita (mismo patrón que el backdrop de la ayuda). */
+.perfiles-panel[hidden] {
+  display: none;
+}
+
+/* Radio: botón transparente de 44×44 (hit-area) que centra la muestra. */
+.perfiles-radio {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px; /* área táctil ≥ 44×44 px */
+  height: 44px;
+  padding: 0;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+}
+
+/* Muestra: círculo de 24 px; el color lo fija data-perfil del propio radio. */
+.perfiles-radio-muestra {
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+}
+
+:root .perfiles-radio[data-perfil="azul"] .perfiles-radio-muestra {
+  background: var(--muestra-azul);
+}
+
+:root .perfiles-radio[data-perfil="rojo"] .perfiles-radio-muestra {
+  background: var(--muestra-rojo);
+}
+
+:root .perfiles-radio[data-perfil="morado"] .perfiles-radio-muestra {
+  background: var(--muestra-morado);
+}
+
+/* Checked: anillo de acento (el estado no se comunica solo por color). */
+.perfiles-radio[aria-checked="true"] .perfiles-radio-muestra {
+  outline: 2px solid var(--acento);
+  outline-offset: 2px;
+}
+
+/* Hover: filete de acento. */
+.perfiles-radio:hover .perfiles-radio-muestra {
+  box-shadow: 0 0 0 1px var(--acento);
+}
+
+.perfiles-radio:focus-visible {
+  outline: 2px solid var(--acento);
+  outline-offset: 2px;
+}
